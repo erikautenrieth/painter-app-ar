@@ -2,9 +2,9 @@
 
 
 ### Authors:
-- **Frontend** [Albaraa Abushammala ](mailto:albaraa.abushammala@smail.inf.h-brs.de)
+- **Frontend Developer, Usability Manager, Test Manager** [Albaraa Abushammala ](mailto:albaraa.abushammala@smail.inf.h-brs.de)
 - **Software Architekt, Quality Manager, Scrum Master** [Erik Autenrieth ](mailto:erik.autenrieth@smail.inf.h-brs.de)
-- **Backend, Database Manager** [Hamed Sadegh ](mailto:hamed.sadegh@mail.inf.h-brs.de)
+- **Backend Developer, Database Manager, Server Manager** [Hamed Sadegh ](mailto:hamed.sadegh@mail.inf.h-brs.de)
 
 
 ### Table of contents
