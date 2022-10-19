@@ -1,6 +1,4 @@
-# WebXR
-
-<h1 align="center">Welcome to Coll@HBRS 👋</h1>
+<h1 align="center">WebXR Project</h1>
 
 
 ### Authors:
