@@ -2,9 +2,9 @@
 
 
 ### Authors:
-- **Scrum Master** [Albaraa Abushammala ](mailto:albaraa.abushammala@smail.inf.h-brs.de)
-- **Software Architekt, Qualitäts Manager** [Erik Autenrieth ](mailto:erik.autenrieth@smail.inf.h-brs.de)
-- **Senior Programmer** [Hamed Sadegh ](mailto:hamed.sadegh@mail.inf.h-brs.de)
+- **Frontend** [Albaraa Abushammala ](mailto:albaraa.abushammala@smail.inf.h-brs.de)
+- **Software Architekt, Quality Manager, Scrum Master** [Erik Autenrieth ](mailto:erik.autenrieth@smail.inf.h-brs.de)
+- **Backend, Database Manager** [Hamed Sadegh ](mailto:hamed.sadegh@mail.inf.h-brs.de)
 
 
 ### Table of contents
