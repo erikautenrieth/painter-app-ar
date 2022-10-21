@@ -33,7 +33,7 @@ Make sure you have installed all of the following prerequisites on your developm
 
 ## Getting Started <a name = "getting_started"></a>
 
-
+- Start ``npm run dev``
 
 ##  Built Using <a name = "built_using"></a>
 
