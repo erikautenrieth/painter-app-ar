@@ -32,21 +32,6 @@ const Login = () => {
       console.log(err);
     }
   };
-  // useEffect(() => {
-  //   const ui =
-  //     firebaseui.auth.AuthUI.getInstance() ||
-  //     new firebaseui.auth.AuthUI(props.auth);
-  //   ui.start(".firebase-auth-container", {
-  //     signInOptions: [
-  //       {
-  //         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-  //         requireDisplayName: false,
-  //       },
-  //     ],
-  //     signInSuccessUrl: "/home",
-  //     privacyPolicyUrl: "<your-url>",
-  //   });
-  // }, [props.auth]);
   return (
     // <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
     //   <Grid item xs={12}>
@@ -87,7 +72,7 @@ const Login = () => {
       />
       <TextField
         type={"password"}
-        label="Username"
+        label="Password"
         variant="standard"
         required
         onChange={(e: any) =>
