@@ -1,12 +1,12 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
-import db from "../../config/firebase";
-import { useAuth } from "../../shared-components/services/auth-context";
+import { userStateService } from "../../shared-components/services/state.service";
 
 const Home = () => {
-  const { user, setUser } = useAuth();
+  const { user, setUserData } = userStateService();
   useEffect(() => {
     (async () => {
+      console.log("hamedkabir  ", user);
+
       // how to get all users from DB
       // const colRef = collection(db, "users");
       // const snapshots = await getDocs(colRef);
