@@ -1,6 +1,13 @@
 import React, { useRef, useState } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
-import { VRButton, ARButton, XR, Controllers, Hands } from "@react-three/xr";
+import {
+  VRButton,
+  ARButton,
+  XR,
+  Controllers,
+  Hands,
+  XRButton,
+} from "@react-three/xr";
 import * as THREE from "three";
 function Box(props: ThreeElements["mesh"]) {
   const ref = useRef<THREE.Mesh>(null!);
@@ -24,7 +31,7 @@ function Box(props: ThreeElements["mesh"]) {
 const test = () => {
   return (
     <div className="container">
-      <ARButton
+      <XRButton
         /**
          * `XRSession` configuration options
          * @see https://immersive-web.github.io/webxr/#feature-dependencies
@@ -34,18 +41,30 @@ const test = () => {
             "local-floor",
             "bounded-floor",
             "hand-tracking",
-            "layers",
+            "local",
+            "viewer",
+            "unbounded",
           ],
         }}
         /** Whether this button should only enter an `XRSession`. Default is `false` */
         enterOnly={false}
         /** Whether this button should only exit an `XRSession`. Default is `false` */
         exitOnly={false}
-      ></ARButton>
+        mode={"AR"}
+      ></XRButton>
       <Canvas>
-        <XR>
-          <Controllers></Controllers>
-          <Hands></Hands>
+        <XR foveation={0} referenceSpace="local-floor">
+          <Controllers
+            /** Optional material props to pass to controllers' ray indicators */
+            rayMaterial={{ color: "blue" }}
+            /** Whether to hide controllers' rays on blur. Default is `false` */
+            hideRaysOnBlur={false}
+          ></Controllers>
+          <Hands
+            // Optional custom models per hand. Default is the Oculus hand model
+            modelLeft="/model-left.glb"
+            modelRight="/model-right.glb"
+          ></Hands>
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
           <Box position={[-1.2, 0, -5]} />
