@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { AuthContextProvider } from "../shared-components/services/auth-context";
 import ProtectedRoute from "../shared-components/protected-route";
-const noAuthRequired = ["/", "/login", "/signup"];
+const noAuthRequired = ["/", "/login", "/test"];
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   return (

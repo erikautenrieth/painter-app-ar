@@ -27,6 +27,10 @@ const Login = () => {
       console.log(err);
     }
   };
+
+  function goToPage(rout: string) {
+    router.push("/test");
+  }
   return (
     // <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
     //   <Grid item xs={12}>
@@ -79,6 +83,9 @@ const Login = () => {
       />
       <Button variant="outlined" type="submit">
         Login
+      </Button>
+      <Button variant="outlined" onClick={() => goToPage("/test")}>
+        XR Test
       </Button>
     </form>
   );
