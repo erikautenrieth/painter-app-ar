@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { useAuth } from "./services/auth-context";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
   const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) {
