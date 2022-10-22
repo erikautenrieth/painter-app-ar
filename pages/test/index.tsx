@@ -24,7 +24,24 @@ function Box(props: ThreeElements["mesh"]) {
 const test = () => {
   return (
     <div className="container">
-      <ARButton></ARButton>
+      <ARButton
+        /**
+         * `XRSession` configuration options
+         * @see https://immersive-web.github.io/webxr/#feature-dependencies
+         */
+        sessionInit={{
+          optionalFeatures: [
+            "local-floor",
+            "bounded-floor",
+            "hand-tracking",
+            "layers",
+          ],
+        }}
+        /** Whether this button should only enter an `XRSession`. Default is `false` */
+        enterOnly={false}
+        /** Whether this button should only exit an `XRSession`. Default is `false` */
+        exitOnly={false}
+      ></ARButton>
       <Canvas>
         <XR>
           <Controllers></Controllers>
