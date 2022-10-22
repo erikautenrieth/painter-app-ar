@@ -1,8 +1,8 @@
-import { useAuth } from "../../shared-components/services/auth-context";
+import { useState } from "react";
+import { getUserById } from "../../shared-components/services/firebase-database";
 
 export default function Home() {
-  const { user } = useAuth();
-  console.log("hamedkabir   ", user);
+  getUserById();
 
   return <h1>Page Home</h1>;
 }
