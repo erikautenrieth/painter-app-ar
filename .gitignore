@@ -37,3 +37,5 @@ next-env.d.ts
 package-lock.json
 .firebase/hosting.b3V0.cache
 yarn.lock
+android
+ios
