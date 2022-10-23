@@ -2,8 +2,9 @@ import { Button, Grid, TextField } from "@mui/material";
 
 import "firebaseui/dist/firebaseui.css";
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebase";
 import { useRouter } from "next/router";
-import { userStateService } from "../../shared-components/services/state.service";
 import { useAuth } from "../../shared-components/services/auth-context";
 
 /**
@@ -12,18 +13,19 @@ import { useAuth } from "../../shared-components/services/auth-context";
  */
 
 const Login = () => {
-  const { logIn } = useAuth();
   const router = useRouter();
-  const { user, setUserData } = userStateService();
+  const { user, login } = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+
     try {
-      await logIn(data.email, data.password);
-      // goToPage("/home")
+      await login(data.email, data.password);
+      goToPage("/home");
     } catch (err) {
       console.log(err);
     }
@@ -32,7 +34,6 @@ const Login = () => {
   function goToPage(rout: string) {
     router.push(rout);
   }
-
   return (
     // <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
     //   <Grid item xs={12}>
