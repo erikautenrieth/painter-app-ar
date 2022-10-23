@@ -23,18 +23,16 @@ const Login = () => {
   const handleLogin = async (e: any) => {
     e.preventDefault();
 
-    console.log(user);
-
     try {
       await login(data.email, data.password);
-      router.push("/home");
+      goToPage("/home");
     } catch (err) {
       console.log(err);
     }
   };
 
   function goToPage(rout: string) {
-    router.push("/test");
+    router.push(rout);
   }
   return (
     // <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
