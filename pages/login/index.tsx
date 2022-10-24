@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await login(data.email, data.password);
+      await logIn(data.email, data.password);
       goToPage("/home");
     } catch (err) {
       console.log(err);
