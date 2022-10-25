@@ -14,12 +14,6 @@ import { auth } from "../../config/firebase";
 //   );
 // };
 
-// export const tryLoginUser = (email: string, password: string) => {
-//   signInWithEmailAndPassword(auth, email, password).then((res) => {
-//     console.log("hamedkabir  ", res);
-//   });
-// };
-
 interface UserType {
   email: string | null;
   uid: string | null;
