@@ -7,27 +7,39 @@ import {
 } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
-const AuthContext = createContext<any>({});
+//   return (
+//     <AuthContext.Provider value={{ login, signup, logout }}>
+//       {loading ? null : children}
+//     </AuthContext.Provider>
+//   );
+// };
 
-export const useAuth = () => useContext(AuthContext);
+interface UserType {
+  email: string | null;
+  uid: string | null;
+}
+
+const AuthContext = createContext({});
+export const useAuth = () => useContext<any>(AuthContext);
 
 export const AuthContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<UserType>({ email: null, uid: null });
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser({
-          uid: user.uid,
           email: user.email,
-          displayName: user.displayName,
+          uid: user.uid,
         });
+        // console.log("hamedkabir user  ", user);
       } else {
-        setUser(null);
+        setUser({ email: null, uid: null });
       }
       setLoading(false);
     });
@@ -42,14 +54,13 @@ export const AuthContextProvider = ({
   const login = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
-
-  const logout = async () => {
-    setUser(null);
+  const logOut = async () => {
+    setUser({ email: null, uid: null });
     await signOut(auth);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logOut }}>
       {loading ? null : children}
     </AuthContext.Provider>
   );
