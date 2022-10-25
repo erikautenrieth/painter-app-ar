@@ -4,5 +4,5 @@ import { getUserById } from "../../shared-components/services/firebase-database"
 export default function Home() {
   getUserById();
 
-  return <h1>Page Home</h1>;
+  return <h1>Page Home user Testing</h1>;
 }
