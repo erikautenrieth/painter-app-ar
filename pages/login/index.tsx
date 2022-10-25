@@ -1,9 +1,7 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 import "firebaseui/dist/firebaseui.css";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebase";
 import { useRouter } from "next/router";
 import { useAuth } from "../../shared-components/services/auth-context";
 
