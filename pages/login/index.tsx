@@ -1,11 +1,13 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 import "firebaseui/dist/firebaseui.css";
-import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebase";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../../shared-components/services/auth-context";
+import { useAuth } from "shared-components/services/auth-context";
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
+
 
 /**
  * User1: user1@real-chat.de     123456
@@ -34,32 +36,11 @@ const Login = () => {
   function goToPage(rout: string) {
     router.push(rout);
   }
+  const [value, setValue] = React.useState(2);
   return (
-    // <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
-    //   <Grid item xs={12}>
-    //     <TextField
-    //       type={"email"}
-    //       id="standard-basic"
-    //       label="Username"
-    //       variant="standard"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={12}>
-    //     <TextField
-    //       type={"password"}
-    //       id="standard-basic"
-    //       label="Password"
-    //       variant="standard"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={12}>
-    //     <Button variant="outlined" onClick={() => test()}>
-    //       Login
-    //     </Button>
-    //   </Grid>
-    // </Grid>
-    // <div className={"firebase-auth-container"}></div>
+
     <form onSubmit={handleLogin}>
+
       <TextField
         type={"email"}
         label="Username"
@@ -90,6 +71,8 @@ const Login = () => {
       <Button variant="outlined" onClick={() => goToPage("/test")}>
         XR Test
       </Button>
+
+
     </form>
   );
 };

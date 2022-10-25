@@ -1,8 +1,15 @@
-import { useState } from "react";
-import { getUserById } from "../../shared-components/services/firebase-database";
+import { Button } from "@mui/material";
+import { useAuth } from "../../shared-components/services/auth-context";
 
 export default function Home() {
-  getUserById();
+  // getUserById();
+  const { user } = useAuth();
+  console.log("user   ", user);
 
-  return <h1>Page Home</h1>;
+  return (
+    <>
+      <Button variant="outlined">Start Host</Button>
+      <Button variant="outlined">Join a Host</Button>
+    </>
+  );
 }
