@@ -20,6 +20,7 @@ const HostingPage = () => {
   const [userState, setUserState] = useState<any>(false);
   // hier wird die ID von Host gesetzt
   const [existHost, setExistHost] = useState<any>(null);
+  const [createHostIs, setCreateHost] = useState<any>(false);
   const { hostingId } = router.query;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
@@ -88,9 +89,11 @@ const HostingPage = () => {
     }).then(
       () => {
         console.log("Host created successfully!");
+        setCreateHost(true);
       },
       (error) => {
         console.log("hosting error   ", error);
+        setCreateHost(false);
       }
     );
   };
@@ -99,7 +102,9 @@ const HostingPage = () => {
     checkTheHostingServerRealTime();
 
     // nur wenn kein hosting existiert und die Role admin ist
-    checkExistingHost();
+    // if (userRole == "admin") {
+    //   checkExistingHost();
+    // }
   }, []);
   return (
     <>
@@ -107,6 +112,12 @@ const HostingPage = () => {
         <>
           {userRole == "admin" ? (
             <Grid columns={{ md: 12 }}>
+              {!createHostIs ? (
+                <Button variant="outlined" onClick={() => checkExistingHost()}>
+                  Create Host
+                </Button>
+              ) : null}
+
               <Button variant="outlined" onClick={() => exitHosting()}>
                 Exit Hosting
               </Button>
