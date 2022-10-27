@@ -5,6 +5,7 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   onSnapshot,
@@ -27,7 +28,24 @@ const HostingPage = () => {
   };
 
   // hier wird nur duch admin dies Button sichtbar und nach dem exite sollte hosting server gelöscht werden
-  const exitHosting = () => {};
+  const exitHosting = () => {
+    existHost.forEach(async (element: any) => {
+      const docID = element.id;
+      const docRef = doc(database, `host/${docID}`);
+
+      await deleteDoc(docRef).then(
+        () => {
+          console.log("host by id removed  ", docID);
+        },
+        (error) => {
+          console.log("host couldn,t remove by error   ", error);
+        }
+      );
+    });
+    setTimeout(() => {
+      router.push("/home");
+    }, 1000);
+  };
 
   // hier wird überprüft für Nutzer welche host joinen möchte ob ein Host in reall time existiert oder nicht
   const checkTheHostingServerRealTime = () => {
@@ -36,7 +54,7 @@ const HostingPage = () => {
       docCollection,
       (doc) => {
         if (doc.docs && doc.docs[0]) {
-          setExistHost(doc.docs[0].id);
+          setExistHost(doc.docs);
         } else {
           setExistHost(null);
         }
@@ -83,10 +101,6 @@ const HostingPage = () => {
     // nur wenn kein hosting existiert und die Role admin ist
     checkExistingHost();
   }, []);
-
-  // if (userRole == "admin" && !existHostTrueOrFalse) {
-  //   createHost();
-  // }
   return (
     <>
       {existHost || userRole == "admin" ? (
