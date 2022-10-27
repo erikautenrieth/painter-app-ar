@@ -24,6 +24,8 @@ const HostingPage = () => {
     setUserState(true);
   };
 
+  const exitHosting = () => {};
+
   const checkTheHostingServer = () => {
     const docCollection = collection(database, "host");
     onSnapshot(
@@ -50,44 +52,53 @@ const HostingPage = () => {
   return (
     <>
       {existHost || userRole == "admin" ? (
-        <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
-          <Grid item xs={6}>
-            <h1>Player1</h1>
-            {userRole == "admin" ? (
-              <>
-                {userState ? (
-                  <Icon
-                    color="success"
-                    fontSize="large"
-                    component={CheckCircleOutlineOutlinedIcon}
-                  ></Icon>
-                ) : (
-                  <Button variant="outlined" onClick={() => getReady()}>
-                    Ready
-                  </Button>
-                )}
-              </>
-            ) : null}
+        <>
+          {userRole == "admin" ? (
+            <Grid columns={{ md: 12 }}>
+              <Button variant="outlined" onClick={() => exitHosting()}>
+                Exit Hosting
+              </Button>
+            </Grid>
+          ) : null}
+          <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
+            <Grid item xs={6}>
+              <h1>Player1</h1>
+              {userRole == "admin" ? (
+                <>
+                  {userState ? (
+                    <Icon
+                      color="success"
+                      fontSize="large"
+                      component={CheckCircleOutlineOutlinedIcon}
+                    ></Icon>
+                  ) : (
+                    <Button variant="outlined" onClick={() => getReady()}>
+                      Ready
+                    </Button>
+                  )}
+                </>
+              ) : null}
+            </Grid>
+            <Grid item xs={6}>
+              <h1>Player2</h1>
+              {userRole == "join" ? (
+                <>
+                  {userState ? (
+                    <Icon
+                      color="success"
+                      fontSize="large"
+                      component={CheckCircleOutlineOutlinedIcon}
+                    ></Icon>
+                  ) : (
+                    <Button variant="outlined" onClick={() => getReady()}>
+                      Ready
+                    </Button>
+                  )}
+                </>
+              ) : null}
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <h1>Player2</h1>
-            {userRole == "join" ? (
-              <>
-                {userState ? (
-                  <Icon
-                    color="success"
-                    fontSize="large"
-                    component={CheckCircleOutlineOutlinedIcon}
-                  ></Icon>
-                ) : (
-                  <Button variant="outlined" onClick={() => getReady()}>
-                    Ready
-                  </Button>
-                )}
-              </>
-            ) : null}
-          </Grid>
-        </Grid>
+        </>
       ) : (
         <h1>Please wait of host ...</h1>
       )}
