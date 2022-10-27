@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import {
+  addDoc,
   collection,
   doc,
   getDocs,
@@ -24,8 +25,10 @@ const HostingPage = () => {
     setUserState(true);
   };
 
+  // hier wird nur duch admin dies Button sichtbar und nach dem exite sollte hosting server gelöscht werden
   const exitHosting = () => {};
 
+  // hier wird überprüft für Nutzer welche host joinen möchte ob ein Host in reall time existiert oder nicht
   const checkTheHostingServer = () => {
     const docCollection = collection(database, "host");
     onSnapshot(
@@ -43,9 +46,29 @@ const HostingPage = () => {
       }
     );
   };
+
+  // eine Methode direkt nach dem Admin bei der Seite ankommt ein Host automatisch erstellt wird
+  const createHost = async () => {
+    const docCollection = collection(database, "host");
+    await addDoc(docCollection, {
+      playerAdminReady: false,
+      playerJoinReady: false,
+      createdAt: new Date(),
+    }).then(
+      () => {
+        console.log("Host created successfully!");
+      },
+      (error) => {
+        console.log("hosting error   ", error);
+      }
+    );
+  };
   useEffect(() => {
     setUserRole(hostingId);
     checkTheHostingServer();
+    if (userRole == "admin") {
+      createHost();
+    }
   }, []);
   console.log("hamedkabir  ", userRole);
 
