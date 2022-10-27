@@ -17,6 +17,7 @@ const HostingPage = () => {
   const router = useRouter();
   const [userRole, setUserRole] = useState<any>("admin");
   const [userState, setUserState] = useState<any>(false);
+  // hier wird die ID von Host gesetzt
   const [existHost, setExistHost] = useState<any>(null);
   const { hostingId } = router.query;
 
@@ -29,7 +30,7 @@ const HostingPage = () => {
   const exitHosting = () => {};
 
   // hier wird überprüft für Nutzer welche host joinen möchte ob ein Host in reall time existiert oder nicht
-  const checkTheHostingServer = () => {
+  const checkTheHostingServerRealTime = () => {
     const docCollection = collection(database, "host");
     onSnapshot(
       docCollection,
@@ -47,6 +48,18 @@ const HostingPage = () => {
     );
   };
 
+  const checkExistingHost = async () => {
+    const docCollection = collection(database, "host");
+    await getDocs(docCollection).then((data) => {
+      if (data.docs.length > 0) {
+        console.log("host already exist", data.docs.length);
+      } else {
+        if (userRole == "admin") {
+          createHost();
+        }
+      }
+    });
+  };
   // eine Methode direkt nach dem Admin bei der Seite ankommt ein Host automatisch erstellt wird
   const createHost = async () => {
     const docCollection = collection(database, "host");
@@ -65,13 +78,15 @@ const HostingPage = () => {
   };
   useEffect(() => {
     setUserRole(hostingId);
-    checkTheHostingServer();
-    if (userRole == "admin") {
-      createHost();
-    }
-  }, []);
-  console.log("hamedkabir  ", userRole);
+    checkTheHostingServerRealTime();
 
+    // nur wenn kein hosting existiert und die Role admin ist
+    checkExistingHost();
+  }, []);
+
+  // if (userRole == "admin" && !existHostTrueOrFalse) {
+  //   createHost();
+  // }
   return (
     <>
       {existHost || userRole == "admin" ? (
