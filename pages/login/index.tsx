@@ -88,6 +88,9 @@ const Login = () => {
       <Button variant="outlined" onClick={() => goToPage("/test")}>
         XR Test
       </Button>
+      <Button variant="outlined" onClick={() => goToPage("/test/painter")}>
+        XR Paint
+      </Button>
     </form>
   );
 };
