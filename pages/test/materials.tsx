@@ -8,13 +8,19 @@ const TexturedSpheres = () => {
     normalMap: "/textures/rocky_trail_nor_gl_1k.png",
     roughnessMap: "/textures/rocky_trail_rough_1k.png",
   });
+  const props2 = useTexture({
+    map: "/textures3/rocks_ground_01_diff_1k.png",
+    displacementMap: "/textures3/rocks_ground_01_disp_1k.png",
+    normalMap: "/textures3/rocks_ground_01_nor_gl_1k.png",
+    roughnessMap: "/textures3/rocks_ground_01_rough_1k.png",
+  });
 
   return (
     <>
       <mesh scale={[1, 1, 1]} position={[0, 1, 0]}>
         <sphereGeometry args={[1, 100, 100]}></sphereGeometry>
         <meshStandardMaterial
-          {...props}
+          {...props2}
           displacementScale={0.1}
         ></meshStandardMaterial>
       </mesh>
