@@ -11,9 +11,12 @@ import Lights from "./components/Lights";
 import Ground from "./components/Ground";
 import PalmModel from "./components/Palm";
 import Palm2 from "./components/PalmV2";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { MeshDistanceMaterial } from "three";
+import { useInput } from "./hooks/useInput";
 
 const MyPlayer = () => {
+  const { forward, backward, left, right, jump, shift } = useInput();
   const model = useGLTF("/models/player.glb");
   const { actions } = useAnimations(model.animations, model.scene);
   model.scene.traverse((object) => {
@@ -21,9 +24,35 @@ const MyPlayer = () => {
       object.castShadow = true;
     }
   });
+  const currentAction = useRef("");
+  // animations dance, idle, jump, running
   useEffect(() => {
-    actions?.dance?.play();
-  });
+    let action = "";
+
+    if (forward || backward || left || right) {
+      action = "running";
+    } else if (jump) {
+      action = "jump";
+    } else if (shift) {
+      action = "dance";
+    } else {
+      action = "idle";
+    }
+    // actions?.dance?.play();
+    // console.log("forward  ", forward);
+    // console.log("backward  ", backward);
+    // console.log("left   ", left);
+    // console.log("right   ", right);
+    // console.log("jump   ", jump);
+    // console.log("shift   ", shift);
+    if (currentAction.current != action) {
+      const nextActionToPlay = actions[action];
+      const current = actions[currentAction.current];
+      current?.fadeOut(0.2);
+      nextActionToPlay?.reset().fadeIn(0.2).play();
+      currentAction.current = action;
+    }
+  }, [forward, backward, left, right, jump, shift]);
 
   return <primitive object={model.scene}></primitive>;
 };
