@@ -21,14 +21,26 @@ const PalmModel = (props: JSX.IntrinsicElements["group"]) => {
   const { nodes, materials } = useGLTF("/models/Palm.glb") as GLTFResult;
   return (
     <group {...props} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Palm.geometry}
-        material={materials.Material}
-        rotation={[2.37, 1.5, -2.52]}
-        scale={[1, 1, 0.5]}
-      />
+      <object3D position={[0, 0, 2]}>
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Palm.geometry}
+          material={materials.Material}
+          rotation={[2.37, 1.5, -2.52]}
+          scale={[1, 1, 0.5]}
+        />
+      </object3D>
+      <object3D position={[0, 0, 0]}>
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Palm.geometry}
+          material={materials.Material}
+          rotation={[2.37, 1.5, -2.52]}
+          scale={[1, 1, 0.5]}
+        />
+      </object3D>
     </group>
   );
 };
