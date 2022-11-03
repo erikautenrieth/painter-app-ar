@@ -7,18 +7,7 @@ import {
 } from "@react-three/drei";
 import Lights from "./components/Lights";
 import Ground from "./components/Ground";
-import { useLoader } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-
-const Tree = () => {
-  const model = useLoader(GLTFLoader, "/models/Palm.glb");
-  model.scene.traverse((object) => {
-    if (object.isMesh) {
-      object.castShadow = true;
-    }
-  });
-  return <primitive object={model.scene}></primitive>;
-};
+import PalmModel from "./components/Palm";
 
 const TexturedSpheres = () => {
   const props = useTexture({
@@ -54,8 +43,8 @@ const Materials: NextPage = () => {
         {/* <Canvas shadows camera={{ position: [0, 10, 0] }}> */}
         <gridHelper args={[10, 10]}></gridHelper>
         <OrbitControls></OrbitControls>
-        <TexturedSpheres></TexturedSpheres>
-        <Tree></Tree>
+        {/* <TexturedSpheres></TexturedSpheres> */}
+        <PalmModel></PalmModel>
         <Lights></Lights>
         <Ground></Ground>
       </Canvas>
