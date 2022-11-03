@@ -44,7 +44,13 @@ const Materials: NextPage = () => {
         {/* <TexturedSpheres></TexturedSpheres> */}
         {/* <PalmModel></PalmModel> */}
         <Palm2 boundary={25} count={20}></Palm2>
-        <MyPlayer></MyPlayer>
+        <MyPlayer
+          position={{
+            x: 3,
+            y: 0,
+            z: 0,
+          }}
+        ></MyPlayer>
         <Lights></Lights>
         <Ground></Ground>
       </Canvas>
