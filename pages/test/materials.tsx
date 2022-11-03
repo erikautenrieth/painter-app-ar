@@ -4,11 +4,29 @@ import {
   OrbitControls,
   useTexture,
   TransformControls,
+  useGLTF,
+  useAnimations,
 } from "@react-three/drei";
 import Lights from "./components/Lights";
 import Ground from "./components/Ground";
 import PalmModel from "./components/Palm";
 import Palm2 from "./components/PalmV2";
+import { useEffect } from "react";
+
+const MyPlayer = () => {
+  const model = useGLTF("/models/player.glb");
+  const { actions } = useAnimations(model.animations, model.scene);
+  model.scene.traverse((object) => {
+    if (object.isMesh) {
+      object.castShadow = true;
+    }
+  });
+  useEffect(() => {
+    actions?.dance?.play();
+  });
+
+  return <primitive object={model.scene}></primitive>;
+};
 
 const TexturedSpheres = () => {
   const props = useTexture({
@@ -47,6 +65,7 @@ const Materials: NextPage = () => {
         {/* <TexturedSpheres></TexturedSpheres> */}
         {/* <PalmModel></PalmModel> */}
         <Palm2 boundary={50} count={20}></Palm2>
+        <MyPlayer></MyPlayer>
         <Lights></Lights>
         <Ground></Ground>
       </Canvas>
