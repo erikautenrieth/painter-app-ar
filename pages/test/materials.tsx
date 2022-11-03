@@ -43,7 +43,7 @@ const Materials: NextPage = () => {
         <OrbitControls></OrbitControls>
         {/* <TexturedSpheres></TexturedSpheres> */}
         {/* <PalmModel></PalmModel> */}
-        <Palm2 boundary={50} count={20}></Palm2>
+        <Palm2 boundary={25} count={20}></Palm2>
         <MyPlayer></MyPlayer>
         <Lights></Lights>
         <Ground></Ground>
