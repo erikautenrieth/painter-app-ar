@@ -6,7 +6,7 @@ const Ground: React.FC = () => {
         rotation={[-Math.PI * 0.5, 0, 0]}
         receiveShadow
       >
-        <planeBufferGeometry args={[1000, 1000]}></planeBufferGeometry>
+        <planeGeometry args={[1000, 1000]}></planeGeometry>
         <meshLambertMaterial color={"green"}></meshLambertMaterial>
       </mesh>
     </>

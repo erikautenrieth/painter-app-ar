@@ -7,9 +7,19 @@ import {
 } from "@react-three/drei";
 import Lights from "./components/Lights";
 import Ground from "./components/Ground";
-const PlaneCustom = () => {
-  return <></>;
+import { useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+const Tree = () => {
+  const model = useLoader(GLTFLoader, "/models/Palm.glb");
+  model.scene.traverse((object) => {
+    if (object.isMesh) {
+      object.castShadow = true;
+    }
+  });
+  return <primitive object={model.scene}></primitive>;
 };
+
 const TexturedSpheres = () => {
   const props = useTexture({
     map: "/textures/rocky_trail_diff_1k.png",
@@ -45,6 +55,7 @@ const Materials: NextPage = () => {
         <gridHelper args={[10, 10]}></gridHelper>
         <OrbitControls></OrbitControls>
         <TexturedSpheres></TexturedSpheres>
+        <Tree></Tree>
         <Lights></Lights>
         <Ground></Ground>
       </Canvas>

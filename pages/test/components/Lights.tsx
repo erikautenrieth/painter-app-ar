@@ -3,11 +3,11 @@ import { useHelper } from "@react-three/drei";
 import { DirectionalLightHelper } from "three";
 
 const Lights: React.FC = () => {
-  const lightRef = useRef<THREE.DirectionalLight>();
+  const lightRef = useRef<THREE.DirectionalLight>(null);
   useHelper(lightRef, DirectionalLightHelper, 5, "red");
   return (
     <>
-      <ambientLight intensity={0.2}></ambientLight>
+      <ambientLight intensity={0.1}></ambientLight>
       <directionalLight
         ref={lightRef}
         position={[0, 10, 10]}
@@ -19,7 +19,7 @@ const Lights: React.FC = () => {
         shadow-camera-top={20}
         shadow-camera-bottom={-20}
       ></directionalLight>
-      <hemisphereLight args={["#34ebd8", "#34eb6b", 0.7]}></hemisphereLight>
+      <hemisphereLight args={["#34ebd8", "#34eb6b", 0.1]}></hemisphereLight>
     </>
   );
 };
