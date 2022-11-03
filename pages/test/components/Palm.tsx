@@ -17,7 +17,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-const PalmModel = (props: JSX.IntrinsicElements["group"]) => {
+const PalmModel: React.FC = (props: JSX.IntrinsicElements["group"]) => {
   const { nodes, materials } = useGLTF("/models/Palm.glb") as GLTFResult;
   return (
     <group {...props} dispose={null}>

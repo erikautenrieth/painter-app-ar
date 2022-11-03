@@ -8,6 +8,7 @@ import {
 import Lights from "./components/Lights";
 import Ground from "./components/Ground";
 import PalmModel from "./components/Palm";
+import Palm2 from "./components/PalmV2";
 
 const TexturedSpheres = () => {
   const props = useTexture({
@@ -44,7 +45,8 @@ const Materials: NextPage = () => {
         <gridHelper args={[10, 10]}></gridHelper>
         <OrbitControls></OrbitControls>
         {/* <TexturedSpheres></TexturedSpheres> */}
-        <PalmModel></PalmModel>
+        {/* <PalmModel></PalmModel> */}
+        <Palm2 boundary={50} count={20}></Palm2>
         <Lights></Lights>
         <Ground></Ground>
       </Canvas>
