@@ -3,7 +3,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import { useInput } from "../hooks/useInput";
 import * as THREE from "three";
-import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 type props = {
   position: { x: number; y: number; z: number };
 };
@@ -38,15 +37,14 @@ const directionOffset = ({ forward, backward, left, right }: any) => {
 };
 
 const MyPlayer: React.FC<props> = ({ position }) => {
-  const model: any = useGLTF("/models/player.glb");
   const { forward, backward, left, right, jump, shift } = useInput();
+  const model = useGLTF("/models/player.glb");
   const { actions } = useAnimations(model.animations, model.scene);
   model.scene.traverse((object) => {
     if (object.isMesh) {
       object.castShadow = true;
     }
   });
-
   const currentAction = useRef("");
   const controlRef = useRef<typeof OrbitControls>();
   const camera = useThree((state) => state.camera);

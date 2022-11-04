@@ -1,17 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import { NextPage } from "next";
-import {
-  OrbitControls,
-  useAnimations,
-  useGLTF,
-  useTexture,
-} from "@react-three/drei";
+import { OrbitControls, useTexture } from "@react-three/drei";
 import Lights from "./components/Lights";
 import Ground from "./components/Ground";
 import PalmModel from "./components/Palm";
 import Palm2 from "./components/PalmV2";
 import MyPlayer from "./components/Player";
-import MyPlayerCopy from "./components/Playercopy";
 
 const TexturedSpheres = () => {
   const props = useTexture({
@@ -57,13 +51,6 @@ const Materials: NextPage = () => {
             z: 0,
           }}
         ></MyPlayer>
-        {/* <MyPlayerCopy
-          position={{
-            x: 0,
-            y: 0,
-            z: 0,
-          }}
-        ></MyPlayerCopy> */}
         <Lights></Lights>
         <Ground></Ground>
       </Canvas>
