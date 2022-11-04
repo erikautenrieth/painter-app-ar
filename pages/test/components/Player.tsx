@@ -3,15 +3,13 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import { useInput } from "../hooks/useInput";
 import * as THREE from "three";
-type props = {
-  position: { x: number; y: number; z: number };
-};
+
 let walkDirection = new THREE.Vector3();
 let rotateAngle = new THREE.Vector3(0, 1, 0);
 let rotateQuartenion = new THREE.Quaternion();
 let cameraTarget = new THREE.Vector3();
 
-const directionOffset = ({ forward, backward, left, right }: any) => {
+const directionOffset = ({ forward, backward, left, right }) => {
   let directionOffset = 0; //w
   if (forward) {
     if (left) {
@@ -36,7 +34,7 @@ const directionOffset = ({ forward, backward, left, right }: any) => {
   return directionOffset;
 };
 
-const MyPlayer: React.FC<props> = ({ position }) => {
+const MyPlayer = () => {
   const { forward, backward, left, right, jump, shift } = useInput();
   const model = useGLTF("/models/player.glb");
   const { actions } = useAnimations(model.animations, model.scene);
@@ -48,7 +46,6 @@ const MyPlayer: React.FC<props> = ({ position }) => {
   const currentAction = useRef("");
   const controlRef = useRef<typeof OrbitControls>();
   const camera = useThree((state) => state.camera);
-  model.scene.position.set(position.x, position.y, position.z);
 
   const updateCameraTarget = (moveX: number, moveZ: number) => {
     //move Camera
@@ -66,6 +63,7 @@ const MyPlayer: React.FC<props> = ({ position }) => {
   // animations dance, idle, jump, running
   useEffect(() => {
     let action = "";
+
     if (forward || backward || left || right) {
       action = "running";
     } else if (jump) {
