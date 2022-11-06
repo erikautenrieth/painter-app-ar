@@ -56,16 +56,15 @@ export default function Login() {
 										<div className="field">
 											<div className="control">
 												<TextField
+													sx={{ color: 'blue' } }focused
+													margin="normal"
 													type={"email"}
 													label="Username"
-													variant="standard"
+													variant="outlined"
+
 													required
-													onChange={(e: any) =>
-													setData({
-													...data,
-													email: e.target.value,
-												})
-												}
+													onChange={(e: any) => setData({...data, email: e.target.value,})}
+
 													/>
 
 											</div>
@@ -75,9 +74,11 @@ export default function Login() {
 											<div className="control">
 
 												<TextField
+													sx={{ color: 'blue' } }focused
+													margin="normal"
 													type={"password"}
 													label="Password"
-													variant="standard"
+													variant="outlined"
 													required
 													onChange={(e: any) =>
 														setData({
