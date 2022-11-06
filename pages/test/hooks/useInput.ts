@@ -19,13 +19,38 @@ export const useInput = () => {
     Space: "jump",
   };
 
-  const findKey = (key: string) => keys[key];
+  const findKey = (key: string) => {
+    let keyBack = "";
+    switch (key) {
+      case "KeyW":
+        keyBack = keys.KeyW;
+        break;
+      case "KeyS":
+        keyBack = keys.KeyS;
+        break;
+      case "KeyA":
+        keyBack = keys.KeyA;
+        break;
+      case "KeyD":
+        keyBack = keys.KeyD;
+        break;
+      case "ShiftLeft":
+        keyBack = keys.ShiftLeft;
+        break;
+      case "Space":
+        keyBack = keys.Space;
+        break;
+      default:
+        break;
+    }
+    return keyBack;
+  };
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: { code: any }) => {
       setInput((m) => ({ ...m, [findKey(e.code)]: true }));
     };
-    const handleKeyUp = (e) => {
+    const handleKeyUp = (e: { code: any }) => {
       setInput((m) => ({ ...m, [findKey(e.code)]: false }));
     };
     document.addEventListener("keydown", handleKeyDown);

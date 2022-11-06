@@ -9,7 +9,7 @@ let rotateAngle = new THREE.Vector3(0, 1, 0);
 let rotateQuartenion = new THREE.Quaternion();
 let cameraTarget = new THREE.Vector3();
 
-const directionOffset = ({ forward, backward, left, right }) => {
+const directionOffset = ({ forward, backward, left, right }: any) => {
   let directionOffset = 0; //w
   if (forward) {
     if (left) {
@@ -36,15 +36,16 @@ const directionOffset = ({ forward, backward, left, right }) => {
 
 const MyPlayer = () => {
   const { forward, backward, left, right, jump, shift } = useInput();
-  const model = useGLTF("/models/player.glb");
+  const model = useGLTF("/models/Player.glb");
+
   const { actions } = useAnimations(model.animations, model.scene);
   model.scene.traverse((object) => {
-    if (object.isMesh) {
+    if (object) {
       object.castShadow = true;
     }
   });
   const currentAction = useRef("");
-  const controlRef = useRef<typeof OrbitControls>();
+  const controlRef = useRef<any>();
   const camera = useThree((state) => state.camera);
 
   const updateCameraTarget = (moveX: number, moveZ: number) => {
