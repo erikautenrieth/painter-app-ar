@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const Navbar = () => {
 
 	return (
@@ -26,9 +28,11 @@ const Navbar = () => {
 						<a className="navbar-item is-active is-size-5 has-text-weight-semibold">
 							Home
 						</a>
+						<Link href="/login">
 						<a className="navbar-item is-size-5 has-text-weight-semibold">
 							Login
 						</a>
+						</Link>
 						<a className="navbar-item is-size-5 has-text-weight-semibold">
 							Register
 						</a>
