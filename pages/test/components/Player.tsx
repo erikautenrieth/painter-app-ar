@@ -12,9 +12,11 @@ let cameraTarget = new THREE.Vector3();
 
 const MyPlayer = () => {
   const { forward, backward, left, right, jump, shift } = useInput();
-  const model = useGLTF("/models/Player.glb");
+  const model = useGLTF("/models/noah.glb");
 
   const { actions } = useAnimations(model.animations, model.scene);
+  console.log(model);
+
   model.scene.traverse((object) => {
     if (object) {
       object.castShadow = true;
