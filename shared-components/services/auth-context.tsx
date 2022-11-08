@@ -8,7 +8,7 @@ import {
 import { auth } from "../../config/firebase";
 
 //   return (
-//     <AuthContext.Provider value={{ login, signup, logout }}>
+//     <AuthContext.Provider value={{ landingpage, signup, logout }}>
 //       {loading ? null : children}
 //     </AuthContext.Provider>
 //   );
