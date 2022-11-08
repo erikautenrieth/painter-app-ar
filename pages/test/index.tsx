@@ -9,36 +9,35 @@ import {
   XRButton,
 } from "@react-three/xr";
 import * as THREE from "three";
-import * as ThreeMeshUI from "three-mesh-ui";
 
-function makeTextPanel() {
-  const textRef = useRef<THREE.Object3D>(null!);
+// function makeTextPanel() {
+//   const textRef = useRef<THREE.Object3D>(null!);
 
-  const container = new ThreeMeshUI.Block({
-    width: 1.2,
-    height: 0.5,
-    padding: 0.05,
-    justifyContent: "center",
-    textAlign: "left",
-  });
+//   const container = new ThreeMeshUI.Block({
+//     width: 1.2,
+//     height: 0.5,
+//     padding: 0.05,
+//     justifyContent: "center",
+//     textAlign: "left",
+//   });
 
-  container.position.set(0, 1, -1.8);
-  container.rotation.x = -0.55;
+//   container.position.set(0, 1, -1.8);
+//   container.rotation.x = -0.55;
 
-  //
+//   //
 
-  new ThreeMeshUI.Text({
-    content: "This library supports line-break-friendly-characters,",
-    fontSize: 0.055,
-  }),
-    new ThreeMeshUI.Text({
-      content:
-        " As well as multi-font-size lines with consistent vertical spacing.",
-      fontSize: 0.08,
-    });
+//   new ThreeMeshUI.Text({
+//     content: "This library supports line-break-friendly-characters,",
+//     fontSize: 0.055,
+//   }),
+//     new ThreeMeshUI.Text({
+//       content:
+//         " As well as multi-font-size lines with consistent vertical spacing.",
+//       fontSize: 0.08,
+//     });
 
-  return <object3D ref={textRef}></object3D>;
-}
+//   return <object3D ref={textRef}></object3D>;
+// }
 
 function Box(props: ThreeElements["mesh"]) {
   const ref = useRef<THREE.Mesh>(null!);
@@ -62,7 +61,7 @@ function Box(props: ThreeElements["mesh"]) {
 
 const test = () => {
   return (
-    <div className="container">
+    <div className="containerCanva">
       <XRButton
         /**
          * `XRSession` configuration options

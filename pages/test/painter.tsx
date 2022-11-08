@@ -115,7 +115,7 @@ const Tube_Painter = () => {
 
     renderer.render(scene, camera);
   }
-  return <div id="container-id" className="container"></div>;
+  return <div id="container-id" className="containerCanva"></div>;
 };
 
 export default Tube_Painter;
