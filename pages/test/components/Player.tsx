@@ -1,7 +1,8 @@
-import { useGLTF, useAnimations, OrbitControls } from "@react-three/drei";
+import { useGLTF, useAnimations, OrbitControls, Box } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
+import { BoxGeometry } from "three";
 import { useInput } from "../../../shared-components/services/hooks/useInput";
 import { directionOffset } from "../../../shared-components/services/player/player.service";
 
@@ -15,7 +16,6 @@ const MyPlayer = () => {
   const model = useGLTF("/models/noah.glb");
 
   const { actions } = useAnimations(model.animations, model.scene);
-  console.log(model);
 
   model.scene.traverse((object) => {
     if (object) {
@@ -113,7 +113,9 @@ const MyPlayer = () => {
   return (
     <>
       <OrbitControls ref={controlRef}></OrbitControls>
-      <primitive object={model.scene}></primitive>
+      <mesh>
+        <primitive object={model.scene}></primitive>
+      </mesh>
     </>
   );
 };
