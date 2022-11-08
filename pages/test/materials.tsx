@@ -35,7 +35,7 @@ const TexturedSpheres = () => {
 
 const Materials: NextPage = () => {
   return (
-    <div className="container">
+    <div className="containerCanva">
       <Canvas shadows>
         {/* <Canvas shadows camera={{ position: [0, 10, 0] }}> */}
         <gridHelper args={[10, 10]}></gridHelper>

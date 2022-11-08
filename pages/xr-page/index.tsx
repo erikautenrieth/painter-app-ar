@@ -43,7 +43,7 @@ const Metaverse = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="containerCanva">
       <Canvas camera={{ position: [0, 10, -5], near: 0.1, far: 1000 }}>
         {/* <Canvas> */}
         <Stats />
