@@ -1,15 +1,53 @@
 import { Box } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
+import { database } from "../../config/firebase";
 import { useInput } from "../../shared-components/services/hooks/useInput";
 import { directionOffset } from "../../shared-components/services/player/player.service";
 
-const MyBox = () => {
+type Props = {
+  user: any;
+  originPosition: number[];
+};
+const MyBox: React.FC<Props> = ({ user, originPosition }: Props) => {
   const { forward, backward, left, right, jump, shift } = useInput();
   const controlRef = useRef<any>(null);
   const boxRef = useRef<any>(null);
   // const camera = useThree((state) => state.camera);
-  useEffect(() => {}, [forward, backward, left, right, jump, shift]);
+  const updatePlayerPosition = async () => {
+    const docKey = "zb5tWRiOArpG0vR5PjO8";
+
+    const docRef = doc(database, `host/${docKey}`);
+    console.log("hamedkabir   ", boxRef.current?.position);
+    await updateDoc(
+      docRef,
+      user.role == "admin"
+        ? {
+            player1: {
+              position: [
+                boxRef.current.position.x,
+                boxRef.current.position.y,
+                boxRef.current.position.z,
+              ],
+            },
+          }
+        : {
+            player2: {
+              position: [
+                boxRef.current.position.x,
+                boxRef.current.position.y,
+                boxRef.current.position.z,
+              ],
+            },
+          }
+    );
+  };
+  useEffect(() => {
+    if (forward || backward || left || right) {
+      // updatePlayerPosition();
+    }
+  }, [forward, backward, left, right, jump, shift]);
 
   useFrame((state, delta) => {
     //diagonal movement angle offset
@@ -41,9 +79,13 @@ const MyBox = () => {
   });
 
   return (
-    <>
-      <Box ref={boxRef} />
-    </>
+    <object3D>
+      {/* Player1 */}
+      <Box
+        ref={boxRef}
+        position={[originPosition[0], originPosition[1], originPosition[2]]}
+      />
+    </object3D>
   );
 };
 
