@@ -1,50 +1,29 @@
-import { useGLTF, useAnimations, OrbitControls } from "@react-three/drei";
+import { useGLTF, useAnimations, OrbitControls, Box } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
-import { useInput } from "../hooks/useInput";
 import * as THREE from "three";
+import { BoxGeometry } from "three";
+import { useInput } from "../../../shared-components/services/hooks/useInput";
+import { directionOffset } from "../../../shared-components/services/player/player.service";
 
 let walkDirection = new THREE.Vector3();
 let rotateAngle = new THREE.Vector3(0, 1, 0);
 let rotateQuartenion = new THREE.Quaternion();
 let cameraTarget = new THREE.Vector3();
 
-const directionOffset = ({ forward, backward, left, right }) => {
-  let directionOffset = 0; //w
-  if (forward) {
-    if (left) {
-      directionOffset = Math.PI / 4; //w+a
-    } else if (right) {
-      directionOffset = -Math.PI / 4; //w+d
-    }
-  } else if (backward) {
-    if (left) {
-      directionOffset = Math.PI / 4 + Math.PI / 2; //s+a
-    } else if (right) {
-      directionOffset = -Math.PI / 4 - Math.PI / 2; //s+d
-    } else {
-      directionOffset = Math.PI; //s
-    }
-  } else if (left) {
-    directionOffset = Math.PI / 2; //a
-  } else if (right) {
-    directionOffset = -Math.PI / 2; //d
-  }
-
-  return directionOffset;
-};
-
 const MyPlayer = () => {
   const { forward, backward, left, right, jump, shift } = useInput();
-  const model = useGLTF("/models/player.glb");
+  const model = useGLTF("/models/noah.glb");
+
   const { actions } = useAnimations(model.animations, model.scene);
+
   model.scene.traverse((object) => {
-    if (object.isMesh) {
+    if (object) {
       object.castShadow = true;
     }
   });
   const currentAction = useRef("");
-  const controlRef = useRef<typeof OrbitControls>();
+  const controlRef = useRef<any>();
   const camera = useThree((state) => state.camera);
 
   const updateCameraTarget = (moveX: number, moveZ: number) => {
@@ -134,7 +113,9 @@ const MyPlayer = () => {
   return (
     <>
       <OrbitControls ref={controlRef}></OrbitControls>
-      <primitive object={model.scene}></primitive>
+      <mesh>
+        <primitive object={model.scene}></primitive>
+      </mesh>
     </>
   );
 };

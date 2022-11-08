@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import { OrbitControls, useTexture } from "@react-three/drei";
 import Lights from "./components/Lights";
 import Ground from "./components/Ground";
-import PalmModel from "./components/Palm";
 import Palm2 from "./components/PalmV2";
 import MyPlayer from "./components/Player";
 

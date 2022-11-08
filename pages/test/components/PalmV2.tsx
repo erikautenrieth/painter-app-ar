@@ -14,7 +14,7 @@ const Palm2: React.FC<props> = ({ boundary, count }) => {
   const model = useLoader(GLTFLoader, "/models/Palm.glb");
   const [palms, setPalms] = useState<palmType[]>([]);
   model.scene.traverse((object) => {
-    if (object.isMesh) {
+    if (object) {
       object.castShadow = true;
     }
   });
