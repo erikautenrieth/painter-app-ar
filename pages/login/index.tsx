@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 
 import styles from '../../styles/Home.module.css';
 
+
+
 /* <input className="input is-large" type="email" placeholder="Your Email"/>
   	<input className="input is-large" type="password" placeholder="Your Password"/>
   	<img src="https://via.placeholder.com/150"/>

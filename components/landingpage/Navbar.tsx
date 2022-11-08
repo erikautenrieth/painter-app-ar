@@ -34,7 +34,7 @@ const Navbar = () => {
 						</a>
 						</Link>
 						<a className="navbar-item is-size-5 has-text-weight-semibold">
-							Register
+							Feature
 						</a>
 					</div>
 				</div>
