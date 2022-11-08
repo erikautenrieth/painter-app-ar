@@ -1,7 +1,8 @@
-import { useGLTF, useAnimations, OrbitControls } from "@react-three/drei";
+import { useGLTF, useAnimations, OrbitControls, Box } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
+import { BoxGeometry } from "three";
 import { useInput } from "../../../shared-components/services/hooks/useInput";
 import { directionOffset } from "../../../shared-components/services/player/player.service";
 
@@ -12,9 +13,10 @@ let cameraTarget = new THREE.Vector3();
 
 const MyPlayer = () => {
   const { forward, backward, left, right, jump, shift } = useInput();
-  const model = useGLTF("/models/Player.glb");
+  const model = useGLTF("/models/noah.glb");
 
   const { actions } = useAnimations(model.animations, model.scene);
+
   model.scene.traverse((object) => {
     if (object) {
       object.castShadow = true;
@@ -111,7 +113,9 @@ const MyPlayer = () => {
   return (
     <>
       <OrbitControls ref={controlRef}></OrbitControls>
-      <primitive object={model.scene}></primitive>
+      <mesh>
+        <primitive object={model.scene}></primitive>
+      </mesh>
     </>
   );
 };
