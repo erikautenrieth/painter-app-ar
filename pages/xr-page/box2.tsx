@@ -10,17 +10,15 @@ type Props = {
   user: any;
   originPosition: number[];
 };
-const MyBox: React.FC<Props> = ({ user, originPosition }: Props) => {
+const MyBox2: React.FC<Props> = ({ user, originPosition }: Props) => {
   const { forward, backward, left, right, jump, shift } = useInput();
-  const controlRef = useRef<any>(null);
   const boxRef = useRef<any>(null);
-  // const camera = useThree((state) => state.camera);
   const updatePlayerPosition = async () => {
     const docKey = "zb5tWRiOArpG0vR5PjO8";
 
     const docRef = doc(database, `host/${docKey}`);
     await updateDoc(docRef, {
-      player1: {
+      player2: {
         position: [
           boxRef.current.position.x,
           boxRef.current.position.y,
@@ -43,7 +41,7 @@ const MyBox: React.FC<Props> = ({ user, originPosition }: Props) => {
       left,
       right,
     });
-    if (user.role == "admin") {
+    if (user.role == "player") {
       if (forward) {
         boxRef.current.position.z += 2 * delta;
         if (right) {
@@ -65,7 +63,6 @@ const MyBox: React.FC<Props> = ({ user, originPosition }: Props) => {
       }
     }
   });
-
   return (
     <object3D>
       {/* Player1 */}
@@ -77,4 +74,4 @@ const MyBox: React.FC<Props> = ({ user, originPosition }: Props) => {
   );
 };
 
-export default MyBox;
+export default MyBox2;

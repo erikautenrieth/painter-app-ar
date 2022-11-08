@@ -8,14 +8,16 @@ import { directionOffset } from "../../shared-components/services/player/player.
 import * as THREE from "three";
 import MyBox from "./box";
 import { useAuth } from "../../shared-components/services/auth-context";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { database } from "../../config/firebase";
+import MyBox2 from "./box2";
 
 let rotateQuartenion = new THREE.Quaternion();
 
 const Metaverse = () => {
   const { user } = useAuth();
   const [userData, setUserData] = useState<any>();
+  const [players, setPlayers] = useState<any>();
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
     const docSnap = await getDoc(docRef);
@@ -26,9 +28,20 @@ const Metaverse = () => {
       setUserData(data);
     }
   };
+
+  const getHostByPlayer = () => {
+    const docKey = "zb5tWRiOArpG0vR5PjO8";
+    onSnapshot(doc(database, `host/${docKey}`), (doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      setPlayers({ id, ...data });
+    });
+  };
   useEffect(() => {
     getUserById();
+    getHostByPlayer();
   }, []);
+
   return (
     <div className="container">
       <Canvas camera={{ position: [0, 10, -5], near: 0.1, far: 1000 }}>
@@ -38,8 +51,18 @@ const Metaverse = () => {
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         {/* <OrbitControls></OrbitControls> */}
-        <MyBox user={userData} originPosition={[-3, 0, 0]}></MyBox>
-        <MyBox user={userData} originPosition={[3, 0, 0]}></MyBox>
+        {players ? (
+          <>
+            <MyBox
+              user={userData}
+              originPosition={players.player1.position}
+            ></MyBox>
+            <MyBox2
+              user={userData}
+              originPosition={players.player2.position}
+            ></MyBox2>
+          </>
+        ) : null}
       </Canvas>
     </div>
   );
