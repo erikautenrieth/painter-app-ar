@@ -11,7 +11,7 @@ export default function Home() {
 	<>
 		<Head>
 			<title>Real Chat App</title>
-			<link rel="icon" href="public/message_draw_icon.ico" />
+			<link rel="icon" href="/message_draw_icon.ico" />
 		</Head>
 
 	  <Navbar />

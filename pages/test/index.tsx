@@ -9,6 +9,37 @@ import {
   XRButton,
 } from "@react-three/xr";
 import * as THREE from "three";
+import * as ThreeMeshUI from "three-mesh-ui";
+
+function makeTextPanel() {
+  const textRef = useRef<THREE.Object3D>(null!);
+
+  const container = new ThreeMeshUI.Block({
+    width: 1.2,
+    height: 0.5,
+    padding: 0.05,
+    justifyContent: "center",
+    textAlign: "left",
+  });
+
+  container.position.set(0, 1, -1.8);
+  container.rotation.x = -0.55;
+
+  //
+
+  new ThreeMeshUI.Text({
+    content: "This library supports line-break-friendly-characters,",
+    fontSize: 0.055,
+  }),
+    new ThreeMeshUI.Text({
+      content:
+        " As well as multi-font-size lines with consistent vertical spacing.",
+      fontSize: 0.08,
+    });
+
+  return <object3D ref={textRef}></object3D>;
+}
+
 function Box(props: ThreeElements["mesh"]) {
   const ref = useRef<THREE.Mesh>(null!);
   const [hovered, hover] = useState(false);
@@ -28,6 +59,7 @@ function Box(props: ThreeElements["mesh"]) {
     </mesh>
   );
 }
+
 const test = () => {
   return (
     <div className="container">
@@ -50,7 +82,7 @@ const test = () => {
         enterOnly={false}
         /** Whether this button should only exit an `XRSession`. Default is `false` */
         exitOnly={false}
-        mode={"AR"}
+        mode={"VR"}
       ></XRButton>
       <Canvas>
         <XR foveation={0} referenceSpace="local-floor">
