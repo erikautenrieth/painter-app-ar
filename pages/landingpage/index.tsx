@@ -24,6 +24,9 @@ export default function Home() {
       <Button variant="outlined" onClick={() => goToPage("/test/painter")}>
         XR Test
       </Button>
+      <Button variant="outlined" onClick={() => goToPage("/xr-paint")}>
+        XR Test Version 2
+      </Button>
       <ResourceHighlight />
       <ResourceList />
       <Newsletter />
