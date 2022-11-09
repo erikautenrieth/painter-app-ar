@@ -1,20 +1,15 @@
 import { PerspectiveCamera } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ARButton, Controllers, XR } from "@react-three/xr";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { ARButton, XR } from "@react-three/xr";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Matrix4, Object3D, Scene } from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 const Painter = () => {
   const { gl, scene, camera, size } = useThree();
   let controller: any;
   let painter: any;
   const cursor = new THREE.Vector3();
-  const virtualScene = useMemo(() => new Scene(), []);
-  const virtualCam = useRef();
-  const ref = useRef();
-  // const [hover, set] = useState(null);
-  const matrix = new Matrix4();
+  const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const init = () => {
     gl.setPixelRatio(window.devicePixelRatio);
     gl.setSize(window.innerWidth, window.innerHeight);
@@ -25,35 +20,28 @@ const Painter = () => {
     scene.add(painter.mesh);
 
     controller = gl.xr.getController(0);
-
     controller.addEventListener("selectstart", onSelectStart);
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
     scene.add(controller);
-    cursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
     function onSelectStart(this: any) {
-      // this.userData.isSelecting = true;
-      // this.userData.skipFrames = 2;
-      console.log(cursor);
-
-      painter.lineTo(cursor);
-      painter.update();
+      this.userData.isSelecting = true;
+      this.userData.skipFrames = 2;
+      setUserDataSelecting(true);
     }
 
     function onSelectEnd(this: any) {
-      // this.userData.isSelecting = false;
-      painter.moveTo(cursor);
+      this.userData.isSelecting = false;
+      setUserDataSelecting(false);
     }
   };
 
   const handleController = (ctl?: any) => {
     if (controller) {
-      const userData = controller.userData;
-      console.log(userData);
+      const userData = ctl.userData;
+      cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
 
-      cursor.set(0, 0, -0.2).applyMatrix4(controller.matrixWorld);
-
-      if (userData.isSelecting === true) {
+      if (userDataSelecting) {
         if (userData.skipFrames >= 0) {
           // TODO(mrdoob) Revisit thi
 
@@ -70,18 +58,13 @@ const Painter = () => {
   useEffect(() => {
     init();
     animate();
-    // handleController();
-  }, []);
+  }, [userDataSelecting]);
+
   function animate() {
     gl.setAnimationLoop(render);
   }
-  useFrame(() => {
-    // handleController(controller);
-  });
-
   function render() {
-    // handleController(controller);
-
+    handleController(controller);
     gl.render(scene, camera);
   }
   return <mesh></mesh>;
@@ -119,9 +102,6 @@ const PaintXR = () => {
             args={["0xffffff", "0xbbbbff", 1]}
             ref={lightRef}
           ></hemisphereLight>
-          {/* <mesh ref={meshRef}>
-          <meshBasicMaterial ref={meshMaterialRef}></meshBasicMaterial>
-        </mesh> */}
           <Painter></Painter>
         </XR>
       </Canvas>
