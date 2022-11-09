@@ -16,13 +16,15 @@ const Painter1: React.FC = () => {
     painter = new TubePainter();
     painter.setSize(0.4);
     painter.mesh.material.side = THREE.DoubleSide;
-    painter.mesh.material.color.r = 235;
-    painter.mesh.material.color.g = 52;
-    painter.mesh.material.color.b = 85;
+    painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 
-    painter.mesh.material.emissive.r = 235;
-    painter.mesh.material.emissive.g = 52;
-    painter.mesh.material.emissive.b = 85;
+    // painter.mesh.material.color.r = 235;
+    // painter.mesh.material.color.g = 52;
+    // painter.mesh.material.color.b = 85;
+
+    // painter.mesh.material.emissive.r = 235;
+    // painter.mesh.material.emissive.g = 52;
+    // painter.mesh.material.emissive.b = 85;
     console.log("hamedkabir ", painter);
     // painter.mesh.material.color(255, 0, 0)
     scene.add(painter.mesh);
@@ -32,6 +34,8 @@ const Painter1: React.FC = () => {
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
     scene.add(controller);
+
+    // scene.add(capsule);
 
     function onSelectStart(this: any) {
       this.userData.isSelecting = true;
