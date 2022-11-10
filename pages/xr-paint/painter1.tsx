@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 
 const Painter1: React.FC = () => {
-  const { gl, scene, camera, size } = useThree();
+  const { gl, scene, camera } = useThree();
   let controller: any;
   let painter: any;
   const cursor = new THREE.Vector3();

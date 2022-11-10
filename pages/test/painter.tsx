@@ -52,8 +52,9 @@ const Tube_Painter = () => {
     //
 
     painter = new TubePainter();
-    painter.setSize(0.4);
+    painter.setSize(0.6);
     painter.mesh.material.side = THREE.DoubleSide;
+    painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     scene.add(painter.mesh);
 
     //
