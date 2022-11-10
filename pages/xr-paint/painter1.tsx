@@ -4,18 +4,19 @@ import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 
 const Painter1: React.FC = () => {
-  const { gl, scene, camera } = useThree();
+  const { gl, scene } = useThree();
+  let camera: any;
   let controller: any;
   let painter: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const init = () => {
-    if (camera) {
-      camera.fov = 75;
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.near = 0.01;
-      camera.far = 20;
-    }
+    camera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      0.01,
+      20
+    );
 
     gl.setPixelRatio(window.devicePixelRatio);
     gl.setSize(window.innerWidth, window.innerHeight);
@@ -78,7 +79,6 @@ const Painter1: React.FC = () => {
   };
   useEffect(() => {
     init();
-    // animate();
   }, [userDataSelecting]);
 
   useFrame(() => {
