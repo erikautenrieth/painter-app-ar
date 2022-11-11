@@ -1,4 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
+import { database } from "config/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
@@ -10,6 +12,8 @@ const Painter1: React.FC = () => {
   let painter: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
+  // const [arrayOfPositions, setArrayOfPositions] = useState<any[]>([]);
+  let arrayOfPositions: any[] = [];
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -40,6 +44,7 @@ const Painter1: React.FC = () => {
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
+      updatePlayerPosition();
     }
     controller = gl.xr.getController(0);
     controller.addEventListener("selectstart", onSelectStart);
@@ -73,13 +78,30 @@ const Painter1: React.FC = () => {
         } else {
           painter.lineTo(cursor);
           painter.update();
+          const object = {
+            x: cursor.x,
+            y: cursor.y,
+            z: cursor.z,
+          };
+          arrayOfPositions.push(object);
         }
       }
     }
   };
+
+  const updatePlayerPosition = async () => {
+    const docKey = "zb5tWRiOArpG0vR5PjO8";
+
+    const docRef = doc(database, `host/${docKey}`);
+    await updateDoc(docRef, {
+      player1: {
+        position: arrayOfPositions,
+      },
+    });
+  };
   useEffect(() => {
     init();
-  }, [userDataSelecting]);
+  }, [userDataSelecting, arrayOfPositions]);
 
   useFrame(() => {
     if (controller) {
