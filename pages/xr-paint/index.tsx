@@ -1,18 +1,33 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { ARButton, XR } from "@react-three/xr";
-import { useEffect, useRef } from "react";
+import { database } from "config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Painter1 from "./painter1";
 
 const PaintXR = () => {
-  useEffect(() => {});
+  const [players, setPlayers] = useState<any>(null);
+  const getHostByPlayer = () => {
+    const docKey = "zb5tWRiOArpG0vR5PjO8";
+    onSnapshot(doc(database, `host/${docKey}`), (doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      setPlayers({ id, ...data });
+    });
+  };
+  useEffect(() => {
+    getHostByPlayer();
+  }, []);
   return (
     <div className="containerCanva">
       <ARButton></ARButton>
       <Canvas>
         <XR>
-          <Painter1></Painter1>
+          {players ? (
+            <Painter1 paintPositionFromDB={players.player1.position}></Painter1>
+          ) : null}
         </XR>
       </Canvas>
     </div>

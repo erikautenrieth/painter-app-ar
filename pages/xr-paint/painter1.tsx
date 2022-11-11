@@ -4,8 +4,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
-
-const Painter1: React.FC = () => {
+type Props = {
+  paintPositionFromDB: any[];
+};
+const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   const { gl, scene } = useThree();
   let camera: any;
   let controller: any;
@@ -13,7 +15,7 @@ const Painter1: React.FC = () => {
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   // const [arrayOfPositions, setArrayOfPositions] = useState<any[]>([]);
-  let arrayOfPositions: any[] = [];
+  let arrayOfPositions: any[] = paintPositionFromDB;
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -44,7 +46,7 @@ const Painter1: React.FC = () => {
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      updatePlayerPosition();
+      // updatePlayerPosition();
     }
     controller = gl.xr.getController(0);
     controller.addEventListener("selectstart", onSelectStart);
@@ -67,15 +69,16 @@ const Painter1: React.FC = () => {
       const userData = ctl.userData;
       const painter = userData.painter;
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
-
       if (userDataSelecting === true) {
         if (userData.skipFrames >= -1) {
           // TODO(mrdoob) Revisit thi
 
           userData.skipFrames--;
 
+          console.log("move", cursor);
           painter.moveTo(cursor);
         } else {
+          console.log("linto", cursor);
           painter.lineTo(cursor);
           painter.update();
           const object = {
@@ -88,7 +91,6 @@ const Painter1: React.FC = () => {
       }
     }
   };
-
   const updatePlayerPosition = async () => {
     const docKey = "zb5tWRiOArpG0vR5PjO8";
 
@@ -99,8 +101,34 @@ const Painter1: React.FC = () => {
       },
     });
   };
+
+  let index = 0;
+  function paintFromDB() {
+    if (index < arrayOfPositions.length) {
+      const cursorObj = new THREE.Vector3();
+      cursorObj.set(
+        arrayOfPositions[index].x,
+        arrayOfPositions[index].y,
+        arrayOfPositions[index].z
+      );
+      if (index < 1) {
+        painter.moveTo(cursorObj);
+      } else {
+        painter.lineTo(cursorObj);
+        painter.update();
+        console.log("painter  ", painter);
+      }
+      index++;
+      paintFromDB();
+    } else {
+      console.log("done");
+    }
+  }
+
   useEffect(() => {
     init();
+
+    paintFromDB();
   }, [userDataSelecting, arrayOfPositions]);
 
   useFrame(() => {
