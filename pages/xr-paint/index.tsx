@@ -6,6 +6,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Painter1 from "./painter1";
+import Painter2 from "./painter2";
 
 const PaintXR = () => {
   const [players, setPlayers] = useState<any>(null);
@@ -26,7 +27,14 @@ const PaintXR = () => {
       <Canvas>
         <XR>
           {players ? (
-            <Painter1 paintPositionFromDB={players.player1.position}></Painter1>
+            <>
+              {/* <Painter1
+                paintPositionFromDB={players.player2.position}
+              ></Painter1> */}
+              <Painter2
+                paintPositionFromDB={players.player1.position}
+              ></Painter2>
+            </>
           ) : null}
         </XR>
       </Canvas>

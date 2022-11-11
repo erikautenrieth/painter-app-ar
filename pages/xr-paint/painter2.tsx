@@ -7,11 +7,11 @@ import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 type Props = {
   paintPositionFromDB: any[];
 };
-const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
+const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
-  let painter: any;
+  let painter: any, painterPlayer1: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   // const [arrayOfPositions, setArrayOfPositions] = useState<any[]>([]);
@@ -34,8 +34,16 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     painter = new TubePainter();
     painter.setSize(0.4);
     painter.mesh.material.side = THREE.DoubleSide;
-    painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0xf2bb07 });
     scene.add(painter.mesh);
+
+    painterPlayer1 = new TubePainter();
+    painterPlayer1.setSize(0.4);
+    painterPlayer1.mesh.material.side = THREE.DoubleSide;
+    painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
+      color: 0x00ff00,
+    });
+    scene.add(painterPlayer1.mesh);
 
     function onSelectStart(this: any) {
       this.userData.isSelecting = true;
@@ -74,11 +82,8 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
           // TODO(mrdoob) Revisit thi
 
           userData.skipFrames--;
-
-          console.log("move", cursor);
           painter.moveTo(cursor);
         } else {
-          console.log("linto", cursor);
           painter.lineTo(cursor);
           painter.update();
           const object = {
@@ -111,16 +116,16 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
         arrayOfPositions[index].z
       );
       if (index < 1) {
-        painter.moveTo(cursor);
+        painterPlayer1.moveTo(cursor);
       } else {
-        painter.lineTo(cursor);
-        painter.update();
+        painterPlayer1.lineTo(cursor);
+        painterPlayer1.update();
       }
       index++;
       paintFromDB();
     } else {
       cursor.set(0, 0, -0.2);
-      painter.moveTo(cursor);
+      painterPlayer1.moveTo(cursor);
     }
   }
 
@@ -139,4 +144,4 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   return <></>;
 };
 
-export default Painter1;
+export default Painter2;
