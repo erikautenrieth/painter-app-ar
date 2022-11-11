@@ -70,7 +70,7 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
       const painter = userData.painter;
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
       if (userDataSelecting === true) {
-        if (userData.skipFrames >= -1) {
+        if (userData.skipFrames >= -2) {
           // TODO(mrdoob) Revisit thi
 
           userData.skipFrames--;
@@ -105,16 +105,15 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   let index = 0;
   function paintFromDB() {
     if (index < arrayOfPositions.length) {
-      const cursorObj = new THREE.Vector3();
-      cursorObj.set(
+      cursor.set(
         arrayOfPositions[index].x,
         arrayOfPositions[index].y,
         arrayOfPositions[index].z
       );
       if (index < 1) {
-        painter.moveTo(cursorObj);
+        painter.moveTo(cursor);
       } else {
-        painter.lineTo(cursorObj);
+        painter.lineTo(cursor);
         painter.update();
         console.log("painter  ", painter);
       }
@@ -122,6 +121,8 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
       paintFromDB();
     } else {
       console.log("done");
+      cursor.set(0, 0, -0.2);
+      painter.moveTo(cursor);
     }
   }
 
