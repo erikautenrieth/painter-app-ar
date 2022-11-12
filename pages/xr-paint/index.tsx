@@ -23,8 +23,9 @@ const PaintXR = () => {
   };
 
   useEffect(() => {
-    // getHostByPlayer();
+    getHostByPlayer();
   }, []);
+
   return (
     <div className="containerCanva">
       <label>{playerName}</label>
@@ -37,11 +38,17 @@ const PaintXR = () => {
       <ARButton></ARButton>
       <Canvas>
         <XR>
-          {playerName === "player1" ? (
-            <Painter1 paintPositionFromDB={testingData}></Painter1>
-          ) : (
-            <Painter2 paintPositionFromDB={testingData}></Painter2>
-          )}
+          {players ? (
+            playerName === "player2" ? (
+              <Painter2
+                paintPositionFromDB={players.player1.position}
+              ></Painter2>
+            ) : (
+              <Painter1
+                paintPositionFromDB={players.player2.position}
+              ></Painter1>
+            )
+          ) : null}
         </XR>
       </Canvas>
     </div>
