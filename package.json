@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "serve-json": "json-server --watch public/test.json --port 4000"
   },
   "dependencies": {
     "@capacitor/android": "^4.4.0",

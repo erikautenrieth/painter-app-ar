@@ -4,18 +4,21 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
+// That is the position of Paint of Player 2
 type Props = {
-  paintPositionFromDB: any[];
+  paintPositionFromDB: { x: number; y: number; z: number }[];
 };
 const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
-  let painter: any;
+  let painter: any, painterPlayer2: any;
   const cursor = new THREE.Vector3();
+  const cursor2 = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  // const [arrayOfPositions, setArrayOfPositions] = useState<any[]>([]);
-  let arrayOfPositions: any[] = paintPositionFromDB;
+  const [arrayOfPositions, setArrayOfPositions] =
+    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
+  let indexOfArrayPositions: number = 0;
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -37,6 +40,14 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     scene.add(painter.mesh);
 
+    painterPlayer2 = new TubePainter();
+    painterPlayer2.setSize(0.4);
+    painterPlayer2.mesh.material.side = THREE.DoubleSide;
+    painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
+      color: 0xf2bb07,
+    });
+    scene.add(painterPlayer2.mesh);
+
     function onSelectStart(this: any) {
       this.userData.isSelecting = true;
       this.userData.skipFrames = 2;
@@ -56,6 +67,8 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
+
+    setArrayOfPositions(paintPositionFromDB);
   };
 
   function onWindowResize() {
@@ -75,10 +88,8 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
 
           userData.skipFrames--;
 
-          console.log("move", cursor);
           painter.moveTo(cursor);
         } else {
-          console.log("linto", cursor);
           painter.lineTo(cursor);
           painter.update();
           const object = {
@@ -86,7 +97,10 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
             y: cursor.y,
             z: cursor.z,
           };
-          arrayOfPositions.push(object);
+          const arrayObjectOfPosition = arrayOfPositions;
+
+          arrayObjectOfPosition.push(object);
+          setArrayOfPositions(arrayObjectOfPosition);
         }
       }
     }
@@ -102,33 +116,34 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     });
   };
 
-  let index = 0;
   function paintFromDB() {
-    if (index < arrayOfPositions.length) {
+    if (indexOfArrayPositions < arrayOfPositions.length) {
       cursor.set(
-        arrayOfPositions[index].x,
-        arrayOfPositions[index].y,
-        arrayOfPositions[index].z
+        arrayOfPositions[indexOfArrayPositions].x,
+        arrayOfPositions[indexOfArrayPositions].y,
+        arrayOfPositions[indexOfArrayPositions].z
       );
-      if (index < 1) {
-        painter.moveTo(cursor);
+      if (indexOfArrayPositions < 1) {
+        painterPlayer2.moveTo(cursor);
       } else {
-        painter.lineTo(cursor);
-        painter.update();
+        painterPlayer2.lineTo(cursor);
+        painterPlayer2.update();
       }
-      index++;
+      indexOfArrayPositions++;
       paintFromDB();
     } else {
       cursor.set(0, 0, -0.2);
-      painter.moveTo(cursor);
+      painterPlayer2.moveTo(cursor);
     }
   }
 
   useEffect(() => {
     init();
+  }, [userDataSelecting]);
 
+  useEffect(() => {
     paintFromDB();
-  }, [userDataSelecting, arrayOfPositions]);
+  }, [arrayOfPositions]);
 
   useFrame(() => {
     if (controller) {

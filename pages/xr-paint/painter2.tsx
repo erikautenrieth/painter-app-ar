@@ -4,8 +4,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
+import Painter1 from "./painter1";
+// That is the position of Paint of Player 1
 type Props = {
-  paintPositionFromDB: any[];
+  paintPositionFromDB: { x: number; y: number; z: number }[];
 };
 const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   const { gl, scene } = useThree();
@@ -13,9 +15,12 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   let controller: any;
   let painter: any, painterPlayer1: any;
   const cursor = new THREE.Vector3();
+  const cursor2 = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  // const [arrayOfPositions, setArrayOfPositions] = useState<any[]>([]);
-  let arrayOfPositions: any[] = paintPositionFromDB;
+  const [arrayOfPositions, setArrayOfPositions] =
+    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
+  let indexOfArrayPositions: number = 0;
+
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -64,6 +69,8 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
+
+    setArrayOfPositions(paintPositionFromDB);
   };
 
   function onWindowResize() {
@@ -91,7 +98,10 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
             y: cursor.y,
             z: cursor.z,
           };
-          arrayOfPositions.push(object);
+          const arrayObjectOfPosition = arrayOfPositions;
+
+          arrayObjectOfPosition.push(object);
+          setArrayOfPositions(arrayObjectOfPosition);
         }
       }
     }
@@ -107,33 +117,34 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     });
   };
 
-  let index = 0;
   function paintFromDB() {
-    if (index < arrayOfPositions.length) {
-      cursor.set(
-        arrayOfPositions[index].x,
-        arrayOfPositions[index].y,
-        arrayOfPositions[index].z
+    if (indexOfArrayPositions < arrayOfPositions.length) {
+      cursor2.set(
+        arrayOfPositions[indexOfArrayPositions].x,
+        arrayOfPositions[indexOfArrayPositions].y,
+        arrayOfPositions[indexOfArrayPositions].z
       );
-      if (index < 1) {
-        painterPlayer1.moveTo(cursor);
+      if (indexOfArrayPositions < 1) {
+        painterPlayer1.moveTo(cursor2);
       } else {
-        painterPlayer1.lineTo(cursor);
+        painterPlayer1.lineTo(cursor2);
         painterPlayer1.update();
       }
-      index++;
+      indexOfArrayPositions++;
       paintFromDB();
     } else {
-      cursor.set(0, 0, -0.2);
-      painterPlayer1.moveTo(cursor);
+      cursor2.set(0, 0, -0.2);
+      painterPlayer1.moveTo(cursor2);
     }
   }
 
   useEffect(() => {
     init();
+  }, [userDataSelecting]);
 
+  useEffect(() => {
     paintFromDB();
-  }, [userDataSelecting, arrayOfPositions]);
+  }, [arrayOfPositions]);
 
   useFrame(() => {
     if (controller) {
