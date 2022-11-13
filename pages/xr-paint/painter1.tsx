@@ -1,12 +1,26 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { database } from "config/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
 type Props = {
-  paintPositionFromDB: { x: number; y: number; z: number }[];
+  paintPositionFromDB: {
+    id: string;
+    index: number;
+    x: number;
+    y: number;
+    z: number;
+  }[];
 };
 const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   const { gl, scene } = useThree();
@@ -14,10 +28,17 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   let controller: any;
   let painter: any, painterPlayer2: any;
   const cursor = new THREE.Vector3();
-  const cursor2 = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  const [arrayOfPositions, setArrayOfPositions] =
-    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
+  const [arrayOfPositionPlayer1] = useState<
+    { x: number; y: number; z: number; index: number }[]
+  >([]);
+  const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] =
+    useState<{ id: string; index: number; x: number; y: number; z: number }[]>(
+      paintPositionFromDB
+    );
+
+  const [loader, setLoader] = useState<boolean>(false);
+
   let indexOfArrayPositions: number = 0;
   const init = () => {
     camera = new THREE.PerspectiveCamera(
@@ -68,7 +89,10 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
 
     window.addEventListener("resize", onWindowResize);
 
-    setArrayOfPositions(paintPositionFromDB);
+    // if (arrayOfPositionPlayer2.length === 0) {
+    //   setArrayOfPositionPlayer2(paintPositionFromDB);
+    //   setLoader(true);
+    // }
   };
 
   function onWindowResize() {
@@ -93,35 +117,36 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
           painter.lineTo(cursor);
           painter.update();
           const object = {
+            index: arrayOfPositionPlayer1.length,
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
           };
-          const arrayObjectOfPosition = arrayOfPositions;
+          // const arrayObjectOfPosition = arrayOfPositions;
 
-          arrayObjectOfPosition.push(object);
-          setArrayOfPositions(arrayObjectOfPosition);
+          // arrayObjectOfPosition.push(object);
+          // setArrayOfPositions(arrayObjectOfPosition);
+          arrayOfPositionPlayer1.push(object);
         }
       }
     }
   };
   const updatePlayerPosition = async () => {
-    const docKey = "zb5tWRiOArpG0vR5PjO8";
-
-    const docRef = doc(database, `host/${docKey}`);
-    await updateDoc(docRef, {
-      player1: {
-        position: arrayOfPositions,
-      },
-    });
+    if (arrayOfPositionPlayer1.length > 0) {
+      const docKey = "zb5tWRiOArpG0vR5PjO8";
+      const collectionRef = collection(database, `host/${docKey}/player1`);
+      arrayOfPositionPlayer1.forEach(async (item) => {
+        await addDoc(collectionRef, item);
+      });
+    }
   };
 
-  function paintFromDB() {
-    if (indexOfArrayPositions < arrayOfPositions.length) {
+  const paintFromDB = () => {
+    if (indexOfArrayPositions < arrayOfPositionPlayer2.length) {
       cursor.set(
-        arrayOfPositions[indexOfArrayPositions].x,
-        arrayOfPositions[indexOfArrayPositions].y,
-        arrayOfPositions[indexOfArrayPositions].z
+        arrayOfPositionPlayer2[indexOfArrayPositions].x,
+        arrayOfPositionPlayer2[indexOfArrayPositions].y,
+        arrayOfPositionPlayer2[indexOfArrayPositions].z
       );
       if (indexOfArrayPositions < 1) {
         painterPlayer2.moveTo(cursor);
@@ -135,16 +160,19 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
       cursor.set(0, 0, -0.2);
       painterPlayer2.moveTo(cursor);
     }
-  }
+  };
 
   useEffect(() => {
     init();
   }, [userDataSelecting]);
 
   useEffect(() => {
-    paintFromDB();
-  }, [arrayOfPositions]);
-
+    if (painterPlayer2) {
+      if (arrayOfPositionPlayer2) {
+        paintFromDB();
+      }
+    }
+  }, [paintPositionFromDB]);
   useFrame(() => {
     if (controller) {
       handleController(controller);
