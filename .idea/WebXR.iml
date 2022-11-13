@@ -8,5 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="15181efa86" level="application" />
+    <orderEntry type="library" name="bulma" level="application" />
+    <orderEntry type="library" name="font-awesome" level="application" />
   </component>
 </module>

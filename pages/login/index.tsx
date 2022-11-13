@@ -4,16 +4,12 @@ import "firebaseui/dist/firebaseui.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "shared-components/services/auth-context";
+import Navbar from "components/landingpage/Navbar";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 
-import styles from "../../styles/Home.module.css";
 
-/* <input className="input is-large" type="email" placeholder="Your Email"/>
-  	<input className="input is-large" type="password" placeholder="Your Password"/>
-  	<img src="https://via.placeholder.com/150"/>
- */
 
 export default function Login() {
   const router = useRouter();
@@ -22,13 +18,11 @@ export default function Login() {
     email: "",
     password: "",
   });
-  function goToPage(rout: string) {
-    router.push(rout);
-  }
+
+  function goToPage(rout: string) {router.push(rout);}
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
-
     try {
       await login(data.email, data.password);
       goToPage("/home");
@@ -36,11 +30,21 @@ export default function Login() {
       console.log(err);
     }
   };
+
   const [value, setValue] = React.useState(2);
 
   return (
     <>
-      <section className={styles.title}>
+      <head>
+        <title>Log In lala</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/login.css"/>
+        </head>
+
+      <Navbar/>
+      <section className="cont1">
         <div className="hero-body">
           <div className="container has-text-centered">
             <div className="column is-4 is-offset-4">
@@ -114,10 +118,6 @@ export default function Login() {
             </div>
           </div>
         </div>
-
-        <Button variant="outlined" onClick={() => goToPage("/test")}>
-          XR Test
-        </Button>
       </section>
       <script async type="text/javascript" src="../js/bulma.js"></script>
     </>

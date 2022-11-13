@@ -37,9 +37,10 @@ export const AuthContextProvider = ({
           email: user.email,
           uid: user.uid,
         });
-        // console.log("hamedkabir user  ", user);
+        console.log("login event", user);
       } else {
         setUser({ email: null, uid: null });
+        console.log("logout event");
       }
       setLoading(false);
     });
@@ -54,6 +55,7 @@ export const AuthContextProvider = ({
   const login = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
+
   const logOut = async () => {
     setUser({ email: null, uid: null });
     await signOut(auth);
