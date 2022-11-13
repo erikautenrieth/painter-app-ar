@@ -21,9 +21,7 @@ export default function Home() {
       </Head>
 
       <Navbar />
-      <Button variant="outlined" onClick={() => goToPage("/test/painter")}>
-        XR Test
-      </Button>
+
       <ResourceHighlight />
       <ResourceList />
       <Newsletter />

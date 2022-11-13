@@ -1,6 +1,10 @@
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { useAuth } from "../../shared-components/services/auth-context";
+import Footer from "components/landingpage/Footer";
+import Navbar from "components/landingpage/Navbar";
+import React from "react";
+
 
 export default function Home() {
   // getUserById();
@@ -13,6 +17,10 @@ export default function Home() {
 
   return (
     <>
+        <Navbar />
+
+
+
       <Button
         variant="outlined"
         onClick={() => navigateToPage("/hosting-page/admin")}
@@ -25,6 +33,15 @@ export default function Home() {
       >
         Join a Host
       </Button>
+
+        <Button variant="outlined" onClick={() => navigateToPage("/test")}>
+        XR Test
+    </Button>
+
+        <Button variant="outlined" onClick={() => navigateToPage("/test/painter")}>
+            XR Test Painter
+        </Button>
+
     </>
   );
 }
