@@ -4,12 +4,11 @@ import "firebaseui/dist/firebaseui.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "shared-components/services/auth-context";
-
+import Navbar from "components/landingpage/Navbar";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 
-import styles from "../../styles/Home.module.css";
 
 
 export default function Login() {
@@ -36,7 +35,16 @@ export default function Login() {
 
   return (
     <>
-      <section className={styles.title}>
+      <head>
+        <title>Log In lala</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/login.css"/>
+        </head>
+
+      <Navbar/>
+      <section className="cont1">
         <div className="hero-body">
           <div className="container has-text-centered">
             <div className="column is-4 is-offset-4">

@@ -32,7 +32,7 @@ const Navbar = () => {
 							Home
 						</a>
 						</Link>
-						{(user.email == null) &&<Link href="/login">
+						{(user.email == null)  &&<Link href="/login">
 							 <a className="navbar-item is-size-5 has-text-weight-semibold">
 							Login
 						</a>
