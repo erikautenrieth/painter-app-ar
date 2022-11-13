@@ -1,7 +1,6 @@
 import Link from "next/link"
 import {useAuth} from "../../shared-components/services/auth-context";
 
-
 const Navbar = () => {
 	const { user, login, logOut } = useAuth();
 	return (
