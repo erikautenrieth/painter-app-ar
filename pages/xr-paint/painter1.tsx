@@ -78,7 +78,7 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      // updatePlayerPosition();
+      updatePlayerPosition();
     }
     controller = gl.xr.getController(0);
     controller.addEventListener("selectstart", onSelectStart);
