@@ -18,7 +18,6 @@ import { useAuth } from "shared-components/services/auth-context";
 import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
-import { testingData } from "./test";
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
