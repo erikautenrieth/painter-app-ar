@@ -38,7 +38,7 @@ export default function Home() {
         XR Test
     </Button>
 
-        <Button variant="outlined" onClick={() => navigateToPage("/test/painter")}>
+        <Button variant="outlined" onClick={() => navigateToPage("/xr-paint")}>
             XR Test Painter
         </Button>
 
