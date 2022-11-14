@@ -74,6 +74,7 @@ const PaintXR = () => {
             array.push({ id, ...data });
           });
           setPlayer1(array);
+
           // player1 = array;
         });
       }
@@ -101,17 +102,19 @@ const PaintXR = () => {
   useEffect(() => {
     getPlayerPosition();
   }, [loader]);
-  console.log(player2);
+  if (userData) {
+    console.log("hamedkabir role  ", userData.role);
+  }
+
   return (
     <div className="containerCanva">
-      {player2.length > 0 ? <ARButton></ARButton> : null}
-      {player1.length > 0 ? <ARButton></ARButton> : null}
+      {userData ? <ARButton></ARButton> : null}
       <Canvas>
         <XR>
           {userData ? (
-            userData.role === "admin" && player2.length > 0 ? (
+            userData.role === "admin" ? (
               <Painter1 paintPositionFromDB={player2}></Painter1>
-            ) : userData.role === "player" && player1.length > 0 ? (
+            ) : userData.role === "player" ? (
               <Painter2 paintPositionFromDB={player1}></Painter2>
             ) : null
           ) : null}

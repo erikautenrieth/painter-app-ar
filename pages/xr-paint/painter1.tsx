@@ -167,6 +167,7 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   }, [userDataSelecting]);
 
   useEffect(() => {
+    setArrayOfPositionPlayer2(paintPositionFromDB);
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
         paintFromDB();
