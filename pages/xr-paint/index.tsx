@@ -23,8 +23,12 @@ const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const { user } = useAuth();
   const [userData, setUserData] = useState<any>();
-  let [player1, setPlayer1] = useState<any>([]);
-  let [player2, setPlayer2] = useState<any>([]);
+  let [player1, setPlayer1] = useState<
+    { id: string; index: number; x: number; y: number; z: number }[]
+  >([]);
+  let [player2, setPlayer2] = useState<
+    { id: string; index: number; x: number; y: number; z: number }[]
+  >([]);
 
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
