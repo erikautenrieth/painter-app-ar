@@ -24,10 +24,10 @@ const PaintXR = () => {
   const { user } = useAuth();
   const [userData, setUserData] = useState<any>();
   let [player1, setPlayer1] = useState<
-    { id: string; index: number; x: number; y: number; z: number }[]
+    { index: number; x: number; y: number; z: number }[]
   >([]);
   let [player2, setPlayer2] = useState<
-    { id: string; index: number; x: number; y: number; z: number }[]
+    { index: number; x: number; y: number; z: number }[]
   >([]);
 
   const getUserById = async () => {
@@ -45,7 +45,7 @@ const PaintXR = () => {
   /**
    * this method ready from collection and each position with doc it and index
    */
-  const getPlayerPosition = async () => {
+  const getPlayerPosition1 = async () => {
     const docKey = "zb5tWRiOArpG0vR5PjO8";
 
     if (userData) {
@@ -59,7 +59,9 @@ const PaintXR = () => {
           doc.forEach((res) => {
             const data = res.data();
             const id = res.id;
-            array.push({ id, ...data });
+            if (data) {
+              array.push({ id, ...data });
+            }
           });
           setPlayer2(array);
           // player2 = array;
@@ -74,7 +76,9 @@ const PaintXR = () => {
           doc.forEach((res) => {
             const data = res.data();
             const id = res.id;
-            array.push({ id, ...data });
+            if (data) {
+              array.push({ id, ...data });
+            }
           });
           setPlayer1(array);
 
@@ -87,13 +91,18 @@ const PaintXR = () => {
   /**
    * this method read player position from document and array
    */
-  const getPlayerPosition2 = async () => {
+  const getPlayerPosition = async () => {
     const docKey = "zb5tWRiOArpG0vR5PjO8";
     onSnapshot(doc(database, `host/${docKey}`), (doc) => {
       const data = doc.data();
       const id = doc.id;
       if (data) {
-        setPlayer2(data.player2.position);
+        if (data.player2) {
+          setPlayer2(data.player2.position);
+        }
+        if (data.player1) {
+          setPlayer1(data.player1.position);
+        }
       }
     });
   };

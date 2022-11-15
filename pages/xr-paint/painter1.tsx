@@ -15,8 +15,6 @@ import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
 type Props = {
   paintPositionFromDB: {
-    id: string;
-    index: number;
     x: number;
     y: number;
     z: number;
@@ -30,12 +28,10 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const [arrayOfPositionPlayer1] = useState<
-    { x: number; y: number; z: number; index: number }[]
+    { x: number; y: number; z: number }[]
   >([]);
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] =
-    useState<{ id: string; index: number; x: number; y: number; z: number }[]>(
-      paintPositionFromDB
-    );
+    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
 
   const [loader, setLoader] = useState<boolean>(false);
 
@@ -88,11 +84,6 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
-
-    // if (arrayOfPositionPlayer2.length === 0) {
-    //   setArrayOfPositionPlayer2(paintPositionFromDB);
-    //   setLoader(true);
-    // }
   };
 
   function onWindowResize() {
@@ -105,11 +96,12 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     if (ctl) {
       const userData = ctl.userData;
       const painter = userData.painter;
+
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
+      if (userDataSelecting) {
+      }
       if (userDataSelecting === true) {
         if (userData.skipFrames >= -2) {
-          // TODO(mrdoob) Revisit thi
-
           userData.skipFrames--;
 
           painter.moveTo(cursor);
@@ -117,21 +109,16 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
           painter.lineTo(cursor);
           painter.update();
           const object = {
-            index: arrayOfPositionPlayer1.length,
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
           };
-          // const arrayObjectOfPosition = arrayOfPositions;
-
-          // arrayObjectOfPosition.push(object);
-          // setArrayOfPositions(arrayObjectOfPosition);
           arrayOfPositionPlayer1.push(object);
         }
       }
     }
   };
-  const updatePlayerPosition = async () => {
+  const updatePlayerPosition1 = async () => {
     if (arrayOfPositionPlayer1.length > 0) {
       const docKey = "zb5tWRiOArpG0vR5PjO8";
       const collectionRef = collection(database, `host/${docKey}/player1`);
@@ -141,24 +128,37 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     }
   };
 
+  const updatePlayerPosition = async () => {
+    if (arrayOfPositionPlayer1.length > 0) {
+      const docKey = "zb5tWRiOArpG0vR5PjO8";
+      const docRef = doc(database, `host/${docKey}`);
+      await updateDoc(docRef, {
+        player1: {
+          position: arrayOfPositionPlayer1,
+        },
+      });
+    }
+  };
+
   const paintFromDB = () => {
     if (indexOfArrayPositions < arrayOfPositionPlayer2.length) {
+      const painter = painterPlayer2;
       cursor.set(
         arrayOfPositionPlayer2[indexOfArrayPositions].x,
         arrayOfPositionPlayer2[indexOfArrayPositions].y,
         arrayOfPositionPlayer2[indexOfArrayPositions].z
       );
       if (indexOfArrayPositions < 1) {
-        painterPlayer2.moveTo(cursor);
+        painter.moveTo(cursor);
       } else {
-        painterPlayer2.lineTo(cursor);
-        painterPlayer2.update();
+        painter.lineTo(cursor);
+        painter.update();
       }
       indexOfArrayPositions++;
       paintFromDB();
     } else {
       cursor.set(0, 0, -0.2);
-      painterPlayer2.moveTo(cursor);
+      painter.moveTo(cursor);
     }
   };
 
@@ -176,6 +176,9 @@ const Painter1: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   }, [paintPositionFromDB]);
   useFrame(() => {
     if (controller) {
+      if (indexOfArrayPositions < paintPositionFromDB.length) {
+        // paintFromDB();
+      }
       handleController(controller);
       gl.render(scene, camera);
     }

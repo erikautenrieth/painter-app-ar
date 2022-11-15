@@ -8,8 +8,6 @@ import Painter1 from "./painter1";
 // That is the position of Paint of Player 1
 type Props = {
   paintPositionFromDB: {
-    id: string;
-    index: number;
     x: number;
     y: number;
     z: number;
@@ -22,13 +20,9 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   let painter: any, painterPlayer1: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  const [arrayOfPositionPlayer2] = useState<
-    { x: number; y: number; z: number; index: number }[]
-  >([]);
+  const [arrayOfPositionPlayer2] = useState<any[]>([]);
   const [arrayOfPositionPlayer1, setArrayOfPositionPlayer1] =
-    useState<{ id: string; index: number; x: number; y: number; z: number }[]>(
-      paintPositionFromDB
-    );
+    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
 
   const [loader, setLoader] = useState<boolean>(false);
   let indexOfArrayPositions: number = 0;
@@ -81,8 +75,6 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
-
-    // setArrayOfPositions(paintPositionFromDB);
   };
 
   function onWindowResize() {
@@ -95,32 +87,28 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     if (ctl) {
       const userData = ctl.userData;
       const painter = userData.painter;
+
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
+
       if (userDataSelecting === true) {
         if (userData.skipFrames >= -2) {
-          // TODO(mrdoob) Revisit thi
-
           userData.skipFrames--;
           painter.moveTo(cursor);
         } else {
           painter.lineTo(cursor);
           painter.update();
+
           const object = {
-            index: arrayOfPositionPlayer2.length,
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
           };
-          // const arrayObjectOfPosition = arrayOfPositions;
-
-          // arrayObjectOfPosition.push(object);
-          // setArrayOfPositions(arrayObjectOfPosition);
           arrayOfPositionPlayer2.push(object);
         }
       }
     }
   };
-  const updatePlayerPosition = async () => {
+  const updatePlayerPosition1 = async () => {
     if (arrayOfPositionPlayer2.length > 0) {
       const docKey = "zb5tWRiOArpG0vR5PjO8";
       const collectionRef = collection(database, `host/${docKey}/player2`);
@@ -130,24 +118,37 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
     }
   };
 
+  const updatePlayerPosition = async () => {
+    if (arrayOfPositionPlayer2.length > 0) {
+      const docKey = "zb5tWRiOArpG0vR5PjO8";
+      const docRef = doc(database, `host/${docKey}`);
+      await updateDoc(docRef, {
+        player2: {
+          position: arrayOfPositionPlayer2,
+        },
+      });
+    }
+  };
+
   function paintFromDB() {
     if (indexOfArrayPositions < arrayOfPositionPlayer1.length) {
+      const painter = painterPlayer1;
       cursor.set(
         arrayOfPositionPlayer1[indexOfArrayPositions].x,
         arrayOfPositionPlayer1[indexOfArrayPositions].y,
         arrayOfPositionPlayer1[indexOfArrayPositions].z
       );
       if (indexOfArrayPositions < 1) {
-        painterPlayer1.moveTo(cursor);
+        painter.moveTo(cursor);
       } else {
-        painterPlayer1.lineTo(cursor);
-        painterPlayer1.update();
+        painter.lineTo(cursor);
+        painter.update();
       }
       indexOfArrayPositions++;
       paintFromDB();
     } else {
       cursor.set(0, 0, -0.2);
-      painterPlayer1.moveTo(cursor);
+      painter.moveTo(cursor);
     }
   }
 
@@ -157,8 +158,6 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
 
   useEffect(() => {
     setArrayOfPositionPlayer1(paintPositionFromDB);
-    // console.log("hamedkabir  ", arrayOfPositionPlayer1);
-
     if (painterPlayer1) {
       if (arrayOfPositionPlayer1) {
         paintFromDB();
@@ -167,6 +166,9 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
   }, [paintPositionFromDB]);
   useFrame(() => {
     if (controller) {
+      if (indexOfArrayPositions < paintPositionFromDB.length) {
+        // paintFromDB();
+      }
       handleController(controller);
       gl.render(scene, camera);
     }
