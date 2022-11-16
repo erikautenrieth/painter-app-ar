@@ -14,6 +14,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { database } from "../../config/firebase";
+import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 export type IPosition = {
   x: number;
   y: number;
@@ -34,6 +35,7 @@ const HostingPage = () => {
   const [existHost, setExistHost] = useState<any>(null);
   const [createHostIs, setCreateHost] = useState<any>(false);
   const [hostingData, setHostingData] = useState<any>(null);
+  const zustandStore = ZustandStore();
   const { hostingId } = router.query;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
@@ -113,6 +115,8 @@ const HostingPage = () => {
         const id = doc.id;
         if (data) {
           setHostingData({ id, ...data });
+          zustandStore.setHostingId(id);
+          // console.log("hamedkabir  ", zustandStore);
         }
       });
     }
@@ -161,7 +165,7 @@ const HostingPage = () => {
       readHostDataInRealTime();
     }
   }, [existHost]);
-
+  console.log("hamedkabir   ", zustandStore.hostingId);
   return (
     <>
       {existHost || userRole == "admin" ? (
