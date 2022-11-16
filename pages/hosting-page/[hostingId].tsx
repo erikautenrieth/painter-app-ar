@@ -13,7 +13,20 @@ import {
   setIndexConfiguration,
 } from "firebase/firestore";
 import { database } from "../../config/firebase";
-
+export type IPosition = {
+  x: number;
+  y: number;
+  z: number;
+};
+export type IPlayer = {
+  playerReady: boolean;
+  position: IPosition[];
+};
+export type IHost = {
+  player1: IPlayer;
+  player2: IPlayer;
+  createdAt: Date;
+};
 const HostingPage = () => {
   const router = useRouter();
   const [userRole, setUserRole] = useState<any>("admin");
@@ -82,11 +95,18 @@ const HostingPage = () => {
   // eine Methode direkt nach dem Admin bei der Seite ankommt ein Host automatisch erstellt wird
   const createHost = async () => {
     const docCollection = collection(database, "host");
-    await addDoc(docCollection, {
-      playerAdminReady: false,
-      playerJoinReady: false,
+    const hostObject: IHost = {
+      player1: {
+        playerReady: false,
+        position: [],
+      },
+      player2: {
+        playerReady: false,
+        position: [],
+      },
       createdAt: new Date(),
-    }).then(
+    };
+    await addDoc(docCollection, hostObject).then(
       () => {
         console.log("Host created successfully!");
         setCreateHost(true);
@@ -100,11 +120,6 @@ const HostingPage = () => {
   useEffect(() => {
     setUserRole(hostingId);
     checkTheHostingServerRealTime();
-
-    // nur wenn kein hosting existiert und die Role admin ist
-    // if (userRole == "admin") {
-    //   checkExistingHost();
-    // }
   }, []);
   return (
     <>
