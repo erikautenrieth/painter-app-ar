@@ -12,8 +12,12 @@ type Props = {
     y: number;
     z: number;
   }[];
+  hostingId: string | undefined;
 };
-const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
+const Painter2: React.FC<Props> = ({
+  paintPositionFromDB,
+  hostingId,
+}: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -120,12 +124,10 @@ const Painter2: React.FC<Props> = ({ paintPositionFromDB }: Props) => {
 
   const updatePlayerPosition = async () => {
     if (arrayOfPositionPlayer2.length > 0) {
-      const docKey = "zb5tWRiOArpG0vR5PjO8";
+      const docKey = hostingId;
       const docRef = doc(database, `host/${docKey}`);
       await updateDoc(docRef, {
-        player2: {
-          position: arrayOfPositionPlayer2,
-        },
+        player2Position: arrayOfPositionPlayer2,
       });
     }
   };

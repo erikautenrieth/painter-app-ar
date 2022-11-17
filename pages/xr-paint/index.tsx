@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "shared-components/services/auth-context";
+import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
@@ -29,6 +30,8 @@ const PaintXR = () => {
   let [player2, setPlayer2] = useState<
     { index: number; x: number; y: number; z: number }[]
   >([]);
+
+  const zustandStore = ZustandStore();
 
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
@@ -92,17 +95,19 @@ const PaintXR = () => {
    * this method read player position from document and array
    */
   const getPlayerPosition = async () => {
-    const docKey = "zb5tWRiOArpG0vR5PjO8";
+    const docKey = zustandStore.hostingId;
     onSnapshot(doc(database, `host/${docKey}`), (doc) => {
       const data = doc.data();
       const id = doc.id;
       if (data) {
-        if (data.player2) {
-          setPlayer2(data.player2.position);
-        }
-        if (data.player1) {
-          setPlayer1(data.player1.position);
-        }
+        // if (data.player2) {
+        //   setPlayer2(data.player2.position);
+        // }
+        // if (data.player1) {
+        //   setPlayer1(data.player1.position);
+        // }
+        setPlayer1(data.player1Position);
+        setPlayer2(data.player2Position);
       }
     });
   };
@@ -112,12 +117,17 @@ const PaintXR = () => {
   }, []);
 
   useEffect(() => {
-    getPlayerPosition();
+    if (zustandStore) {
+      getPlayerPosition();
+    }
   }, [loader]);
   if (userData) {
     console.log("hamedkabir role  ", userData.role);
   }
 
+  if (zustandStore) {
+    console.log("hamedkabir hosting id  ", zustandStore.hostingId);
+  }
   return (
     <div className="containerCanva">
       {userData ? <ARButton></ARButton> : null}
@@ -125,9 +135,15 @@ const PaintXR = () => {
         <XR>
           {userData ? (
             userData.role === "admin" ? (
-              <Painter1 paintPositionFromDB={player2}></Painter1>
+              <Painter1
+                paintPositionFromDB={player2}
+                hostingId={zustandStore.hostingId}
+              ></Painter1>
             ) : userData.role === "player" ? (
-              <Painter2 paintPositionFromDB={player1}></Painter2>
+              <Painter2
+                paintPositionFromDB={player1}
+                hostingId={zustandStore.hostingId}
+              ></Painter2>
             ) : null
           ) : null}
         </XR>
