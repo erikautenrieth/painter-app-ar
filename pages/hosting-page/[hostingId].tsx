@@ -155,6 +155,7 @@ const HostingPage = () => {
       }
     );
   };
+
   useEffect(() => {
     setUserRole(hostingId);
     checkTheHostingServerRealTime();
@@ -165,7 +166,27 @@ const HostingPage = () => {
       readHostDataInRealTime();
     }
   }, [existHost]);
-  console.log("hamedkabir   ", zustandStore.hostingId);
+
+  const [seconds, setSeconds] = useState<number>(5);
+
+  useEffect(() => {
+    let interval: any = undefined;
+    if (hostingData) {
+      if (hostingData.player1Ready && hostingData.player2Ready) {
+        if (seconds > 0) {
+          interval = setInterval(() => {
+            setSeconds((seconds) => seconds - 1);
+          }, 1000);
+          return () => clearInterval(interval);
+        } else {
+          setTimeout(() => {
+            router.push("/xr-paint");
+          }, 1000);
+          return () => clearInterval(interval);
+        }
+      }
+    }
+  }, [seconds, hostingData]);
   return (
     <>
       {existHost || userRole == "admin" ? (
@@ -237,6 +258,15 @@ const HostingPage = () => {
               ) : null}
             </Grid>
           </Grid>
+          {hostingData ? (
+            hostingData.player1Ready && hostingData.player2Ready ? (
+              <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
+                <Grid item xs={12}>
+                  <h1>Redirecting to Painting Server in: {seconds}</h1>
+                </Grid>
+              </Grid>
+            ) : null
+          ) : null}
         </>
       ) : (
         <h1>Please wait of host ...</h1>
