@@ -8,12 +8,11 @@ const Footer = () => {
 		<footer className="footer">
 			<div className="content has-text-centered">
 				<p>
-					<strong>WebXR Projekt</strong> by <a href="https://example.com">Albaraa Abushammala, Erik Autenrieth and  Hamed Sadegh </a>....
-
+					<strong>WebXR Projekt</strong> von <a href="https://example.com">Albaraa Abushammala, Erik Autenrieth und Hamed Sadegh </a>
 					 <a
-					href="components/landingpage/Footer">...</a>. The source code is licensed
-					<a href="http://opensource.org/licenses/mit-license.php"> MIT</a>
-					<Typography component="legend">Give Rating</Typography>
+					href="components/landingpage/Footer"></a>Der Quellcode ist lizenziert:<a href="http://opensource.org/licenses/mit-license.php"> MIT</a>
+
+					<Typography component="legend">Bewerte das Projekt</Typography>
 					<Rating name="no-value" value={null} />
 				</p>
 			</div>

@@ -1,0 +1,20 @@
+
+.navbar-end{
+    background-color: #9fbddc;
+
+}
+.navbar-brand{
+    background-color: #9fbddc;
+}
+.navbar-menu{
+    background-color: #9fbddc;
+}
+
+.navbarsmall{
+    margin-left: 10px;
+}
+
+@media screen and (max-height: 450px) {
+
+    .navbar-end {margin-left :0px;}
+}
