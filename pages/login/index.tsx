@@ -9,6 +9,10 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 
+/**
+ * User1: user1@real-chat.de     123456
+ * User2: user2@real-chat.de     123456
+ */
 
 
 export default function Login() {
@@ -36,11 +40,8 @@ export default function Login() {
   return (
     <>
       <head>
-        <title>Log In lala</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
-        <link rel="stylesheet" type="text/css" href="../css/login.css"/>
+        <title>Log</title>
+        <link rel="stylesheet" type="text/css" href="../styles/Login.module.css"/>
         </head>
 
       <Navbar/>

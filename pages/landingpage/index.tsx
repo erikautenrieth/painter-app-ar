@@ -1,5 +1,6 @@
 import Footer from "components/landingpage/Footer";
 import Navbar from "components/landingpage/Navbar";
+import NavbarSmall from "components/landingpage/NavbarSmall";
 import ResourceHighlight from "components/landingpage/ResourceHighlight";
 import Newsletter from "components/landingpage/Newsletter";
 import ResourceList from "components/landingpage/ResourceList";
@@ -21,7 +22,7 @@ export default function Home() {
       </Head>
 
       <Navbar />
-
+        <NavbarSmall />
       <ResourceHighlight />
       <ResourceList />
       <Newsletter />

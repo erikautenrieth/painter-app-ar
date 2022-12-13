@@ -32,7 +32,8 @@
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
     "three": "^0.145.0",
-    "three-mesh-ui": "^6.5.2"
+    "three-mesh-ui": "^6.5.2",
+    "three.meshline": "^1.4.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^4.4.0",
@@ -44,4 +45,7 @@
     "eslint-config-next": "12.3.1",
     "typescript": "4.8.4"
   }
+
+
+
 }

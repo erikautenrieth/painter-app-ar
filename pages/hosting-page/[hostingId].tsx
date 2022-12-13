@@ -1,7 +1,8 @@
 import { Button, Grid, Icon } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import Navbar from "components/landingpage/Navbar";
 import {
   addDoc,
   collection,
@@ -164,24 +165,50 @@ const HostingPage = () => {
 
   return (
     <>
+      <Navbar />
       {existHost || userRole == "admin" ? (
         <>
+          <div><br/><br/><br/><br/><br/><br/></div>
           {userRole == "admin" ? (
-            <Grid columns={{ md: 12 }}>
+            <Grid  container
+                   gap={12}
+                   direction="row"
+                   justifyContent="center"
+                   alignItems="center"
+                   rowSpacing={5}
+                   >
               {!createHostIs ? (
-                <Button variant="outlined" onClick={() => checkExistingHost()}>
-                  Create Host
+                <Button size="large" variant="contained" onClick={() => checkExistingHost()}>
+                  Erstelle Host
                 </Button>
               ) : null}
 
-              <Button variant="outlined" onClick={() => exitHosting()}>
-                Exit Hosting
+              <Button size="large"  variant="contained" onClick={() => exitHosting()}>
+                Beende Hosting
               </Button>
             </Grid>
           ) : null}
-          <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
-            <Grid item xs={6}>
-              <h1>Player1</h1>
+
+          <div><br/><br/><br/><br/><br/><br/><br/><br/></div>
+
+          <Grid container
+                gap={12}
+                direction="row"
+                justifyContent="center"
+                rowSpacing={5}>
+
+            <Grid item xs={2}>
+
+              <figure className="avatar">
+                <img
+                    src="https://www.thispersondoesnotexist.com/image"
+                    height="150px"
+                    width={"150px"}
+                />
+              </figure>
+
+              <h1 className="player" >Spieler 1</h1>
+
               {userRole == "admin" ? (
                 <>
                   {userState ? (
@@ -191,8 +218,8 @@ const HostingPage = () => {
                       component={CheckCircleOutlineOutlinedIcon}
                     ></Icon>
                   ) : (
-                    <Button variant="outlined" onClick={() => getReady()}>
-                      Ready
+                    <Button size="large" variant="contained" onClick={() => getReady()}>
+                      Bereit
                     </Button>
                   )}
                 </>
@@ -206,8 +233,18 @@ const HostingPage = () => {
                 ) : null
               ) : null}
             </Grid>
-            <Grid item xs={6}>
-              <h1>Player2</h1>
+            <Grid item xs={4}>
+
+              <figure className="avatar">
+                <img
+                    src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
+                    height="150px"
+                    width={"150px"}
+                />
+              </figure>
+
+
+              <h1 className="player">Spieler 2</h1>
               {userRole == "join" ? (
                 <>
                   {userState ? (
@@ -217,8 +254,8 @@ const HostingPage = () => {
                       component={CheckCircleOutlineOutlinedIcon}
                     ></Icon>
                   ) : (
-                    <Button variant="outlined" onClick={() => getReady()}>
-                      Ready
+                    <Button size="large" variant="outlined" onClick={() => getReady()}>
+                      Bereit
                     </Button>
                   )}
                 </>
