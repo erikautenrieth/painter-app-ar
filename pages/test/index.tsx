@@ -62,7 +62,6 @@ function Box(props: ThreeElements["mesh"]) {
 
 const test = () => {
   const zustandStore = ZustandStore();
-  useEffect(() => {}, []);
   console.log("hamedkabir   ", zustandStore.hostingId);
 
   return (
