@@ -14,17 +14,9 @@ import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
 type Props = {
-  paintPositionFromDB: {
-    x: number;
-    y: number;
-    z: number;
-  }[];
   hostingId: string | undefined;
 };
-const Painter1: React.FC<Props> = ({
-  paintPositionFromDB,
-  hostingId,
-}: Props) => {
+const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -34,10 +26,9 @@ const Painter1: React.FC<Props> = ({
   const [arrayOfPositionPlayer1] = useState<
     { x: number; y: number; z: number }[]
   >([]);
-  const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] =
-    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
-
-  const [loader, setLoader] = useState<boolean>(false);
+  const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
+    { x: number; y: number; z: number }[]
+  >([]);
 
   let indexOfArrayPositions: number = 0;
   const init = () => {
@@ -164,23 +155,40 @@ const Painter1: React.FC<Props> = ({
     }
   };
 
+  /**
+   * this method read player position from document and array
+   */
+  const getPlayerPosition = async () => {
+    const docKey = hostingId;
+    onSnapshot(doc(database, `host/${docKey}`), (doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      if (data) {
+        setArrayOfPositionPlayer2(data.player2Position);
+      }
+    });
+  };
+
   useEffect(() => {
     init();
   }, [userDataSelecting]);
 
   useEffect(() => {
-    setArrayOfPositionPlayer2(paintPositionFromDB);
+    getPlayerPosition();
+  }, []);
+
+  useEffect(() => {
+    init();
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
+        console.log("hamedkabir data  ", arrayOfPositionPlayer2);
+
         paintFromDB();
       }
     }
-  }, [paintPositionFromDB]);
+  }, [arrayOfPositionPlayer2, painterPlayer2]);
   useFrame(() => {
     if (controller) {
-      if (indexOfArrayPositions < paintPositionFromDB.length) {
-        // paintFromDB();
-      }
       handleController(controller);
       gl.render(scene, camera);
     }

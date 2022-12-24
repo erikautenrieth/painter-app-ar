@@ -1,23 +1,21 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { database } from "config/firebase";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 import Painter1 from "./painter1";
 // That is the position of Paint of Player 1
 type Props = {
-  paintPositionFromDB: {
-    x: number;
-    y: number;
-    z: number;
-  }[];
   hostingId: string | undefined;
 };
-const Painter2: React.FC<Props> = ({
-  paintPositionFromDB,
-  hostingId,
-}: Props) => {
+const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -25,10 +23,14 @@ const Painter2: React.FC<Props> = ({
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const [arrayOfPositionPlayer2] = useState<any[]>([]);
-  const [arrayOfPositionPlayer1, setArrayOfPositionPlayer1] =
-    useState<{ x: number; y: number; z: number }[]>(paintPositionFromDB);
+  const [arrayOfPositionPlayer1, setArrayOfPositionPlayer1] = useState<
+    { x: number; y: number; z: number }[]
+  >([]);
 
-  const [loader, setLoader] = useState<boolean>(false);
+  const [nextPlayerPaint, setNextPlayerPaint] = useState<Boolean>(false);
+
+  let test: any[] = [];
+
   let indexOfArrayPositions: number = 0;
 
   const init = () => {
@@ -133,6 +135,9 @@ const Painter2: React.FC<Props> = ({
   };
 
   function paintFromDB() {
+    console.log("db painting ", arrayOfPositionPlayer1);
+    console.log("painter 1 inited  ", painterPlayer1);
+
     if (indexOfArrayPositions < arrayOfPositionPlayer1.length) {
       const painter = painterPlayer1;
       cursor.set(
@@ -154,23 +159,39 @@ const Painter2: React.FC<Props> = ({
     }
   }
 
+  /**
+   * this method read player position from document and array
+   */
+  const getPlayerPosition = async () => {
+    const docKey = hostingId;
+    onSnapshot(doc(database, `host/${docKey}`), (doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      if (data) {
+        setArrayOfPositionPlayer1(data.player1Position);
+      }
+    });
+  };
+
   useEffect(() => {
     init();
   }, [userDataSelecting]);
 
   useEffect(() => {
-    setArrayOfPositionPlayer1(paintPositionFromDB);
+    getPlayerPosition();
+  }, []);
+
+  useEffect(() => {
+    init();
     if (painterPlayer1) {
       if (arrayOfPositionPlayer1) {
         paintFromDB();
       }
     }
-  }, [paintPositionFromDB]);
+  }, [arrayOfPositionPlayer1, painterPlayer1]);
+
   useFrame(() => {
     if (controller) {
-      if (indexOfArrayPositions < paintPositionFromDB.length) {
-        // paintFromDB();
-      }
       handleController(controller);
       gl.render(scene, camera);
     }

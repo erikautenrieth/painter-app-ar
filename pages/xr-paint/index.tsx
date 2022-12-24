@@ -116,11 +116,11 @@ const PaintXR = () => {
     getUserById();
   }, []);
 
-  useEffect(() => {
-    if (zustandStore) {
-      getPlayerPosition();
-    }
-  }, [loader]);
+  // useEffect(() => {
+  //   if (zustandStore) {
+  //     getPlayerPosition();
+  //   }
+  // }, [loader]);
   if (userData) {
     console.log("hamedkabir role  ", userData.role);
   }
@@ -133,7 +133,7 @@ const PaintXR = () => {
       {userData ? <ARButton></ARButton> : null}
       <Canvas>
         <XR>
-          {userData ? (
+          {/* {userData ? (
             userData.role === "admin" ? (
               <Painter1
                 paintPositionFromDB={player2}
@@ -143,6 +143,17 @@ const PaintXR = () => {
               <Painter2
                 paintPositionFromDB={player1}
                 hostingId={zustandStore.hostingId}
+              ></Painter2>
+            ) : null
+          ) : null} */}
+          {userData ? (
+            userData.role === "admin" ? (
+              <Painter1
+                hostingId={"lMrL7sJkWrKJCE4eBpVY"}
+              ></Painter1>
+            ) : userData.role === "player" ? (
+              <Painter2
+                hostingId={"lMrL7sJkWrKJCE4eBpVY"}
               ></Painter2>
             ) : null
           ) : null}

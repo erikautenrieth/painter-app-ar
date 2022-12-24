@@ -135,7 +135,7 @@ export default function Home() {
 
                   <Button
                     variant="contained"
-                    onClick={() => navigateToPage("/test/painter")}
+                    onClick={() => navigateToPage("/xr-paint")}
                   >
                     XR Test Painter
                   </Button>
