@@ -24,13 +24,33 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const [arrayOfPositionPlayer1] = useState<
-    { x: number; y: number; z: number }[]
+    {
+      x: number;
+      y: number;
+      z: number;
+      type: string;
+      color: number;
+      size: number;
+    }[]
   >([]);
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
-    { x: number; y: number; z: number }[]
+    {
+      x: number;
+      y: number;
+      z: number;
+      type: "move" | "line";
+      color: number;
+      size: number;
+    }[]
   >([]);
 
   let indexOfArrayPositions: number = 0;
+
+  const defaultColorPlayer1: number = 0x00ff00;
+  const defaultColorPlayer2: number = 0xf2bb07;
+
+  const defaultPaintSizePlayer1: number = 0.4;
+  const defaultPaintSizePlayer2: number = 0.4;
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -47,16 +67,18 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(0.4);
+    painter.setSize(defaultPaintSizePlayer1);
     painter.mesh.material.side = THREE.DoubleSide;
-    painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    painter.mesh.material = new THREE.MeshBasicMaterial({
+      color: defaultColorPlayer1,
+    });
     scene.add(painter.mesh);
 
     painterPlayer2 = new TubePainter();
-    painterPlayer2.setSize(0.4);
+    painterPlayer2.setSize(defaultPaintSizePlayer2);
     painterPlayer2.mesh.material.side = THREE.DoubleSide;
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
-      color: 0xf2bb07,
+      color: defaultColorPlayer2,
     });
     scene.add(painterPlayer2.mesh);
 
@@ -100,6 +122,15 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
           userData.skipFrames--;
 
           painter.moveTo(cursor);
+          const object = {
+            x: cursor.x,
+            y: cursor.y,
+            z: cursor.z,
+            type: "move",
+            color: defaultColorPlayer1,
+            size: defaultPaintSizePlayer1,
+          };
+          arrayOfPositionPlayer1.push(object);
         } else {
           painter.lineTo(cursor);
           painter.update();
@@ -107,6 +138,9 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
+            type: "line",
+            color: defaultColorPlayer1,
+            size: defaultPaintSizePlayer1,
           };
           arrayOfPositionPlayer1.push(object);
         }
@@ -141,7 +175,7 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
         arrayOfPositionPlayer2[indexOfArrayPositions].y,
         arrayOfPositionPlayer2[indexOfArrayPositions].z
       );
-      if (indexOfArrayPositions < 1) {
+      if (arrayOfPositionPlayer2[indexOfArrayPositions].type == "move") {
         painter.moveTo(cursor);
       } else {
         painter.lineTo(cursor);

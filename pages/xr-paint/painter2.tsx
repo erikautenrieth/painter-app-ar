@@ -18,20 +18,38 @@ type Props = {
 const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
-  let controller: any;
+  let controller: any, controllerPlayer1: any;
   let painter: any, painterPlayer1: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  const [arrayOfPositionPlayer2] = useState<any[]>([]);
+  const [arrayOfPositionPlayer2] = useState<
+    {
+      x: number;
+      y: number;
+      z: number;
+      type: string;
+      color: number;
+      size: number;
+    }[]
+  >([]);
   const [arrayOfPositionPlayer1, setArrayOfPositionPlayer1] = useState<
-    { x: number; y: number; z: number }[]
+    {
+      x: number;
+      y: number;
+      z: number;
+      type: "move" | "line";
+      color: number;
+      size: number;
+    }[]
   >([]);
 
-  const [nextPlayerPaint, setNextPlayerPaint] = useState<Boolean>(false);
-
-  let test: any[] = [];
-
   let indexOfArrayPositions: number = 0;
+
+  const defaultColorPlayer1: number = 0x00ff00;
+  const defaultColorPlayer2: number = 0xf2bb07;
+
+  const defaultPaintSizePlayer1: number = 0.4;
+  const defaultPaintSizePlayer2: number = 0.4;
 
   const init = () => {
     camera = new THREE.PerspectiveCamera(
@@ -49,16 +67,18 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(0.4);
+    painter.setSize(defaultPaintSizePlayer2);
     painter.mesh.material.side = THREE.DoubleSide;
-    painter.mesh.material = new THREE.MeshBasicMaterial({ color: 0xf2bb07 });
+    painter.mesh.material = new THREE.MeshBasicMaterial({
+      color: defaultColorPlayer2,
+    });
     scene.add(painter.mesh);
 
     painterPlayer1 = new TubePainter();
-    painterPlayer1.setSize(0.4);
+    painterPlayer1.setSize(defaultPaintSizePlayer1);
     painterPlayer1.mesh.material.side = THREE.DoubleSide;
     painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
-      color: 0x00ff00,
+      color: defaultColorPlayer1,
     });
     scene.add(painterPlayer1.mesh);
 
@@ -100,6 +120,16 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
         if (userData.skipFrames >= -2) {
           userData.skipFrames--;
           painter.moveTo(cursor);
+
+          const object = {
+            x: cursor.x,
+            y: cursor.y,
+            z: cursor.z,
+            type: "move",
+            color: defaultColorPlayer2,
+            size: defaultPaintSizePlayer2,
+          };
+          arrayOfPositionPlayer2.push(object);
         } else {
           painter.lineTo(cursor);
           painter.update();
@@ -108,6 +138,9 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
+            type: "line",
+            color: defaultColorPlayer2,
+            size: defaultPaintSizePlayer2,
           };
           arrayOfPositionPlayer2.push(object);
         }
@@ -135,9 +168,6 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
   };
 
   function paintFromDB() {
-    console.log("db painting ", arrayOfPositionPlayer1);
-    console.log("painter 1 inited  ", painterPlayer1);
-
     if (indexOfArrayPositions < arrayOfPositionPlayer1.length) {
       const painter = painterPlayer1;
       cursor.set(
@@ -145,7 +175,7 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
         arrayOfPositionPlayer1[indexOfArrayPositions].y,
         arrayOfPositionPlayer1[indexOfArrayPositions].z
       );
-      if (indexOfArrayPositions < 1) {
+      if (arrayOfPositionPlayer1[indexOfArrayPositions].type == "move") {
         painter.moveTo(cursor);
       } else {
         painter.lineTo(cursor);
