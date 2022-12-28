@@ -22,7 +22,7 @@ export default function Home() {
       </Head>
 
       <Navbar />
-        <NavbarSmall />
+      <NavbarSmall />
       <ResourceHighlight />
       <ResourceList />
       <Newsletter />

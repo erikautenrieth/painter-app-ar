@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
 import {
   VRButton,
@@ -9,6 +9,7 @@ import {
   XRButton,
 } from "@react-three/xr";
 import * as THREE from "three";
+import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 
 // function makeTextPanel() {
 //   const textRef = useRef<THREE.Object3D>(null!);
@@ -60,6 +61,9 @@ function Box(props: ThreeElements["mesh"]) {
 }
 
 const test = () => {
+  const zustandStore = ZustandStore();
+  console.log("hamedkabir   ", zustandStore.hostingId);
+
   return (
     <div className="containerCanva">
       <XRButton

@@ -15,6 +15,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { database } from "../../config/firebase";
+import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 export type IPosition = {
   x: number;
   y: number;
@@ -35,6 +36,7 @@ const HostingPage = () => {
   const [existHost, setExistHost] = useState<any>(null);
   const [createHostIs, setCreateHost] = useState<any>(false);
   const [hostingData, setHostingData] = useState<any>(null);
+  const zustandStore = ZustandStore();
   const { hostingId } = router.query;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
@@ -114,6 +116,8 @@ const HostingPage = () => {
         const id = doc.id;
         if (data) {
           setHostingData({ id, ...data });
+          zustandStore.setHostingId(id);
+          // console.log("hamedkabir  ", zustandStore);
         }
       });
     }
@@ -152,6 +156,7 @@ const HostingPage = () => {
       }
     );
   };
+
   useEffect(() => {
     setUserRole(hostingId);
     checkTheHostingServerRealTime();
@@ -163,6 +168,26 @@ const HostingPage = () => {
     }
   }, [existHost]);
 
+  const [seconds, setSeconds] = useState<number>(5);
+
+  useEffect(() => {
+    let interval: any = undefined;
+    if (hostingData) {
+      if (hostingData.player1Ready && hostingData.player2Ready) {
+        if (seconds > 0) {
+          interval = setInterval(() => {
+            setSeconds((seconds) => seconds - 1);
+          }, 1000);
+          return () => clearInterval(interval);
+        } else {
+          setTimeout(() => {
+            router.push("/xr-paint");
+          }, 1000);
+          return () => clearInterval(interval);
+        }
+      }
+    }
+  }, [seconds, hostingData]);
   return (
     <>
       <Navbar />
@@ -270,6 +295,15 @@ const HostingPage = () => {
               ) : null}
             </Grid>
           </Grid>
+          {hostingData ? (
+            hostingData.player1Ready && hostingData.player2Ready ? (
+              <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
+                <Grid item xs={12}>
+                  <h1>Redirecting to Painting Server in: {seconds}</h1>
+                </Grid>
+              </Grid>
+            ) : null
+          ) : null}
         </>
       ) : (
         <h1>Please wait of host ...</h1>
