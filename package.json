@@ -26,6 +26,7 @@
     "firebase": "^9.13.0",
     "firebaseui": "^6.0.1",
     "next": "12.3.1",
+    "randomcolor": "^0.6.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-typed": "^1.2.0",
@@ -34,12 +35,13 @@
     "socket.io-client": "^4.5.3",
     "three": "^0.145.0",
     "three-mesh-ui": "^6.5.2",
-    "zustand": "^4.1.4",
-    "three.meshline": "^1.4.0"
+    "three.meshline": "^1.4.0",
+    "zustand": "^4.1.4"
   },
   "devDependencies": {
     "@capacitor/cli": "^4.4.0",
     "@types/node": "18.11.2",
+    "@types/randomcolor": "^0.5.7",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@types/three": "^0.144.0",

@@ -18,7 +18,7 @@ type Props = {
 const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
-  let controller: any, controllerPlayer1: any;
+  let controller: any;
   let painter: any, painterPlayer1: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
@@ -117,7 +117,7 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
 
       if (userDataSelecting === true) {
-        if (userData.skipFrames >= -2) {
+        if (userData.skipFrames >= 0) {
           userData.skipFrames--;
           painter.moveTo(cursor);
 

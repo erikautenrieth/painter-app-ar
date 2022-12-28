@@ -12,6 +12,8 @@ import {
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
+
+import randomColor from "randomcolor";
 // That is the position of Paint of Player 2
 type Props = {
   hostingId: string | undefined;
@@ -20,7 +22,7 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
-  let painter: any, painterPlayer2: any;
+  let painterPlayer1: any, painterPlayer2: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const [arrayOfPositionPlayer1] = useState<
@@ -29,7 +31,7 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
       y: number;
       z: number;
       type: string;
-      color: number;
+      color: number | string;
       size: number;
     }[]
   >([]);
@@ -66,13 +68,13 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
     light.position.set(0, 1, 0);
     scene.add(light);
 
-    painter = new TubePainter();
-    painter.setSize(defaultPaintSizePlayer1);
-    painter.mesh.material.side = THREE.DoubleSide;
-    painter.mesh.material = new THREE.MeshBasicMaterial({
+    painterPlayer1 = new TubePainter();
+    painterPlayer1.setSize(defaultPaintSizePlayer1);
+    painterPlayer1.mesh.material.side = THREE.DoubleSide;
+    painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
       color: defaultColorPlayer1,
     });
-    scene.add(painter.mesh);
+    scene.add(painterPlayer1.mesh);
 
     painterPlayer2 = new TubePainter();
     painterPlayer2.setSize(defaultPaintSizePlayer2);
@@ -97,7 +99,7 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
     controller.addEventListener("selectstart", onSelectStart);
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
-    controller.userData.painter = painter;
+    controller.userData.painter = painterPlayer1;
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
@@ -115,10 +117,8 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
       const painter = userData.painter;
 
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
-      if (userDataSelecting) {
-      }
       if (userDataSelecting === true) {
-        if (userData.skipFrames >= -2) {
+        if (userData.skipFrames >= 0) {
           userData.skipFrames--;
 
           painter.moveTo(cursor);
@@ -184,8 +184,8 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
       indexOfArrayPositions++;
       paintFromDB();
     } else {
-      cursor.set(0, 0, -0.2);
-      painter.moveTo(cursor);
+      // cursor.set(0, 0, -0.2);
+      // painter.moveTo(cursor);
     }
   };
 
@@ -215,8 +215,6 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
     init();
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
-        console.log("hamedkabir data  ", arrayOfPositionPlayer2);
-
         paintFromDB();
       }
     }

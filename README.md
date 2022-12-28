@@ -45,3 +45,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Installed Packages
 
 npm i firebase firebaseeui
+
+## Random Color Generator
+
+npm i randomcolor
+yarn add randomcolor
+npm i --save-dev @types/randomcolor
+// Returns a hex code for an attractive color
+import randomColor from "randomcolor";
