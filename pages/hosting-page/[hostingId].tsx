@@ -80,6 +80,7 @@ const HostingPage = () => {
       }
     });
   };
+
   // eine Methode direkt nach dem Admin bei der Seite ankommt ein Host automatisch erstellt wird
   const createHost = async () => {
     const docCollection = collection(database, "host");
@@ -178,7 +179,6 @@ const HostingPage = () => {
                     width={"150px"}
                 />
               </figure>
-
 
               <h1 className="player">Spieler 2</h1>
               {userRole == "join" ? (

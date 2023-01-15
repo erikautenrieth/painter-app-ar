@@ -1,20 +1,28 @@
 
-.navbar-end{
-    background-color: #9fbddc;
+.navbar-menu {
+    border-color: #5b78b2;
+    border-width: 2px;
+    border-style: inset;
+}
 
+.navbar-end{
+    background-color: #c8e6ff;
 }
+
 .navbar-brand{
-    background-color: #9fbddc;
+    background-color: #c8e6ff;
 }
+
 .navbar-menu{
-    background-color: #9fbddc;
+    background-color: #c8e6ff;
 }
 
 .navbarsmall{
     margin-left: 10px;
 }
 
-@media screen and (max-height: 450px) {
 
+
+@media screen and (max-height: 450px) {
     .navbar-end {margin-left :0px;}
 }

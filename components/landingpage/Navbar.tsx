@@ -1,19 +1,30 @@
 import Link from "next/link"
 import {useAuth} from "../../shared-components/services/auth-context";
+import {Nav, Dropdown, DropdownToggle, DropdownItem} from "reactstrap";
+import MenuList from "./MenuList";
+
+
 
 const Navbar = () => {
+
 	const { user, login, logOut } = useAuth();
 	return (
 		<nav className="navbar">
+
 			<div className="container">
 				<div className="navbar-brand">
-					<Link href="/landingpage">
-					<a className="navbar-item is-size-5 has-text-weight-semibold" >
-						<h1>Landingpage</h1>
-					</a>
-					</Link>
+					<MenuList />
 				</div>
+
+
 				<div id="navbarMenu" className="navbar-menu">
+
+						<Link href="/landingpage">
+							<a className="navbar-item is-size-5 has-text-weight-semibold" >
+								Landingpage
+							</a>
+						</Link>
+
 					<div className="navbar-end">
 						<div className=" navbar-item">
 							<div className="control has-icons-left">
@@ -21,7 +32,6 @@ const Navbar = () => {
 								<span className="icon is-left"><i className="fa fa-search"></i> </span>
 							</div>
 						</div>
-
 						{user.email != null && <Link href="/home">
 						<a className="navbar-item is-active is-size-5 has-text-weight-semibold">
 							Home

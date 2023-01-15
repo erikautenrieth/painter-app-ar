@@ -10,9 +10,11 @@ const ResourceHighlight = () => {
 						<div className="columns">
 							<div className="column is-8 is-offset-2">
 								<div className="content is-medium">
-									<h2 className="subtitle is-4">Punkt 1</h2>
-									<h1 className="title">Projekt </h1>
-									<p> Hier entsteht ein Text über das wundervolle Projekt und welche Mentalität die Begründer des Projektes an den Tag legen. Vor allem  soll Liebe zum Programmieren herausstechen.</p>
+									<h2 className="subtitle is-4">Real Chat </h2>
+									<h1 className="title">3D Painting </h1>
+									<p>
+										Es ist wirklich wundervoll, wie die Technologie es uns heute ermöglicht, auf innovative und unterhaltsame Weise zusammenzuarbeiten und kreativ zu sein.
+										Mit unserer neuen Web App können Sie zusammen mit einem Freund oder einem Kollegen an einer 3D-Zeichnung arbeiten.</p>
 									<Typed
 										loop
 										typeSpeed={20}
@@ -35,14 +37,32 @@ const ResourceHighlight = () => {
 						<div className="columns">
 							<div className="column is-8 is-offset-2">
 								<div className="content is-medium">
-									<h2 className="subtitle is-4">Erste Schritte</h2>
+									<h2 className="subtitle is-4">Projekt</h2>
 									<h1 className="title">Erste Schritte</h1>
-									<p>Hier entsteht ein Text über die Funktionsweisen der App und wie gestartet werden kann.
+									<p >
+										Die App bietet eine Vielzahl von Werkzeugen und Funktionen, die es Ihnen ermöglichen, Ihrer Kreativität freien Lauf zu lassen und wirklich beeindruckende Ergebnisse zu erzielen. Ob Sie nun ein erfahrener 3D-Künstler sind oder gerade erst damit anfangen, Sie werden sicherlich viel Spaß haben, während Sie gemeinsam an Ihrem Projekt arbeiten.
 									</p>
 								</div>
 							</div>
 						</div>
 					</section>
+
+					<section className="section">
+						<div className="columns">
+							<div className="column is-8 is-offset-2">
+								<div className="content is-medium">
+									<h2 className="subtitle is-4">Start</h2>
+									<h1 className="title">Los gehts</h1>
+									<p >Die Benutzeroberfläche ist intuitiv und einfach zu bedienen, sodass Sie schnell in die App hineinfinden und loslegen können. Sie werden überrascht sein, wie schnell Sie Fortschritte machen und wie viel Spaß es macht, zusammenzuarbeiten und Ideen auszutauschen.
+
+										Also warum zögern Sie noch? Laden Sie jetzt unsere Web App herunter und starten Sie noch heute mit der Zusammenarbeit an Ihrer nächsten 3D-Zeichnung. Sie werden es nicht bereuen!
+									</p>
+								</div>
+							</div>
+						</div>
+					</section>
+
+
 				</div>
 			</div>
 		</section>

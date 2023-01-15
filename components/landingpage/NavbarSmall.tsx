@@ -1,7 +1,7 @@
 import Link from "next/link"
 import {useAuth} from "../../shared-components/services/auth-context";
 
-const Navbar = () => {
+const NavbarSmall = () => {
 	const { user, login, logOut } = useAuth();
 	return (
 		<nav className="navbar">
@@ -31,4 +31,4 @@ const Navbar = () => {
 
 }
 
-export default Navbar;
+export default NavbarSmall;
