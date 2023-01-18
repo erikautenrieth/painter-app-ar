@@ -4,13 +4,10 @@ import NavbarSmall from "components/landingpage/NavbarSmall";
 import ResourceHighlight from "components/landingpage/ResourceHighlight";
 import Newsletter from "components/landingpage/Newsletter";
 import ResourceList from "components/landingpage/ResourceList";
-
-import * as React from 'react';
 import Head from "next/head";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import MenuList from "../../components/landingpage/MenuList";
-
 
 export default function Home() {
 
