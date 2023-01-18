@@ -9,9 +9,8 @@ import * as React from 'react';
 import Head from "next/head";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
-import {DropdownMenu} from "reactstrap";
 import MenuList from "../../components/landingpage/MenuList";
-import { isMobile } from 'is-mobile';
+
 
 export default function Home() {
 
@@ -19,22 +18,6 @@ export default function Home() {
     const goToPage = (url: any) => {
         router.push(url);
     };
-
-    if (isMobile()) {
-        return (
-            <>
-                <Head>
-                    <title>Real Chat App</title>
-                    <link rel="icon" href="/message_draw_icon.ico"/>
-                </Head>
-                <MenuList/>
-                <ResourceHighlight/>
-                <ResourceList/>
-                <Newsletter/>
-                <Footer/>
-            </>
-        )
-    } else {
         return (
             <>
                 <Head>
@@ -49,5 +32,5 @@ export default function Home() {
 
             </>
         );
-    }
+
 }
