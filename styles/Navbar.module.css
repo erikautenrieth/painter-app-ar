@@ -1,25 +1,39 @@
 
+
 .navbar-menu {
-    border-color: #5b78b2;
-    border-width: 2px;
+    border-color: #683ff8;
+    border-width: 0px;
     border-style: inset;
 }
 
+.navbar-item {
+    border-style: solid;
+    border-color: #1f1442;
+    border-width: 2px;
+}
+
+
+
+.navbar-start {
+flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    text-align: center;
+
+
+}
 .navbar-end{
-    background-color: #c8e6ff;
+    background-color: #683ff8; /* #c8e6ff */
 }
 
 .navbar-brand{
-    background-color: #c8e6ff;
+    background-color: #683ff8;
 }
 
 .navbar-menu{
-    background-color: #c8e6ff;
+    background-color: #683ff8;
 }
 
-.navbarsmall{
-    margin-left: 10px;
-}
 
 
 

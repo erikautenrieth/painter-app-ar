@@ -1,12 +1,8 @@
 import Link from "next/link"
 import {useAuth} from "../../shared-components/services/auth-context";
-import {Nav, Dropdown, DropdownToggle, DropdownItem} from "reactstrap";
 import MenuList from "./MenuList";
 
-
-
 const Navbar = () => {
-
 	const { user, login, logOut } = useAuth();
 	return (
 		<nav className="navbar">
@@ -16,11 +12,10 @@ const Navbar = () => {
 					<MenuList />
 				</div>
 
-
 				<div id="navbarMenu" className="navbar-menu">
 
 						<Link href="/landingpage">
-							<a className="navbar-item is-size-5 has-text-weight-semibold" >
+							<a  className="navbar-item  is-size-5 has-text-weight-semibold" >
 								Landingpage
 							</a>
 						</Link>
