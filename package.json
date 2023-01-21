@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "serve-json": "json-server --watch public/test.json --port 4000"
   },
   "dependencies": {
     "@capacitor/android": "^4.4.0",
@@ -27,10 +28,8 @@
     "firebaseui": "^6.0.1",
     "is-mobile": "^3.1.1",
     "next": "12.3.1",
-    "react": "^17.0.2",
-    "react-burger-menu": "^3.0.9",
-    "react-device-detect": "^2.2.2",
-    "react-dom": "^17.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-typed": "^1.2.0",
     "reactstrap": "^9.1.5",
     "sass": "^1.56.0",
@@ -39,6 +38,7 @@
     "styled-components": "^5.3.6",
     "three": "^0.145.0",
     "three-mesh-ui": "^6.5.2",
+    "zustand": "^4.1.4",
     "three.meshline": "^1.4.0"
   },
   "devDependencies": {
@@ -51,4 +51,7 @@
     "eslint-config-next": "12.3.1",
     "typescript": "4.8.4"
   }
+
+
+
 }
