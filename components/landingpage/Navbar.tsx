@@ -6,17 +6,13 @@ const Navbar = () => {
 	const { user, login, logOut } = useAuth();
 	return (
 		<nav className="navbar">
-
-			<div className="container">
 				<div className="navbar-brand">
 					<MenuList />
 				</div>
-
 				<div id="navbarMenu" className="navbar-menu">
-
 						<Link href="/landingpage">
 							<a  className="navbar-item  is-size-5 has-text-weight-semibold" >
-								Landingpage
+								 Landingpage
 							</a>
 						</Link>
 
@@ -48,7 +44,7 @@ const Navbar = () => {
 						</a>
 					</div>
 				</div>
-			</div>
+
 		</nav>
 	);
 

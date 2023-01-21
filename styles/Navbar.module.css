@@ -12,16 +12,21 @@
     border-width: 2px;
 }
 
-
+.container {
+    color: #3b05e7;
+}
 
 .navbar-start {
 flex-grow: 1;
     flex-shrink: 1;
     display: flex;
     text-align: center;
-
-
 }
+
+.footer {
+    text-align: center;
+}
+
 .navbar-end{
     background-color: #683ff8; /* #c8e6ff */
 }
@@ -34,7 +39,9 @@ flex-grow: 1;
     background-color: #683ff8;
 }
 
-
+#navbarMenu .navbar-item {
+    color: black;
+}
 
 
 @media screen and (max-height: 450px) {
