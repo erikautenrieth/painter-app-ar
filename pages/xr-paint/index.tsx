@@ -148,13 +148,9 @@ const PaintXR = () => {
           ) : null} */}
           {userData ? (
             userData.role === "admin" ? (
-              <Painter1
-                hostingId={"lMrL7sJkWrKJCE4eBpVY"}
-              ></Painter1>
+              <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"}></Painter1>
             ) : userData.role === "player" ? (
-              <Painter2
-                hostingId={"lMrL7sJkWrKJCE4eBpVY"}
-              ></Painter2>
+              <Painter2 hostingId={"C40TA8sCawBJm8GwJzsv"}></Painter2>
             ) : null
           ) : null}
         </XR>

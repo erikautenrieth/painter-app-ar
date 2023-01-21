@@ -11,8 +11,8 @@ body {
 
 p {
   /* font-family: "Nunito"; */
+  text-align:justify
 }
-
 
 a {
   color: inherit;
@@ -21,6 +21,11 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.containerCanva {
+  width: 100%;
+  height: 100vh;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -32,8 +37,3 @@ a {
     background: black;
   }
 } */
-
-.containerCanva {
-  width: 100%;
-  height: 100vh;
-}
