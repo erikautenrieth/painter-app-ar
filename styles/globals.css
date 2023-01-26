@@ -27,37 +27,6 @@ a {
   height: 100vh;
 }
 
-/*
-Navbar
-*/
-.sidemenu-button svg {
-  font-size: 35px;
-  color: white;
-  cursor: pointer;
-  transition: 0.5s ease-in-out;
-}
-.sidemenu-button:hover {
-  background: black;
-}
-
-.sidemenu-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 300px;
-  height: 450px;
-  overflow: hidden;
-  background: #362e6f;
-  z-index: 9;
-  border-radius: 10px;
-}
-
-.sidemenu-content-items {
-  color: white !important;
-  border-bottom: 1px solid darkgray !important;
-  text-align: center !important;
-}
-
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

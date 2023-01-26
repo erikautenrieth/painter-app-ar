@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useAuth } from "shared-components/services/auth-context";
 
 export default function Sidemenu() {
-  const [sidemenuClick, setSidemenuClick] = useState<boolean>(true);
+  const [sidemenuClick, setSidemenuClick] = useState<boolean>(false);
   const { user, login, logOut } = useAuth();
   let isOpened = false;
   function navbarIsClicked() {
