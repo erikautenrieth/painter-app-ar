@@ -2,9 +2,11 @@ import { IconButton, ListItemButton, ListItemText } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { useAuth } from "shared-components/services/auth-context";
 
 export default function Sidemenu() {
   const [sidemenuClick, setSidemenuClick] = useState<boolean>(true);
+  const { user, login, logOut } = useAuth();
   let isOpened = false;
   function navbarIsClicked() {
     if (sidemenuClick) {
@@ -12,7 +14,6 @@ export default function Sidemenu() {
     } else {
       setSidemenuClick(true);
     }
-    console.log(sidemenuClick);
   }
   return (
     <div>
@@ -38,15 +39,50 @@ export default function Sidemenu() {
           >
             <CloseIcon />
           </IconButton>
-          <div>
-            <ListItemButton
-              className="sidemenu-content-items"
-              component="a"
-              href="#simple-list"
-            >
-              <ListItemText primary="Spam" />
-            </ListItemButton>
-          </div>
+          {user.email ? (
+            <div>
+              <ListItemButton
+                className="sidemenu-content-items"
+                component="a"
+                href="/landingpage"
+              >
+                <ListItemText primary="Landing Page" />
+              </ListItemButton>
+
+              <ListItemButton
+                className="sidemenu-content-items"
+                component="a"
+                href="/home"
+              >
+                <ListItemText primary="Home" />
+              </ListItemButton>
+              <ListItemButton
+                className="sidemenu-content-items"
+                component="a"
+                href="/landingpage"
+                onClick={logOut}
+              >
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </div>
+          ) : (
+            <div>
+              <ListItemButton
+                className="sidemenu-content-items"
+                component="a"
+                href="/landingpage"
+              >
+                <ListItemText primary="Landing Page" />
+              </ListItemButton>
+              <ListItemButton
+                className="sidemenu-content-items"
+                component="a"
+                href="/login"
+              >
+                <ListItemText primary="Login" />
+              </ListItemButton>
+            </div>
+          )}
         </div>
       ) : null}
     </div>

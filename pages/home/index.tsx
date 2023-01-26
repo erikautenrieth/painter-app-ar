@@ -4,6 +4,7 @@ import { useAuth } from "../../shared-components/services/auth-context";
 import Footer from "components/landingpage/Footer";
 import Navbar from "components/landingpage/Navbar";
 import React from "react";
+import Sidemenu from "shared-components/components/Sidemenu";
 
 export default function Home() {
   const { user } = useAuth();
@@ -15,8 +16,8 @@ export default function Home() {
 
   return (
     <body>
-      <Navbar />
-
+      {/* <Navbar /> */}
+      <Sidemenu></Sidemenu>
       <div className="box cta">
         <p className="has-text-centered">
           <span className="tag is-primary">New</span> Hier können Sie die App
@@ -41,8 +42,10 @@ export default function Home() {
                 <div className="content">
                   <h4>Starten Sie einen Host</h4>
                   <p className="filltext">
-                    In unserer 3D Zeichen App können Sie Ihre Zeichnungen jederzeit hosten und online teilen.
-                    Präsentieren Sie Ihre Projekte der Welt und lassen Sie sich von anderen inspirieren.
+                    In unserer 3D Zeichen App können Sie Ihre Zeichnungen
+                    jederzeit hosten und online teilen. Präsentieren Sie Ihre
+                    Projekte der Welt und lassen Sie sich von anderen
+                    inspirieren.
                   </p>
                   <Button
                     variant="contained"
@@ -68,8 +71,9 @@ export default function Home() {
                 <div className="content">
                   <h4>Verbindung zum Host</h4>
                   <p>
-                    Verbinden Sie sich jetzt mit unserem Host und präsentieren Sie Ihre Zeichnungen online.
-                    Lassen Sie sich von anderen inspirieren und zeigen Sie, was in Ihnen steckt!{" "}
+                    Verbinden Sie sich jetzt mit unserem Host und präsentieren
+                    Sie Ihre Zeichnungen online. Lassen Sie sich von anderen
+                    inspirieren und zeigen Sie, was in Ihnen steckt!{" "}
                   </p>
                   <Button
                     variant="contained"
@@ -86,8 +90,8 @@ export default function Home() {
               <div className="card-image">
                 <figure className="image is-4by3">
                   <img
-                      src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                      alt="butterfly image"
+                    src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                    alt="butterfly image"
                   />
                 </figure>
               </div>
@@ -95,13 +99,15 @@ export default function Home() {
                 <div className="content">
                   <h4>Testen Sie die XR Umgebung</h4>
                   <p>
-                    Testen Sie unseren XR Painter und entdecken Sie die Möglichkeiten der 3D-Malerei in der virtuellen Realität.
-                    Lassen Sie Ihrer Kreativität freien Lauf und erschaffen Sie beeindruckende Kunstwerke in einer immersivem Umgebung.
+                    Testen Sie unseren XR Painter und entdecken Sie die
+                    Möglichkeiten der 3D-Malerei in der virtuellen Realität.
+                    Lassen Sie Ihrer Kreativität freien Lauf und erschaffen Sie
+                    beeindruckende Kunstwerke in einer immersivem Umgebung.
                   </p>
 
                   <Button
-                      variant="contained"
-                      onClick={() => navigateToPage("/xr-paint")}
+                    variant="contained"
+                    onClick={() => navigateToPage("/xr-paint")}
                   >
                     XR Test Painter
                   </Button>
@@ -110,7 +116,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </section>
     </body>
   );

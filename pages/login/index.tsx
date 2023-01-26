@@ -8,12 +8,12 @@ import Navbar from "components/landingpage/Navbar";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
+import Sidemenu from "shared-components/components/Sidemenu";
 
 /**
  * User1: user1@real-chat.de     123456
  * User2: user2@real-chat.de     123456
  */
-
 
 export default function Login() {
   const router = useRouter();
@@ -23,7 +23,9 @@ export default function Login() {
     password: "",
   });
 
-  function goToPage(rout: string) {router.push(rout);}
+  function goToPage(rout: string) {
+    router.push(rout);
+  }
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -41,10 +43,15 @@ export default function Login() {
     <>
       <head>
         <title>Log</title>
-        <link rel="stylesheet" type="text/css" href="../styles/Login.module.css"/>
-        </head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="../styles/Login.module.css"
+        />
+      </head>
 
-      <Navbar/>
+      {/* <Navbar/> */}
+      <Sidemenu></Sidemenu>
       <section className="cont1">
         <div className="hero-body">
           <div className="container has-text-centered">
