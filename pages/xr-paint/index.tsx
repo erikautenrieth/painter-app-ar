@@ -14,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
+import Sidemenu from "shared-components/components/Sidemenu";
 import { useAuth } from "shared-components/services/auth-context";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import * as THREE from "three";
@@ -130,6 +131,7 @@ const PaintXR = () => {
   }
   return (
     <div className="containerCanva">
+      <Sidemenu></Sidemenu>
       {userData ? <ARButton></ARButton> : null}
       <Canvas>
         <XR>

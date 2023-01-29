@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore";
 import { database } from "../../config/firebase";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
+import Sidemenu from "shared-components/components/Sidemenu";
 export type IPosition = {
   x: number;
   y: number;
@@ -191,49 +192,75 @@ const HostingPage = () => {
   }, [seconds, hostingData]);
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Sidemenu></Sidemenu>
       {existHost || userRole == "admin" ? (
         <>
-          <div><br/><br/><br/><br/><br/><br/></div>
+          <div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </div>
           {userRole == "admin" ? (
-            <Grid  container
-                   gap={12}
-                   direction="row"
-                   justifyContent="center"
-                   alignItems="center"
-                   rowSpacing={5}
-                   >
+            <Grid
+              container
+              gap={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              rowSpacing={5}
+            >
               {!createHostIs ? (
-                <Button size="large" variant="contained" onClick={() => checkExistingHost()}>
+                <Button
+                  size="large"
+                  variant="contained"
+                  onClick={() => checkExistingHost()}
+                >
                   Erstelle Host
                 </Button>
               ) : null}
 
-              <Button size="large"  variant="contained" onClick={() => exitHosting()}>
+              <Button
+                size="large"
+                variant="contained"
+                onClick={() => exitHosting()}
+              >
                 Beende Hosting
               </Button>
             </Grid>
           ) : null}
 
-          <div><br/><br/><br/><br/><br/><br/><br/><br/></div>
+          <div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </div>
 
-          <Grid container
-                gap={12}
-                direction="row"
-                justifyContent="center"
-                rowSpacing={5}>
-
+          <Grid
+            container
+            gap={12}
+            direction="row"
+            justifyContent="center"
+            rowSpacing={5}
+          >
             <Grid item xs={2}>
-
               <figure className="avatar">
                 <img
-                    src="https://www.thispersondoesnotexist.com/image"
-                    height="150px"
-                    width={"150px"}
+                  src="https://www.thispersondoesnotexist.com/image"
+                  height="150px"
+                  width={"150px"}
                 />
               </figure>
 
-              <h1 className="player" >Spieler 1</h1>
+              <h1 className="player">Spieler 1</h1>
 
               {userRole == "admin" ? (
                 <>
@@ -244,7 +271,11 @@ const HostingPage = () => {
                       component={CheckCircleOutlineOutlinedIcon}
                     ></Icon>
                   ) : (
-                    <Button size="large" variant="contained" onClick={() => getReady()}>
+                    <Button
+                      size="large"
+                      variant="contained"
+                      onClick={() => getReady()}
+                    >
                       Bereit
                     </Button>
                   )}
@@ -260,12 +291,11 @@ const HostingPage = () => {
               ) : null}
             </Grid>
             <Grid item xs={4}>
-
               <figure className="avatar">
                 <img
-                    src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
-                    height="150px"
-                    width={"150px"}
+                  src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
+                  height="150px"
+                  width={"150px"}
                 />
               </figure>
 
@@ -279,7 +309,11 @@ const HostingPage = () => {
                       component={CheckCircleOutlineOutlinedIcon}
                     ></Icon>
                   ) : (
-                    <Button size="large" variant="outlined" onClick={() => getReady()}>
+                    <Button
+                      size="large"
+                      variant="outlined"
+                      onClick={() => getReady()}
+                    >
                       Bereit
                     </Button>
                   )}
