@@ -1,4 +1,4 @@
-import { Button, Grid, Icon } from "@mui/material";
+import { Button, Grid, Icon, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
@@ -17,6 +17,17 @@ import {
 import { database } from "../../config/firebase";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import Sidemenu from "shared-components/components/Sidemenu";
+// 3D Models imports of React-Three-Fiber
+import {
+  Canvas,
+  useThree,
+  useFrame,
+  ThreeElements,
+  useLoader,
+} from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useAnimations, useGLTF } from "@react-three/drei";
+
 export type IPosition = {
   x: number;
   y: number;
@@ -39,6 +50,8 @@ const HostingPage = () => {
   const [hostingData, setHostingData] = useState<any>(null);
   const zustandStore = ZustandStore();
   const { hostingId } = router.query;
+
+  let modelPlayer1: any;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
   const getReady = () => {
@@ -159,6 +172,19 @@ const HostingPage = () => {
     );
   };
 
+  function Model({ url }: any) {
+    const { nodes, materials }: any = useLoader(GLTFLoader, url);
+    return <primitive object={nodes.Scene} />;
+  }
+
+  // useEffect(() => {
+  //   modelPlayer1 = useGLTF("/models/glb/antIdle.glb");
+  //   const { actions } = useAnimations(
+  //     modelPlayer1.animations,
+  //     modelPlayer1.scene
+  //   );
+  // });
+
   useEffect(() => {
     setUserRole(hostingId);
     checkTheHostingServerRealTime();
@@ -196,148 +222,180 @@ const HostingPage = () => {
       <Sidemenu></Sidemenu>
       {existHost || userRole == "admin" ? (
         <>
-          <div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-          </div>
           {userRole == "admin" ? (
-            <Grid
-              container
-              gap={12}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              rowSpacing={5}
+            <Paper
+              sx={{
+                p: 2,
+                margin: "auto",
+                marginTop: 10,
+                maxWidth: 350,
+                flexGrow: 1,
+              }}
             >
-              {!createHostIs ? (
-                <Button
-                  size="large"
-                  variant="contained"
-                  onClick={() => checkExistingHost()}
-                >
-                  Erstelle Host
-                </Button>
-              ) : null}
-
-              <Button
-                size="large"
-                variant="contained"
-                onClick={() => exitHosting()}
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                rowSpacing={5}
+                columnSpacing={1}
               >
-                Beende Hosting
-              </Button>
-            </Grid>
-          ) : null}
-
-          <div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-          </div>
-
-          <Grid
-            container
-            gap={12}
-            direction="row"
-            justifyContent="center"
-            rowSpacing={5}
-          >
-            <Grid item xs={2}>
-              <figure className="avatar">
-                <img
-                  src="https://www.thispersondoesnotexist.com/image"
-                  height="150px"
-                  width={"150px"}
-                />
-              </figure>
-
-              <h1 className="player">Spieler 1</h1>
-
-              {userRole == "admin" ? (
-                <>
-                  {userState ? (
-                    <Icon
-                      color="success"
-                      fontSize="large"
-                      component={CheckCircleOutlineOutlinedIcon}
-                    ></Icon>
-                  ) : (
+                {!createHostIs ? (
+                  <Grid item xs={6}>
                     <Button
                       size="large"
                       variant="contained"
-                      onClick={() => getReady()}
+                      onClick={() => checkExistingHost()}
                     >
-                      Bereit
+                      Erstelle Host
                     </Button>
-                  )}
-                </>
-              ) : hostingData ? (
-                hostingData.player1Ready ? (
-                  <Icon
-                    color="success"
-                    fontSize="large"
-                    component={CheckCircleOutlineOutlinedIcon}
-                  ></Icon>
-                ) : null
-              ) : null}
-            </Grid>
-            <Grid item xs={4}>
-              <figure className="avatar">
-                <img
-                  src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
-                  height="150px"
-                  width={"150px"}
-                />
-              </figure>
+                  </Grid>
+                ) : null}
+                <Grid item xs={6}>
+                  <Button
+                    size="large"
+                    variant="contained"
+                    onClick={() => exitHosting()}
+                  >
+                    Beende Hosting
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
+          ) : null}
 
-              <h1 className="player">Spieler 2</h1>
-              {userRole == "join" ? (
-                <>
-                  {userState ? (
+          <Paper
+            sx={{
+              p: 2,
+              margin: "auto",
+              marginTop: 20,
+              maxWidth: 500,
+              flexGrow: 1,
+            }}
+          >
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              rowSpacing={15}
+              columnSpacing={1}
+            >
+              <Grid
+                item
+                xs={6}
+                className={
+                  hostingData
+                    ? hostingData.player1Ready
+                      ? "hosting-user-ready"
+                      : ""
+                    : ""
+                }
+              >
+                <img
+                  src="/gifs/yy3.gif"
+                  alt="A responsive GIF"
+                  style={{ width: "100%", height: "auto" }}
+                />
+
+                <h1 className="player text-align-center">Spieler 1</h1>
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                className={
+                  hostingData
+                    ? hostingData.player2Ready
+                      ? "hosting-user-ready"
+                      : ""
+                    : ""
+                }
+              >
+                {/* <figure className="avatar">
+                  <img
+                    src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
+                    height="150px"
+                    width={"150px"}
+                  />
+                </figure> */}
+
+                <img
+                  src="/gifs/yy3.gif"
+                  alt="A responsive GIF"
+                  style={{ width: "100%", height: "auto" }}
+                />
+
+                <h1 className="player text-align-center">Spieler 2</h1>
+              </Grid>
+              <Grid item xs={6} className="no-padding text-align-center">
+                {userRole == "admin" ? (
+                  <>
+                    {userState ? (
+                      <Icon
+                        color="success"
+                        fontSize="large"
+                        component={CheckCircleOutlineOutlinedIcon}
+                      ></Icon>
+                    ) : (
+                      <Button
+                        size="large"
+                        variant="contained"
+                        onClick={() => getReady()}
+                      >
+                        Bereit
+                      </Button>
+                    )}
+                  </>
+                ) : hostingData ? (
+                  hostingData.player1Ready ? (
                     <Icon
                       color="success"
                       fontSize="large"
                       component={CheckCircleOutlineOutlinedIcon}
                     ></Icon>
-                  ) : (
-                    <Button
-                      size="large"
-                      variant="outlined"
-                      onClick={() => getReady()}
-                    >
-                      Bereit
-                    </Button>
-                  )}
-                </>
-              ) : hostingData ? (
-                hostingData.player2Ready ? (
-                  <Icon
-                    color="success"
-                    fontSize="large"
-                    component={CheckCircleOutlineOutlinedIcon}
-                  ></Icon>
-                ) : null
-              ) : null}
-            </Grid>
-          </Grid>
-          {hostingData ? (
-            hostingData.player1Ready && hostingData.player2Ready ? (
-              <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
-                <Grid item xs={12}>
-                  <h1>Redirecting to Painting Server in: {seconds}</h1>
-                </Grid>
+                  ) : null
+                ) : null}
               </Grid>
-            ) : null
-          ) : null}
+              <Grid item xs={6} className="no-padding text-align-center">
+                {userRole == "join" ? (
+                  <>
+                    {userState ? (
+                      <Icon
+                        color="success"
+                        fontSize="large"
+                        component={CheckCircleOutlineOutlinedIcon}
+                      ></Icon>
+                    ) : (
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        onClick={() => getReady()}
+                      >
+                        Bereit
+                      </Button>
+                    )}
+                  </>
+                ) : hostingData ? (
+                  hostingData.player2Ready ? (
+                    <Icon
+                      color="success"
+                      fontSize="large"
+                      component={CheckCircleOutlineOutlinedIcon}
+                    ></Icon>
+                  ) : null
+                ) : null}
+              </Grid>
+            </Grid>
+            {hostingData ? (
+              hostingData.player1Ready && hostingData.player2Ready ? (
+                <Grid container spacing={{ md: 3 }} columns={{ md: 12 }}>
+                  <Grid item xs={12}>
+                    <h1>Redirecting to Painting Server in: {seconds}</h1>
+                  </Grid>
+                </Grid>
+              ) : null
+            ) : null}
+          </Paper>
         </>
       ) : (
         <h1>Please wait of host ...</h1>
