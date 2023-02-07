@@ -284,7 +284,13 @@ const HostingPage = () => {
               <Grid
                 item
                 xs={6}
-                className={hostingData.player1Ready ? "hosting-user-ready" : ""}
+                className={
+                  hostingData
+                    ? hostingData.player1Ready
+                      ? "hosting-user-ready"
+                      : ""
+                    : ""
+                }
               >
                 <img
                   src="/gifs/yy3.gif"
@@ -297,7 +303,13 @@ const HostingPage = () => {
               <Grid
                 item
                 xs={6}
-                className={hostingData.player2Ready ? "hosting-user-ready" : ""}
+                className={
+                  hostingData
+                    ? hostingData.player2Ready
+                      ? "hosting-user-ready"
+                      : ""
+                    : ""
+                }
               >
                 {/* <figure className="avatar">
                   <img
