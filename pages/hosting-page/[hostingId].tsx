@@ -17,6 +17,17 @@ import {
 import { database } from "../../config/firebase";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import Sidemenu from "shared-components/components/Sidemenu";
+// 3D Models imports of React-Three-Fiber
+import {
+  Canvas,
+  useThree,
+  useFrame,
+  ThreeElements,
+  useLoader,
+} from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useAnimations, useGLTF } from "@react-three/drei";
+
 export type IPosition = {
   x: number;
   y: number;
@@ -39,6 +50,8 @@ const HostingPage = () => {
   const [hostingData, setHostingData] = useState<any>(null);
   const zustandStore = ZustandStore();
   const { hostingId } = router.query;
+
+  let modelPlayer1: any;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
   const getReady = () => {
@@ -159,6 +172,19 @@ const HostingPage = () => {
     );
   };
 
+  function Model({ url }: any) {
+    const { nodes, materials }: any = useLoader(GLTFLoader, url);
+    return <primitive object={nodes.Scene} />;
+  }
+
+  // useEffect(() => {
+  //   modelPlayer1 = useGLTF("/models/glb/antIdle.glb");
+  //   const { actions } = useAnimations(
+  //     modelPlayer1.animations,
+  //     modelPlayer1.scene
+  //   );
+  // });
+
   useEffect(() => {
     setUserRole(hostingId);
     checkTheHostingServerRealTime();
@@ -255,13 +281,41 @@ const HostingPage = () => {
               rowSpacing={15}
               columnSpacing={1}
             >
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={6}
+                className={hostingData.player1Ready ? "hosting-user-ready" : ""}
+              >
+                <img
+                  src="/gifs/yy3.gif"
+                  alt="A responsive GIF"
+                  style={{ width: "100%", height: "auto" }}
+                />
+
+                <h1 className="player text-align-center">Spieler 1</h1>
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                className={hostingData.player2Ready ? "hosting-user-ready" : ""}
+              >
                 {/* <figure className="avatar">
-                <img src="https://www.thispersondoesnotexist.com/image" />
-              </figure> */}
+                  <img
+                    src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
+                    height="150px"
+                    width={"150px"}
+                  />
+                </figure> */}
 
-                <h1 className="player">Spieler 1</h1>
+                <img
+                  src="/gifs/yy3.gif"
+                  alt="A responsive GIF"
+                  style={{ width: "100%", height: "auto" }}
+                />
 
+                <h1 className="player text-align-center">Spieler 2</h1>
+              </Grid>
+              <Grid item xs={6} className="no-padding text-align-center">
                 {userRole == "admin" ? (
                   <>
                     {userState ? (
@@ -290,16 +344,7 @@ const HostingPage = () => {
                   ) : null
                 ) : null}
               </Grid>
-              <Grid item xs={12}>
-                <figure className="avatar">
-                  <img
-                    src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
-                    height="150px"
-                    width={"150px"}
-                  />
-                </figure>
-
-                <h1 className="player">Spieler 2</h1>
+              <Grid item xs={6} className="no-padding text-align-center">
                 {userRole == "join" ? (
                   <>
                     {userState ? (
