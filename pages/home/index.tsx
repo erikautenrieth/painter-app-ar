@@ -15,15 +15,15 @@ export default function Home() {
   };
 
   return (
-    <body>
+    <>
       {/* <Navbar /> */}
       <Sidemenu></Sidemenu>
-      <div className="box cta">
+      {/* <div className="box cta">
         <p className="has-text-centered">
           <span className="tag is-primary">New</span> Hier können Sie die App
           starten. Wählen Sie ein Funktion.
         </p>
-      </div>
+      </div> */}
       <section className="container">
         <div className="columns features">
           <div className="column is-4">
@@ -117,6 +117,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </body>
+    </>
   );
 }

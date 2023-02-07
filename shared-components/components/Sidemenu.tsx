@@ -15,7 +15,7 @@ export default function Sidemenu() {
     }
   }
   return (
-    <div>
+    <div className="sideMenuButtonToOpen">
       <IconButton
         size="large"
         aria-label="closeSidemenu"
