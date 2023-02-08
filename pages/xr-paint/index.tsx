@@ -1,6 +1,5 @@
-import { Button } from "@mui/material";
 import { PerspectiveCamera } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { ARButton, XR } from "@react-three/xr";
 import { database } from "config/firebase";
 import {
@@ -20,6 +19,55 @@ import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
+import { extend } from "@react-three/fiber";
+import { log } from "console";
+
+function Button({ onClick, children, position, scale }: any) {
+  const meshRef: any = useRef();
+
+  useFrame((state: any) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.mouseY * 0.01;
+      meshRef.current.rotation.y = state.mouseX * 0.01;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} onClick={onClick} position={position} scale={scale}>
+      <planeGeometry />
+      {/* <boxGeometry args={[1, 1, 1]} /> */}
+      <meshBasicMaterial color={"orange"} />
+    </mesh>
+  );
+}
+
+function Box(props: any) {
+  // This reference gives us direct access to the THREE.Mesh object
+  const ref: any = useRef();
+  // Hold state for hovered and clicked events
+  const [hovered, hover] = useState(false);
+  const [clicked, click] = useState(false);
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  useFrame((state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.x += delta;
+    }
+  });
+  // Return the view, these are regular Threejs elements expressed in JSX
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      scale={clicked ? 1.5 : 1}
+      onClick={(event) => click(!clicked)}
+      onPointerOver={(event) => hover(true)}
+      onPointerOut={(event) => hover(false)}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+    </mesh>
+  );
+}
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
@@ -129,12 +177,26 @@ const PaintXR = () => {
   if (zustandStore) {
     console.log("hamedkabir hosting id  ", zustandStore.hostingId);
   }
+
+  const handleClick = () => {
+    console.log("Button was clicked");
+  };
+
   return (
     <div className="containerCanva">
       <Sidemenu></Sidemenu>
       {userData ? <ARButton></ARButton> : null}
+      {/* <Button className="hamedkabir" size="large" variant="contained">
+        Bereit
+      </Button> */}
       <Canvas>
         <XR>
+          <Button onClick={handleClick} position={[0, 0, -5]} scale={[2, 2, 2]}>
+            Click me
+          </Button>
+
+          {/* <Box position={[0, 0, -5]} /> */}
+
           {/* {userData ? (
             userData.role === "admin" ? (
               <Painter1
