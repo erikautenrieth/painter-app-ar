@@ -1,4 +1,3 @@
-import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ARButton, XR } from "@react-three/xr";
 import { database } from "config/firebase";
@@ -19,14 +18,14 @@ import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
-import { extend } from "@react-three/fiber";
-import { log } from "console";
-import { Grid } from "@mui/material";
+import { Button, Grid, Paper, Slider } from "@mui/material";
 
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
-function Button({ onClick, children, position, scale }: any) {
+import { Range } from "react-range";
+
+function Button2({ onClick, children, position, scale }: any) {
   const meshRef: any = useRef();
 
   useFrame((state: any) => {
@@ -86,6 +85,10 @@ const PaintXR = () => {
   // Color Picker
   // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
   const [color, setColor] = useColor("hex", "#121212");
+  const [openColorPicker, setOpenColorPicker] = useState<boolean>(false);
+  // Ranger Paint Größe
+  // https://www.geeksforgeeks.org/how-to-add-slider-in-next-js/
+  const [painterSize, setPainterSize] = useState<number>(0.4);
 
   const zustandStore = ZustandStore();
 
@@ -185,33 +188,68 @@ const PaintXR = () => {
     console.log("hamedkabir hosting id  ", zustandStore.hostingId);
   }
 
-  const handleClick = () => {
-    console.log("Button was clicked");
-  };
+  function rangeValueText(value: number) {
+    return `${value}`;
+  }
 
   return (
     <div className="containerCanva">
       <Sidemenu></Sidemenu>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        rowSpacing={15}
-        columnSpacing={1}
+      {openColorPicker ? (
+        <ColorPicker
+          width={320}
+          height={228}
+          color={color}
+          onChange={setColor}
+          hideHSV
+          dark
+        />
+      ) : null}
+      <Paper
+        className="xr-paint-setting-ui"
+        sx={{
+          p: 2,
+          margin: "auto",
+          marginTop: 10,
+          maxWidth: 500,
+          flexGrow: 1,
+        }}
       >
-        <Grid item xs={8}>
-          <ColorPicker
-            width={456}
-            height={228}
-            color={color}
-            onChange={setColor}
-            hideHSV
-            dark
-          />
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          rowSpacing={15}
+          columnSpacing={1}
+        >
+          <Grid item xs={6}>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setOpenColorPicker(openColorPicker ? false : true)}
+            >
+              Open/ Close Color Picker
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Slider
+              aria-label="Painter Size"
+              defaultValue={painterSize}
+              getAriaValueText={rangeValueText}
+              valueLabelDisplay="on"
+              step={0.1}
+              marks
+              min={0}
+              max={5}
+            />
+          </Grid>
+          <Grid item xs>
+            {userData ? <ARButton></ARButton> : null}
+          </Grid>
         </Grid>
-        <Grid item xs={4}></Grid>
-      </Grid>
+      </Paper>
+
       {userData ? <ARButton></ARButton> : null}
       {/* <Button className="hamedkabir" size="large" variant="contained">
         Bereit
