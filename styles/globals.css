@@ -27,6 +27,14 @@ a {
   height: 100vh;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

@@ -1,6 +1,13 @@
 /*
 Navbar
 */
+.sideMenuButtonToOpen {
+  z-index: 9;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
 .sidemenu-button {
   background: #322d6d !important;
   border-radius: 15px !important;
