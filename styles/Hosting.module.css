@@ -1,9 +1,5 @@
-.player {
-  font-size: 30px;
-  ont-weight: bold;
-}
 
-.hosting-user-ready {
-  background-color: #48c78e;
-  border-radius: 50px;
+.player{
+    font-size: 30px;
+    ont-weight: bold;
 }

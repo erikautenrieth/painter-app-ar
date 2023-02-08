@@ -1,9 +1,13 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 import "firebaseui/dist/firebaseui.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "shared-components/services/auth-context";
+import Navbar from "components/landingpage/Navbar";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 import Sidemenu from "shared-components/components/Sidemenu";
 
 /**
@@ -13,7 +17,7 @@ import Sidemenu from "shared-components/components/Sidemenu";
 
 export default function Login() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -33,8 +37,20 @@ export default function Login() {
     }
   };
 
+  const [value, setValue] = React.useState(2);
+
   return (
     <>
+      <head>
+        <title>Log</title>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="../styles/Login.module.css"
+        />
+      </head>
+
+      {/* <Navbar/> */}
       <Sidemenu></Sidemenu>
       <section className="cont1">
         <div className="hero-body">
@@ -102,10 +118,16 @@ export default function Login() {
                   </button>
                 </form>
               </div>
+              <p className="has-text-grey">
+                <a href="../">Sign Up</a> &nbsp;·&nbsp;
+                <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                <a href="../">Need Help?</a>
+              </p>
             </div>
           </div>
         </div>
       </section>
+      <script async type="text/javascript" src="../js/bulma.js"></script>
     </>
   );
 }
