@@ -21,6 +21,10 @@ import Painter1 from "./painter1";
 import Painter2 from "./painter2";
 import { extend } from "@react-three/fiber";
 import { log } from "console";
+import { Grid } from "@mui/material";
+
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/lib/css/styles.css";
 
 function Button({ onClick, children, position, scale }: any) {
   const meshRef: any = useRef();
@@ -79,6 +83,9 @@ const PaintXR = () => {
   let [player2, setPlayer2] = useState<
     { index: number; x: number; y: number; z: number }[]
   >([]);
+  // Color Picker
+  // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
+  const [color, setColor] = useColor("hex", "#121212");
 
   const zustandStore = ZustandStore();
 
@@ -185,31 +192,35 @@ const PaintXR = () => {
   return (
     <div className="containerCanva">
       <Sidemenu></Sidemenu>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        rowSpacing={15}
+        columnSpacing={1}
+      >
+        <Grid item xs={8}>
+          <ColorPicker
+            width={456}
+            height={228}
+            color={color}
+            onChange={setColor}
+            hideHSV
+            dark
+          />
+        </Grid>
+        <Grid item xs={4}></Grid>
+      </Grid>
       {userData ? <ARButton></ARButton> : null}
       {/* <Button className="hamedkabir" size="large" variant="contained">
         Bereit
       </Button> */}
       <Canvas>
         <XR>
-          <Button onClick={handleClick} position={[0, 0, -5]} scale={[2, 2, 2]}>
+          {/* <Button onClick={handleClick} position={[0, 0, -5]} scale={[2, 2, 2]}>
             Click me
-          </Button>
-
-          {/* <Box position={[0, 0, -5]} /> */}
-
-          {/* {userData ? (
-            userData.role === "admin" ? (
-              <Painter1
-                paintPositionFromDB={player2}
-                hostingId={zustandStore.hostingId}
-              ></Painter1>
-            ) : userData.role === "player" ? (
-              <Painter2
-                paintPositionFromDB={player1}
-                hostingId={zustandStore.hostingId}
-              ></Painter2>
-            ) : null
-          ) : null} */}
+          </Button> */}
           {userData ? (
             userData.role === "admin" ? (
               <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"}></Painter1>
