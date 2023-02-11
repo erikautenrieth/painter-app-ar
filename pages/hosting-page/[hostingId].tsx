@@ -218,8 +218,7 @@ const HostingPage = () => {
   }, [seconds, hostingData]);
   return (
     <>
-      {/* <Navbar /> */}
-      <Sidemenu></Sidemenu>
+      <Navbar />
       {existHost || userRole == "admin" ? (
         <>
           {userRole == "admin" ? (

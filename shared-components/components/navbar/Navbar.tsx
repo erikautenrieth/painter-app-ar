@@ -1,14 +1,18 @@
 import Link from "next/link"
 import {useAuth} from "../../services/auth-context";
 import MenuList from "../landingpage/MenuList";
+import Sidemenu from "./Sidemenu";
+
 
 const Navbar = () => {
 	const { user, login, logOut } = useAuth();
 	return (
+
 		<nav className="navbar">
-				<div className="navbar-brand">
-					<MenuList />
+				<div className="sidemenu">
+				<Sidemenu/>
 				</div>
+
 				<div id="navbarMenu" className="navbar-menu">
 						<Link href="/landingpage">
 							<a  className="navbar-item  is-size-5 has-text-weight-semibold" >

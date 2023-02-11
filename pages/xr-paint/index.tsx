@@ -24,6 +24,7 @@ import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
 import { Range } from "react-range";
+import Navbar from "../../shared-components/components/navbar/Navbar";
 
 function Button2({ onClick, children, position, scale }: any) {
   const meshRef: any = useRef();
@@ -194,7 +195,7 @@ const PaintXR = () => {
 
   return (
     <div className="containerCanva">
-      <Sidemenu></Sidemenu>
+      <Navbar/>
       {openColorPicker ? (
         <ColorPicker
           width={320}

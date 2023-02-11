@@ -32,8 +32,8 @@ export default function Landingpage() {
 
       <Wrapper className="App">
         <Background />
-        {/* <Navbar/> */}
-        <Sidemenu></Sidemenu>
+          <Navbar/>
+
         <TextSection />
         <Newsletter />
         <Footer />

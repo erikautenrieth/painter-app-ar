@@ -16,8 +16,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <Navbar /> */}
-      <Sidemenu></Sidemenu>
+      <Navbar />
       <Grid
         container
         direction="row"

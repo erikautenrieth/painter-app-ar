@@ -39,3 +39,8 @@ Navbar
   border-bottom: 1px solid darkgray !important;
   text-align: center !important;
 }
+
+.sidemenu {
+  width : 80px;
+  background: #362e6f;
+}
