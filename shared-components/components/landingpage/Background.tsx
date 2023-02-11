@@ -2,14 +2,14 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components";
 
-import mountain1 from "./pics/mountain1.svg";
+import mountain1 from "./pictures/mountain1.svg";
 
-import mountain2 from "./pics/mountain2.svg";
-import mountain3 from "./pics/mountain3.svg";
-import mountain4 from "./pics/mountain4.svg";
-import mountain5 from "./pics/mountain5.svg";
-import heroWave from "./pics/hero-wave.svg";
-import blurLayer from "./pics/blur-layer.webp";
+import mountain2 from "./pictures/mountain2.svg";
+import mountain3 from "./pictures/mountain3.svg";
+import mountain4 from "./pictures/mountain4.svg";
+import mountain5 from "./pictures/mountain5.svg";
+import heroWave from "./pictures/hero-wave.svg";
+import blurLayer from "./pictures/blur-layer.webp";
 
 export default function HeroBackground() {
 	return (

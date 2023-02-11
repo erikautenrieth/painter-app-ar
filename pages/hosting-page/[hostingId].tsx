@@ -2,7 +2,7 @@ import { Button, Grid, Icon, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import Navbar from "components/landingpage/Navbar";
+import Navbar from "shared-components/components/navbar/Navbar";
 import {
   addDoc,
   collection,
@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { database } from "../../config/firebase";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
-import Sidemenu from "shared-components/components/Sidemenu";
+import Sidemenu from "shared-components/components/navbar/Sidemenu";
 // 3D Models imports of React-Three-Fiber
 import {
   Canvas,

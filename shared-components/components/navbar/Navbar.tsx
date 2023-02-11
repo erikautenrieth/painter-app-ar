@@ -1,6 +1,6 @@
 import Link from "next/link"
-import {useAuth} from "../../shared-components/services/auth-context";
-import MenuList from "./MenuList";
+import {useAuth} from "../../services/auth-context";
+import MenuList from "../landingpage/MenuList";
 
 const Navbar = () => {
 	const { user, login, logOut } = useAuth();

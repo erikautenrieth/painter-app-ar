@@ -13,7 +13,7 @@ const Footer = () => {
 					<a href="https://example.com"> Albaraa Abushammala, Erik Autenrieth und Hamed Sadegh </a>
 					<p></p>
 					 <a
-					href="components/landingpage/Footer"></a>Der Quellcode ist lizenziert: <a href="http://opensource.org/licenses/mit-license.php"> MIT</a>
+					href="shared-components/components/landingpage/Footer"></a>Der Quellcode ist lizenziert: <a href="http://opensource.org/licenses/mit-license.php"> MIT</a>
 
 				</p>
 			</div>
