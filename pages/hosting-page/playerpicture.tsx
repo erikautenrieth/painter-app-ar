@@ -9,7 +9,7 @@ const Model = ({ url }: { url: string }) => {
 
 	useEffect(() => {
 		new FBXLoader().load(url, object => {
-			object.scale.set(2, 2, 2);
+			object.scale.set(4, 4, 4);
 			console.log(object.children)
 			// Farbe des Modells ändern
 			object.traverse(function(child) {

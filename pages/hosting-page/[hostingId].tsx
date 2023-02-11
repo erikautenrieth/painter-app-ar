@@ -299,8 +299,6 @@ const HostingPage = () => {
               >
 
                 <Playeranimation ready={isReady1} name={"antDance"}/>
-
-
                 {/*<img*/}
                 {/*  src="/gifs/yy3.gif"*/}
                 {/*  alt="A responsive GIF"*/}
@@ -327,7 +325,6 @@ const HostingPage = () => {
                 {/*  alt="A responsive GIF"*/}
                 {/*  style={{ width: "100%", height: "auto" }}*/}
                 {/*/>*/}
-
                 <h1 className="player text-align-center">Spieler 2</h1>
               </Grid>
               <Grid item xs={6} className="no-padding text-align-center">
