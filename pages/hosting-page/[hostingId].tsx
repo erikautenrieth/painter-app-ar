@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import Navbar from "shared-components/components/navbar/Navbar";
+
 import {
   addDoc,
   collection,
@@ -27,6 +28,7 @@ import {
 } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useAnimations, useGLTF } from "@react-three/drei";
+import Playeranimation from "./playeranimation";
 
 export type IPosition = {
   x: number;
@@ -51,6 +53,11 @@ const HostingPage = () => {
   const zustandStore = ZustandStore();
   const { hostingId } = router.query;
 
+
+  const [isReady1, setIsReady1] = useState(false);
+  const [isReady2, setIsReady2] = useState(false);
+  const handleReady1 = () => {setIsReady1(true);};
+  const handleReady2 = () => {setIsReady2(true);};
   let modelPlayer1: any;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
@@ -262,7 +269,6 @@ const HostingPage = () => {
               </Grid>
             </Paper>
           ) : null}
-
           <Paper
             sx={{
               p: 2,
@@ -291,12 +297,15 @@ const HostingPage = () => {
                     : ""
                 }
               >
-                <img
-                  src="/gifs/yy3.gif"
-                  alt="A responsive GIF"
-                  style={{ width: "100%", height: "auto" }}
-                />
 
+                <Playeranimation ready={isReady1} name={"antDance"}/>
+
+
+                {/*<img*/}
+                {/*  src="/gifs/yy3.gif"*/}
+                {/*  alt="A responsive GIF"*/}
+                {/*  style={{ width: "100%", height: "auto" }}*/}
+                {/*/>*/}
                 <h1 className="player text-align-center">Spieler 1</h1>
               </Grid>
               <Grid
@@ -310,11 +319,14 @@ const HostingPage = () => {
                     : ""
                 }
               >
-                <img
-                  src="/gifs/yy3.gif"
-                  alt="A responsive GIF"
-                  style={{ width: "100%", height: "auto" }}
-                />
+
+
+                <Playeranimation ready={isReady2} name={"kongDance"}/>
+                {/*<img*/}
+                {/*  src="/gifs/yy3.gif"*/}
+                {/*  alt="A responsive GIF"*/}
+                {/*  style={{ width: "100%", height: "auto" }}*/}
+                {/*/>*/}
 
                 <h1 className="player text-align-center">Spieler 2</h1>
               </Grid>
@@ -331,7 +343,7 @@ const HostingPage = () => {
                       <Button
                         size="large"
                         variant="contained"
-                        onClick={() => getReady()}
+                        onClick={() => {getReady(); handleReady1()}}
                       >
                         Bereit
                       </Button>
@@ -360,8 +372,9 @@ const HostingPage = () => {
                       <Button
                         size="large"
                         variant="outlined"
-                        onClick={() => getReady()}
-                      >
+                        onClick={() => {
+                          getReady();
+                          handleReady2()}} >
                         Bereit
                       </Button>
                     )}
