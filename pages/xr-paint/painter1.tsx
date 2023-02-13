@@ -71,7 +71,7 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(size);
+    painter.setSize(defaultPaintSizePlayer1);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
       color: defaultColorPlayer1,
@@ -79,10 +79,10 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
     scene.add(painter.mesh);
 
     painterPlayer2 = new TubePainter();
-    painterPlayer2.setSize(defaultPaintSizePlayer2);
+    painterPlayer2.setSize(size);
     painterPlayer2.mesh.material.side = THREE.DoubleSide;
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
-      color: defaultColorPlayer2,
+      color: color,
     });
     scene.add(painterPlayer2.mesh);
 
