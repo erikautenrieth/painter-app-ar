@@ -15,8 +15,10 @@ import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
 type Props = {
   hostingId: string | undefined;
+  color: number;
+  size: number;
 };
-const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
+const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -45,12 +47,14 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
   >([]);
 
   let indexOfArrayPositions: number = 0;
-
+  // color for user 2 !
   const defaultColorPlayer1: number = 0x00ff00;
   const defaultColorPlayer2: number = 0xf2bb07;
-
+  // size for user 2!
   const defaultPaintSizePlayer1: number = 0.4;
   const defaultPaintSizePlayer2: number = 0.4;
+
+
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -67,7 +71,7 @@ const Painter1: React.FC<Props> = ({ hostingId }: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(defaultPaintSizePlayer1);
+    painter.setSize(size);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
       color: defaultColorPlayer1,

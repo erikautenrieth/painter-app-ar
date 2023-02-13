@@ -14,8 +14,10 @@ import Painter1 from "./painter1";
 // That is the position of Paint of Player 1
 type Props = {
   hostingId: string | undefined;
+  color: number;
+  size: number;
 };
-const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
+const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any, controllerPlayer1: any;
