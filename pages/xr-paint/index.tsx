@@ -11,22 +11,22 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState} from "react";
 import Sidemenu from "shared-components/components/navbar/Sidemenu";
-import { useAuth } from "shared-components/services/auth-context";
-import { ZustandStore } from "shared-components/services/hooks/zustand.state";
+import {useAuth} from "shared-components/services/auth-context";
+import {ZustandStore} from "shared-components/services/hooks/zustand.state";
 import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
-import { Button, Grid, Paper, Slider } from "@mui/material";
+import {Button, Grid, Paper, Slider} from "@mui/material";
 
-import { ColorPicker, useColor } from "react-color-palette";
+import {ColorPicker, useColor} from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
-import { Range } from "react-range";
+import {Range} from "react-range";
 import Navbar from "../../shared-components/components/navbar/Navbar";
 
-function Button2({ onClick, children, position, scale }: any) {
+function Button2({onClick, children, position, scale}: any) {
   const meshRef: any = useRef();
 
   useFrame((state: any) => {
@@ -37,11 +37,11 @@ function Button2({ onClick, children, position, scale }: any) {
   });
 
   return (
-    <mesh ref={meshRef} onClick={onClick} position={position} scale={scale}>
-      <planeGeometry />
-      {/* <boxGeometry args={[1, 1, 1]} /> */}
-      <meshBasicMaterial color={"orange"} />
-    </mesh>
+      <mesh ref={meshRef} onClick={onClick} position={position} scale={scale}>
+        <planeGeometry/>
+        {/* <boxGeometry args={[1, 1, 1]} /> */}
+        <meshBasicMaterial color={"orange"}/>
+      </mesh>
   );
 }
 
@@ -59,29 +59,29 @@ function Box(props: any) {
   });
   // Return the view, these are regular Threejs elements expressed in JSX
   return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 1.5 : 1}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
-    </mesh>
+      <mesh
+          {...props}
+          ref={ref}
+          scale={clicked ? 1.5 : 1}
+          onClick={(event) => click(!clicked)}
+          onPointerOver={(event) => hover(true)}
+          onPointerOut={(event) => hover(false)}
+      >
+        <boxGeometry args={[1, 1, 1]}/>
+        <meshStandardMaterial color={hovered ? "hotpink" : "orange"}/>
+      </mesh>
   );
 }
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
-  const { user } = useAuth();
+  const {user} = useAuth();
   const [userData, setUserData] = useState<any>();
   let [player1, setPlayer1] = useState<
-    { index: number; x: number; y: number; z: number }[]
+      { index: number; x: number; y: number; z: number }[]
   >([]);
   let [player2, setPlayer2] = useState<
-    { index: number; x: number; y: number; z: number }[]
+      { index: number; x: number; y: number; z: number }[]
   >([]);
   // Color Picker
   // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
@@ -99,14 +99,8 @@ const PaintXR = () => {
 
   let defaultColorPlayer1 = 0xf2bb07; //0xcc0000
   let defaultColorPlayer2 = 0xff9900; //0xcc0000   0xff9900
-  // const [colorPlayer1, setColorPlayer1] = useColor("hex", "#121212");
-  // const [colorPlayer2, setColorPlayer2] = useColor("hex", "#000000");
-
-  const [color, setColor] = useColor("hex", "#121212");
-
-  const [sizePlayer1, setSizePlayer1] = useState(0.4); // default painter size is 0.4
-  const [sizePlayer2, setSizePlayer2] = useState(0.4); // default painter size is 0.4
-
+  const [colorPlayer1, setColorPlayer1] = useColor("hex", "#121212");
+  const [colorPlayer2, setColorPlayer2] = useColor("hex", "#000000");
 
 
   const zustandStore = ZustandStore();
@@ -132,8 +126,8 @@ const PaintXR = () => {
     if (userData) {
       if (userData.role === "admin") {
         const q = query(
-          collection(database, `host/${docKey}/player2`),
-          orderBy("index", "asc")
+            collection(database, `host/${docKey}/player2`),
+            orderBy("index", "asc")
         );
         onSnapshot(q, (doc) => {
           const array: any = [];
@@ -141,7 +135,7 @@ const PaintXR = () => {
             const data = res.data();
             const id = res.id;
             if (data) {
-              array.push({ id, ...data });
+              array.push({id, ...data});
             }
           });
           setPlayer2(array);
@@ -149,8 +143,8 @@ const PaintXR = () => {
         });
       } else {
         const q = query(
-          collection(database, `host/${docKey}/player1`),
-          orderBy("index", "asc")
+            collection(database, `host/${docKey}/player1`),
+            orderBy("index", "asc")
         );
         onSnapshot(q, (doc) => {
           const array: any = [];
@@ -158,7 +152,7 @@ const PaintXR = () => {
             const data = res.data();
             const id = res.id;
             if (data) {
-              array.push({ id, ...data });
+              array.push({id, ...data});
             }
           });
           setPlayer1(array);
@@ -207,7 +201,6 @@ const PaintXR = () => {
     console.log("hamedkabir hosting id  ", zustandStore.hostingId);
   }
 
-
   function rangeValueText(value: number) {
     return `${value}`;
   }
@@ -215,19 +208,19 @@ const PaintXR = () => {
   const handleColorChange = (color: any) => {
     setColor(color.hex);
   };
-
-  console.log("Paintersize:", painterSize2)
+  const [color, setColor] = useColor("hex", "#121212");
+  console.log("Color:", color.hex)
   return (
-    <div className="containerCanva">
-      <Navbar/>
-      {openColorPicker ? (
-        <ColorPicker
-          width={320}
-          height={228}
-          color={color}
-          onChange={(color) => {setColor(color)}}
-          hideHSV={true}
-          dark={true}
+      <div className="containerCanva">
+        <Navbar/>
+        {openColorPicker ? (
+            <ColorPicker
+                width={320}
+                height={228}
+                color={email === emailUser1 ? colorPlayer2 : colorPlayer1}
+                onChange={email === emailUser1 ? setColorPlayer2 : setColorPlayer1}
+                hideHSV
+                dark
         />
       ) : null}
       <Paper
@@ -293,9 +286,9 @@ const PaintXR = () => {
           </Button> */}
           {userData ? (
             userData.role === "admin" ? (
-                <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"} color={color} size={painterSize1}></Painter1>
+                <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"} color={colorPlayer1.hex} size={painterSize1}></Painter1>
             ) : userData.role === "player" ? (
-                <Painter2 hostingId={"C40TA8sCawBJm8GwJzsv"} color={color} size={painterSize2}></Painter2>
+                <Painter2 hostingId={"C40TA8sCawBJm8GwJzsv"} color={colorPlayer2.hex} size={painterSize2}></Painter2>
             ) : null
           ) : null}
         </XR>
