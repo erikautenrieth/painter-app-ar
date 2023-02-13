@@ -14,7 +14,7 @@ import Painter1 from "./painter1";
 // That is the position of Paint of Player 1
 type Props = {
   hostingId: string | undefined;
-  color: number;
+  color: any;
   size: number;
 };
 const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
@@ -30,7 +30,7 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
       y: number;
       z: number;
       type: string;
-      color: number;
+      color: any;
       size: number;
     }[]
   >([]);
@@ -40,7 +40,7 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
       y: number;
       z: number;
       type: "move" | "line";
-      color: number;
+      color: any;
       size: number;
     }[]
   >([]);
@@ -69,18 +69,18 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(defaultPaintSizePlayer2);
+    painter.setSize(size);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
-      color: defaultColorPlayer2,
+      color: color,
     });
     scene.add(painter.mesh);
 
     painterPlayer1 = new TubePainter();
-    painterPlayer1.setSize(size);
+    painterPlayer1.setSize(defaultPaintSizePlayer1);
     painterPlayer1.mesh.material.side = THREE.DoubleSide;
     painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
-      color: color,
+      color: defaultColorPlayer1,
     });
     scene.add(painterPlayer1.mesh);
 

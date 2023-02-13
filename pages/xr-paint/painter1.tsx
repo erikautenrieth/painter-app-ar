@@ -15,7 +15,7 @@ import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
 type Props = {
   hostingId: string | undefined;
-  color: number;
+  color: any;
   size: number;
 };
 const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
@@ -31,7 +31,7 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
       y: number;
       z: number;
       type: string;
-      color: number;
+      color: any;
       size: number;
     }[]
   >([]);
@@ -41,7 +41,7 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
       y: number;
       z: number;
       type: "move" | "line";
-      color: number;
+      color: any;
       size: number;
     }[]
   >([]);
@@ -71,18 +71,18 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(defaultPaintSizePlayer1);
+    painter.setSize(size);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
-      color: defaultColorPlayer1,
+      color: color,
     });
     scene.add(painter.mesh);
 
     painterPlayer2 = new TubePainter();
-    painterPlayer2.setSize(size);
+    painterPlayer2.setSize(defaultPaintSizePlayer2);
     painterPlayer2.mesh.material.side = THREE.DoubleSide;
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
-      color: color,
+      color: defaultColorPlayer2,
     });
     scene.add(painterPlayer2.mesh);
 

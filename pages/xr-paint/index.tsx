@@ -85,11 +85,29 @@ const PaintXR = () => {
   >([]);
   // Color Picker
   // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
-  const [color, setColor] = useColor("hex", "#121212");
+  //
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false);
   // Ranger Paint Größe
   // https://www.geeksforgeeks.org/how-to-add-slider-in-next-js/
-  const [painterSize, setPainterSize] = useState<number>(0.4);
+
+  const [painterSize1, setPainterSize1] = useState<number>(0.4);
+  const [painterSize2, setPainterSize2] = useState<number>(0.4);
+
+  const email = user.email;
+  const emailUser1 = "user1@real-chat.de";
+
+
+  let defaultColorPlayer1 = 0xf2bb07; //0xcc0000
+  let defaultColorPlayer2 = 0xff9900; //0xcc0000   0xff9900
+  // const [colorPlayer1, setColorPlayer1] = useColor("hex", "#121212");
+  // const [colorPlayer2, setColorPlayer2] = useColor("hex", "#000000");
+
+  const [color, setColor] = useColor("hex", "#121212");
+
+  const [sizePlayer1, setSizePlayer1] = useState(0.4); // default painter size is 0.4
+  const [sizePlayer2, setSizePlayer2] = useState(0.4); // default painter size is 0.4
+
+
 
   const zustandStore = ZustandStore();
 
@@ -189,10 +207,16 @@ const PaintXR = () => {
     console.log("hamedkabir hosting id  ", zustandStore.hostingId);
   }
 
+
   function rangeValueText(value: number) {
     return `${value}`;
   }
 
+  const handleColorChange = (color: any) => {
+    setColor(color.hex);
+  };
+
+  console.log("Paintersize:", painterSize2)
   return (
     <div className="containerCanva">
       <Navbar/>
@@ -201,9 +225,9 @@ const PaintXR = () => {
           width={320}
           height={228}
           color={color}
-          onChange={setColor}
-          hideHSV
-          dark
+          onChange={(color) => {setColor(color)}}
+          hideHSV={true}
+          dark={true}
         />
       ) : null}
       <Paper
@@ -236,13 +260,18 @@ const PaintXR = () => {
           <Grid item xs={6}>
             <Slider
               aria-label="Painter Size"
-              defaultValue={painterSize}
+              defaultValue={email === emailUser1 ? painterSize2 : painterSize1}
               getAriaValueText={rangeValueText}
               valueLabelDisplay="on"
               step={0.1}
               marks
-              min={0}
-              max={5}
+              min={0.1}
+              max={4}
+              onChange={(event, value) =>
+                  email === emailUser1
+                  ? setPainterSize2(value as number)
+                  : setPainterSize1(value as number)
+              }
             />
           </Grid>
           <Grid item xs>
@@ -251,8 +280,10 @@ const PaintXR = () => {
         </Grid>
       </Paper>
 
+
+      {/*
       {userData ? <ARButton></ARButton> : null}
-      {/* <Button className="hamedkabir" size="large" variant="contained">
+      <Button className="hamedkabir" size="large" variant="contained">
         Bereit
       </Button> */}
       <Canvas>
@@ -262,9 +293,9 @@ const PaintXR = () => {
           </Button> */}
           {userData ? (
             userData.role === "admin" ? (
-                <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"} color={colorPlayer1} size={sizePlayer1}></Painter1>
+                <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"} color={color} size={painterSize1}></Painter1>
             ) : userData.role === "player" ? (
-                <Painter2 hostingId={"C40TA8sCawBJm8GwJzsv"} color={colorPlayer2} size={sizePlayer2}></Painter2>
+                <Painter2 hostingId={"C40TA8sCawBJm8GwJzsv"} color={color} size={painterSize2}></Painter2>
             ) : null
           ) : null}
         </XR>
