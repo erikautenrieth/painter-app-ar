@@ -318,7 +318,6 @@ const HostingPage = () => {
                 }
               >
 
-
                 <Playeranimation ready={isReady2} name={"kongDance"}/>
                 {/*<img*/}
                 {/*  src="/gifs/yy3.gif"*/}
