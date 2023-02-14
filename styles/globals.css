@@ -46,6 +46,17 @@ a {
   height: 165px;
 }
 
+.painter-color-picker-position {
+  position: absolute;
+  z-index: 9;
+}
+
+@media only screen and (max-width: 425px) {
+  .navbar {
+    display: none;
+  }
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
