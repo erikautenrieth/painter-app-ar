@@ -53,11 +53,14 @@ const HostingPage = () => {
   const zustandStore = ZustandStore();
   const { hostingId } = router.query;
 
-
   const [isReady1, setIsReady1] = useState(false);
   const [isReady2, setIsReady2] = useState(false);
-  const handleReady1 = () => {setIsReady1(true);};
-  const handleReady2 = () => {setIsReady2(true);};
+  const handleReady1 = () => {
+    setIsReady1(true);
+  };
+  const handleReady2 = () => {
+    setIsReady2(true);
+  };
   let modelPlayer1: any;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
@@ -297,8 +300,16 @@ const HostingPage = () => {
                     : ""
                 }
               >
-
-                <Playeranimation ready={isReady1} name={"antDance"}/>
+                <Playeranimation
+                  ready={
+                    hostingData
+                      ? hostingData.player1Ready
+                        ? true
+                        : false
+                      : false
+                  }
+                  name={"antDance"}
+                />
                 {/*<img*/}
                 {/*  src="/gifs/yy3.gif"*/}
                 {/*  alt="A responsive GIF"*/}
@@ -317,8 +328,16 @@ const HostingPage = () => {
                     : ""
                 }
               >
-
-                <Playeranimation ready={isReady2} name={"kongDance"}/>
+                <Playeranimation
+                  ready={
+                    hostingData
+                      ? hostingData.player2Ready
+                        ? true
+                        : false
+                      : false
+                  }
+                  name={"kongDance"}
+                />
                 {/*<img*/}
                 {/*  src="/gifs/yy3.gif"*/}
                 {/*  alt="A responsive GIF"*/}
@@ -339,7 +358,10 @@ const HostingPage = () => {
                       <Button
                         size="large"
                         variant="contained"
-                        onClick={() => {getReady(); handleReady1()}}
+                        onClick={() => {
+                          getReady();
+                          handleReady1();
+                        }}
                       >
                         Bereit
                       </Button>
@@ -370,7 +392,9 @@ const HostingPage = () => {
                         variant="outlined"
                         onClick={() => {
                           getReady();
-                          handleReady2()}} >
+                          handleReady2();
+                        }}
+                      >
                         Bereit
                       </Button>
                     )}
