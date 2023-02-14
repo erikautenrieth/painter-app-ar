@@ -43,9 +43,11 @@ const Navbar = () => {
 							<a onClick={logOut} className="navbar-item is-size-5 has-text-weight-semibold">
 							Logout </a>
 						</Link>}
+						<Link href="/about">
 						<a className="navbar-item is-size-5 has-text-weight-semibold">
-							Feature
+							About Us
 						</a>
+						</Link>
 					</div>
 				</div>
 

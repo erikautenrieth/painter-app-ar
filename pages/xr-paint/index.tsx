@@ -259,16 +259,19 @@ const PaintXR = () => {
             {userData ? <ARButton></ARButton> : null}
           </Grid>
         </Grid>
+
       </Paper>
 
-        userData ? <ARButton></ARButton> : null
+
       {/*
       {userData ? <ARButton></ARButton> : null}
       <Button className="hamedkabir" size="large" variant="contained">
         Bereit
       </Button> */}
+
       <Canvas>
         <XR>
+
           {/* <Button onClick={handleClick} position={[0, 0, -5]} scale={[2, 2, 2]}>
             Click me
           </Button> */}
