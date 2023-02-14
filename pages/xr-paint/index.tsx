@@ -90,19 +90,12 @@ const PaintXR = () => {
   // Ranger Paint Größe
   // https://www.geeksforgeeks.org/how-to-add-slider-in-next-js/
 
-  const [painterSize1, setPainterSize1] = useState<number>(0.4);
-  const [painterSize2, setPainterSize2] = useState<number>(0.4);
-
   const email = user.email;
   const emailUser1 = "user1@real-chat.de";
-
-
-  let defaultColorPlayer1 = 0xf2bb07; //0xcc0000
-  let defaultColorPlayer2 = 0xff9900; //0xcc0000   0xff9900
-  const [colorPlayer1, setColorPlayer1] = useColor("hex", "#121212");
-  const [colorPlayer2, setColorPlayer2] = useColor("hex", "#000000");
-
-
+  const [painterSize1, setPainterSize1] = useState<number>(0.4);
+  const [painterSize2, setPainterSize2] = useState<number>(0.4);
+  const [colorPlayer1, setColorPlayer1] = useColor("hex", "#dad810");
+  const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
   const getUserById = async () => {
@@ -205,11 +198,6 @@ const PaintXR = () => {
     return `${value}`;
   }
 
-  const handleColorChange = (color: any) => {
-    setColor(color.hex);
-  };
-  const [color, setColor] = useColor("hex", "#121212");
-  console.log("Color:", color.hex)
   return (
       <div className="containerCanva">
         <Navbar/>
@@ -221,7 +209,7 @@ const PaintXR = () => {
                 onChange={email === emailUser1 ? setColorPlayer2 : setColorPlayer1}
                 hideHSV
                 dark
-        />
+            />
       ) : null}
       <Paper
         className="xr-paint-setting-ui"
@@ -273,7 +261,7 @@ const PaintXR = () => {
         </Grid>
       </Paper>
 
-
+        userData ? <ARButton></ARButton> : null
       {/*
       {userData ? <ARButton></ARButton> : null}
       <Button className="hamedkabir" size="large" variant="contained">
