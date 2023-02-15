@@ -186,13 +186,9 @@ const PaintXR = () => {
   //     getPlayerPosition();
   //   }
   // }, [loader]);
-  if (userData) {
-    console.log("hamedkabir role  ", userData.role);
-  }
 
-  if (zustandStore) {
-    console.log("hamedkabir hosting id  ", zustandStore.hostingId);
-  }
+  //if (userData) {console.log("hamedkabir role  ", userData.role);}
+  //if (zustandStore) {console.log("hamedkabir hosting id  ", zustandStore.hostingId);}
 
   function rangeValueText(value: number) {
     return `${value}`;

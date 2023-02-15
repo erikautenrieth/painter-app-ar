@@ -8,16 +8,16 @@ const Navbar = () => {
   return (
     <>
       <div className="sidemenu">
-        <Sidemenu />
+
       </div>
       <nav className="navbar">
+        <Sidemenu />
         <div id="navbarMenu" className="navbar-menu">
           <Link href="/landingpage">
             <a className="navbar-item  is-size-5 has-text-weight-semibold">
               Landingpage
             </a>
           </Link>
-
           <div className="navbar-end">
             <div className=" navbar-item">
               <div className="control has-icons-left">
@@ -31,6 +31,7 @@ const Navbar = () => {
                 </span>
               </div>
             </div>
+
             {user.email != null && (
               <Link href="/home">
                 <a className="navbar-item is-active is-size-5 has-text-weight-semibold">
