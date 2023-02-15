@@ -194,6 +194,15 @@ const PaintXR = () => {
     return `${value}`;
   }
 
+  const handleChangeSize = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+      email === emailUser1
+          ? setPainterSize2(newValue as number)
+          : setPainterSize1(newValue as number)
+    }
+  };
+
+  console.log(painterSize2)
   return (
     <div className="containerCanva">
       <Navbar />
@@ -245,18 +254,14 @@ const PaintXR = () => {
           <Grid item xs={6}>
             <Slider
               aria-label="Painter Size"
-              defaultValue={email === emailUser1 ? painterSize2 : painterSize1}
+              value={email === emailUser1 ? painterSize2 : painterSize1}
               getAriaValueText={rangeValueText}
               valueLabelDisplay="on"
               step={0.1}
               marks
               min={0.1}
               max={4}
-              onChange={(event, value) =>
-                email === emailUser1
-                  ? setPainterSize2(value as number)
-                  : setPainterSize1(value as number)
-              }
+              onChange={handleChangeSize}
             />
           </Grid>
           <Grid item xs>
