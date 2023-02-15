@@ -58,6 +58,13 @@ export default function Sidemenu() {
               <ListItemButton
                 className="sidemenu-content-items"
                 component="a"
+                href="/xr-paint"
+              >
+                <ListItemText primary="XR Test" />
+              </ListItemButton>
+              <ListItemButton
+                className="sidemenu-content-items"
+                component="a"
                 href="/landingpage"
                 onClick={logOut}
               >
