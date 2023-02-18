@@ -12,19 +12,17 @@ import {
   where,
 } from "firebase/firestore";
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import Sidemenu from "shared-components/components/navbar/Sidemenu";
 import { useAuth } from "shared-components/services/auth-context";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
-import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
 import { Button, Grid, Paper, Slider } from "@mui/material";
 
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
-
-import { Range } from "react-range";
 import Navbar from "../../shared-components/components/navbar/Navbar";
+
+
 
 function Button2({ onClick, children, position, scale }: any) {
   const meshRef: any = useRef();
