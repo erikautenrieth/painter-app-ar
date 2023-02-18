@@ -26,14 +26,18 @@ export default function Landingpage() {
   return (
     <>
       <Head>
-        <title>Real Chat App</title>
-        <link rel="icon" href="/message_draw_icon.ico" />
+          <title>3D Painter App</title>
+              <meta name="description" content="Create stunning 3D art with the 3D Painter App. With a variety of brushes and tools,
+                                                 you can paint and sculpt in three dimensions to bring your ideas to life." />
+              <meta name="keywords" content="3D art, 3D painting, sculpting, digital art, creative tools, brushes, drawing, modeling" />
+              <meta name="author" content="Your Name" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="icon" href="/message_draw_icon.ico" />
       </Head>
 
       <Wrapper className="App">
         <Background />
-          <Navbar/>
-
+          <Navbar />
         <TextSection />
         <Newsletter />
         <Footer />

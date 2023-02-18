@@ -85,11 +85,10 @@ const PaintXR = () => {
   >([]);
   // Color Picker
   // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
-  //
-  const [openColorPicker, setOpenColorPicker] = useState<boolean>(false);
-  // Ranger Paint Größe
+  // Slider
   // https://www.geeksforgeeks.org/how-to-add-slider-in-next-js/
 
+  const [openColorPicker, setOpenColorPicker] = useState<boolean>(false);
   const email = user.email;
   const emailUser1 = "user1@real-chat.de";
   const [painterSize1, setPainterSize1] = useState<number>(0.4);
@@ -202,7 +201,6 @@ const PaintXR = () => {
     }
   };
 
-  console.log(painterSize2)
   return (
     <div className="containerCanva">
       <Navbar />
