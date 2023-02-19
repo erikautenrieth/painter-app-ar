@@ -35,6 +35,28 @@ a {
   padding: 0px !important;
 }
 
+.xr-paint-setting-ui {
+  position: absolute;
+  z-index: 9;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-radius: 10px;
+  background-color: #322d6d !important;
+  height: 165px;
+}
+
+.painter-color-picker-position {
+  position: absolute;
+  z-index: 9;
+}
+
+@media only screen and (max-width: 425px) {
+  .navbar {
+    display: none;
+  }
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

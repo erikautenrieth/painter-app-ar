@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import Link from "next/link";
-import {useAuth} from "../../shared-components/services/auth-context";
+import {useAuth} from "../../services/auth-context";
 
 export default function MenuList() {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

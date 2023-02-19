@@ -2,7 +2,8 @@ import { Button, Grid, Icon, Paper } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import Navbar from "components/landingpage/Navbar";
+import Navbar from "shared-components/components/navbar/Navbar";
+
 import {
   addDoc,
   collection,
@@ -16,7 +17,7 @@ import {
 } from "firebase/firestore";
 import { database } from "../../config/firebase";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
-import Sidemenu from "shared-components/components/Sidemenu";
+import Sidemenu from "shared-components/components/navbar/Sidemenu";
 // 3D Models imports of React-Three-Fiber
 import {
   Canvas,
@@ -27,6 +28,7 @@ import {
 } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useAnimations, useGLTF } from "@react-three/drei";
+import Playeranimation from "./playeranimation";
 
 export type IPosition = {
   x: number;
@@ -51,6 +53,14 @@ const HostingPage = () => {
   const zustandStore = ZustandStore();
   const { hostingId } = router.query;
 
+  const [isReady1, setIsReady1] = useState(false);
+  const [isReady2, setIsReady2] = useState(false);
+  const handleReady1 = () => {
+    setIsReady1(true);
+  };
+  const handleReady2 = () => {
+    setIsReady2(true);
+  };
   let modelPlayer1: any;
 
   // Funktion für Button Ready wenn beide Spieler Ready setIndexConfiguration, wird state User State auf true gesetzt
@@ -218,8 +228,7 @@ const HostingPage = () => {
   }, [seconds, hostingData]);
   return (
     <>
-      {/* <Navbar /> */}
-      <Sidemenu></Sidemenu>
+      <Navbar />
       {existHost || userRole == "admin" ? (
         <>
           {userRole == "admin" ? (
@@ -263,7 +272,6 @@ const HostingPage = () => {
               </Grid>
             </Paper>
           ) : null}
-
           <Paper
             sx={{
               p: 2,
@@ -292,12 +300,21 @@ const HostingPage = () => {
                     : ""
                 }
               >
-                <img
-                  src="/gifs/yy3.gif"
-                  alt="A responsive GIF"
-                  style={{ width: "100%", height: "auto" }}
+                <Playeranimation
+                  ready={
+                    hostingData
+                      ? hostingData.player1Ready
+                        ? true
+                        : false
+                      : false
+                  }
+                  name={"antDance"}
                 />
-
+                {/*<img*/}
+                {/*  src="/gifs/yy3.gif"*/}
+                {/*  alt="A responsive GIF"*/}
+                {/*  style={{ width: "100%", height: "auto" }}*/}
+                {/*/>*/}
                 <h1 className="player text-align-center">Spieler 1</h1>
               </Grid>
               <Grid
@@ -311,20 +328,21 @@ const HostingPage = () => {
                     : ""
                 }
               >
-                {/* <figure className="avatar">
-                  <img
-                    src="https://images.generated.photos/LsZoe6BGKISgVVpgpAGpscQn0nUV6zuF0q4q4OmzFJ0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy8wMDI1/NDQ4LmpwZw.jpg"
-                    height="150px"
-                    width={"150px"}
-                  />
-                </figure> */}
-
-                <img
-                  src="/gifs/yy3.gif"
-                  alt="A responsive GIF"
-                  style={{ width: "100%", height: "auto" }}
+                <Playeranimation
+                  ready={
+                    hostingData
+                      ? hostingData.player2Ready
+                        ? true
+                        : false
+                      : false
+                  }
+                  name={"kongDance"}
                 />
-
+                {/*<img*/}
+                {/*  src="/gifs/yy3.gif"*/}
+                {/*  alt="A responsive GIF"*/}
+                {/*  style={{ width: "100%", height: "auto" }}*/}
+                {/*/>*/}
                 <h1 className="player text-align-center">Spieler 2</h1>
               </Grid>
               <Grid item xs={6} className="no-padding text-align-center">
@@ -340,7 +358,10 @@ const HostingPage = () => {
                       <Button
                         size="large"
                         variant="contained"
-                        onClick={() => getReady()}
+                        onClick={() => {
+                          getReady();
+                          handleReady1();
+                        }}
                       >
                         Bereit
                       </Button>
@@ -369,7 +390,10 @@ const HostingPage = () => {
                       <Button
                         size="large"
                         variant="outlined"
-                        onClick={() => getReady()}
+                        onClick={() => {
+                          getReady();
+                          handleReady2();
+                        }}
                       >
                         Bereit
                       </Button>

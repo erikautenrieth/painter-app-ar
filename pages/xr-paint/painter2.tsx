@@ -14,8 +14,10 @@ import Painter1 from "./painter1";
 // That is the position of Paint of Player 1
 type Props = {
   hostingId: string | undefined;
+  color: any;
+  size: number;
 };
-const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
+const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any, controllerPlayer1: any;
@@ -28,7 +30,7 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
       y: number;
       z: number;
       type: string;
-      color: number;
+      color: any;
       size: number;
     }[]
   >([]);
@@ -38,7 +40,7 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
       y: number;
       z: number;
       type: "move" | "line";
-      color: number;
+      color: any;
       size: number;
     }[]
   >([]);
@@ -67,10 +69,10 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
     scene.add(light);
 
     painter = new TubePainter();
-    painter.setSize(defaultPaintSizePlayer2);
+    painter.setSize(size);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
-      color: defaultColorPlayer2,
+      color: color,
     });
     scene.add(painter.mesh);
 
@@ -91,7 +93,7 @@ const Painter2: React.FC<Props> = ({ hostingId }: Props) => {
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      updatePlayerPosition();
+      // updatePlayerPosition();
     }
     controller = gl.xr.getController(0);
     controller.addEventListener("selectstart", onSelectStart);

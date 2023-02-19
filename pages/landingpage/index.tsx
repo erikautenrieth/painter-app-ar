@@ -1,22 +1,13 @@
-import * as THREE from "three";
-import { Scene } from "three";
-import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
-import Navbar from "components/landingpage/Navbar";
+import Navbar from "shared-components/components/navbar/Navbar";
 // @ts-ignore
 import styled from "styled-components";
-import { OrbitControls } from "@react-three/drei";
-import Background from "../../components/landingpage/Background";
-import TextSection from "../../components/landingpage/TextSection";
-
-import Box from "../../components/landingpage/Box";
-import AnimatedSphere from "../../components/landingpage/AnimatedSphere";
-import Iphone from "../../components/landingpage/Iphone";
-import Footer from "../../components/landingpage/Footer";
+import Background from "../../shared-components/components/landingpage/Background";
+import TextSection from "../../shared-components/components/landingpage/TextSection";
+import Footer from "../../shared-components/components/landingpage/Footer";
 import Head from "next/head";
-import Newsletter from "../../components/landingpage/Newsletter";
+import Newsletter from "../../shared-components/components/landingpage/Newsletter";
 import { useRouter } from "next/router";
-import Sidemenu from "shared-components/components/Sidemenu";
+
 
 export default function Landingpage() {
   const router = useRouter();
@@ -26,14 +17,18 @@ export default function Landingpage() {
   return (
     <>
       <Head>
-        <title>Real Chat App</title>
-        <link rel="icon" href="/message_draw_icon.ico" />
+          <title>3D Painter App</title>
+              <meta name="description" content="Create stunning 3D art with the 3D Painter App. With a variety of brushes and tools,
+                                                 you can paint and sculpt in three dimensions to bring your ideas to life." />
+              <meta name="keywords" content="3D art, 3D painting, sculpting, digital art, creative tools, brushes, drawing, modeling" />
+              <meta name="author" content="Your Name" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="icon" href="/message_draw_icon.ico" />
       </Head>
 
       <Wrapper className="App">
         <Background />
-        {/* <Navbar/> */}
-        <Sidemenu></Sidemenu>
+          <Navbar />
         <TextSection />
         <Newsletter />
         <Footer />

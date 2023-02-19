@@ -1,6 +1,4 @@
-import { Button } from "@mui/material";
-import { PerspectiveCamera } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { ARButton, XR } from "@react-three/xr";
 import { database } from "config/firebase";
 import {
@@ -13,13 +11,65 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
-import Sidemenu from "shared-components/components/Sidemenu";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { useAuth } from "shared-components/services/auth-context";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
-import * as THREE from "three";
 import Painter1 from "./painter1";
 import Painter2 from "./painter2";
+import { Button, Grid, Paper, Slider } from "@mui/material";
+
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/lib/css/styles.css";
+import Navbar from "../../shared-components/components/navbar/Navbar";
+
+
+
+function Button2({ onClick, children, position, scale }: any) {
+  const meshRef: any = useRef();
+
+  useFrame((state: any) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.mouseY * 0.01;
+      meshRef.current.rotation.y = state.mouseX * 0.01;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} onClick={onClick} position={position} scale={scale}>
+      <planeGeometry />
+      {/* <boxGeometry args={[1, 1, 1]} /> */}
+      <meshBasicMaterial color={"orange"} />
+    </mesh>
+  );
+}
+
+function Box(props: any) {
+  // This reference gives us direct access to the THREE.Mesh object
+  const ref: any = useRef();
+  // Hold state for hovered and clicked events
+  const [hovered, hover] = useState(false);
+  const [clicked, click] = useState(false);
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  useFrame((state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.x += delta;
+    }
+  });
+  // Return the view, these are regular Threejs elements expressed in JSX
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      scale={clicked ? 1.5 : 1}
+      onClick={(event) => click(!clicked)}
+      onPointerOver={(event) => hover(true)}
+      onPointerOut={(event) => hover(false)}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+    </mesh>
+  );
+}
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
@@ -31,7 +81,18 @@ const PaintXR = () => {
   let [player2, setPlayer2] = useState<
     { index: number; x: number; y: number; z: number }[]
   >([]);
+  // Color Picker
+  // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
+  // Slider
+  // https://www.geeksforgeeks.org/how-to-add-slider-in-next-js/
 
+  const [openColorPicker, setOpenColorPicker] = useState<boolean>(false);
+  const email = user.email;
+  const emailUser1 = "user1@real-chat.de";
+  const [painterSize1, setPainterSize1] = useState<number>(0.4);
+  const [painterSize2, setPainterSize2] = useState<number>(0.4);
+  const [colorPlayer1, setColorPlayer1] = useColor("hex", "#dad810");
+  const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
   const getUserById = async () => {
@@ -122,37 +183,113 @@ const PaintXR = () => {
   //     getPlayerPosition();
   //   }
   // }, [loader]);
-  if (userData) {
-    console.log("hamedkabir role  ", userData.role);
+
+  //if (userData) {console.log("hamedkabir role  ", userData.role);}
+  //if (zustandStore) {console.log("hamedkabir hosting id  ", zustandStore.hostingId);}
+
+  function rangeValueText(value: number) {
+    return `${value}`;
   }
 
-  if (zustandStore) {
-    console.log("hamedkabir hosting id  ", zustandStore.hostingId);
-  }
+  const handleChangeSize = (event: Event, newValue: number | number[]) => {
+    if (typeof newValue === 'number') {
+      email === emailUser1
+          ? setPainterSize2(newValue as number)
+          : setPainterSize1(newValue as number)
+    }
+  };
+
   return (
     <div className="containerCanva">
-      <Sidemenu></Sidemenu>
+      <Navbar />
+      {openColorPicker ? (
+        <Grid
+          className="painter-color-picker-position"
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <ColorPicker
+            width={320}
+            height={228}
+            color={email === emailUser1 ? colorPlayer2 : colorPlayer1}
+            onChange={email === emailUser1 ? setColorPlayer2 : setColorPlayer1}
+            hideHSV
+            dark
+          />
+        </Grid>
+      ) : null}
+      <Paper
+        className="xr-paint-setting-ui"
+        sx={{
+          p: 2,
+          margin: "auto",
+          marginTop: 10,
+          maxWidth: 500,
+          flexGrow: 1,
+        }}
+      >
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          rowSpacing={15}
+          columnSpacing={1}
+        >
+          <Grid item xs={6}>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setOpenColorPicker(openColorPicker ? false : true)}
+            >
+              Open/ Close Color Picker
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Slider
+              aria-label="Painter Size"
+              value={email === emailUser1 ? painterSize2 : painterSize1}
+              getAriaValueText={rangeValueText}
+              valueLabelDisplay="on"
+              step={0.1}
+              marks
+              min={0.1}
+              max={4}
+              onChange={handleChangeSize}
+            />
+          </Grid>
+          <Grid item xs>
+            {userData ? <ARButton></ARButton> : null}
+          </Grid>
+        </Grid>
+      </Paper>
+
+      {/*
       {userData ? <ARButton></ARButton> : null}
+      <Button className="hamedkabir" size="large" variant="contained">
+        Bereit
+      </Button> */}
+
       <Canvas>
         <XR>
-          {/* {userData ? (
+          {/* <Button onClick={handleClick} position={[0, 0, -5]} scale={[2, 2, 2]}>
+            Click me
+          </Button> */}
+          {userData ? (
             userData.role === "admin" ? (
               <Painter1
-                paintPositionFromDB={player2}
-                hostingId={zustandStore.hostingId}
+                hostingId={"C40TA8sCawBJm8GwJzsv"}
+                color={colorPlayer1.hex}
+                size={painterSize1}
               ></Painter1>
             ) : userData.role === "player" ? (
               <Painter2
-                paintPositionFromDB={player1}
-                hostingId={zustandStore.hostingId}
+                hostingId={"C40TA8sCawBJm8GwJzsv"}
+                color={colorPlayer2.hex}
+                size={painterSize2}
               ></Painter2>
-            ) : null
-          ) : null} */}
-          {userData ? (
-            userData.role === "admin" ? (
-              <Painter1 hostingId={"C40TA8sCawBJm8GwJzsv"}></Painter1>
-            ) : userData.role === "player" ? (
-              <Painter2 hostingId={"C40TA8sCawBJm8GwJzsv"}></Painter2>
             ) : null
           ) : null}
         </XR>
