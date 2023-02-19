@@ -1,5 +1,4 @@
 import { TextField } from "@mui/material";
-import "firebaseui/dist/firebaseui.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "shared-components/services/auth-context";
