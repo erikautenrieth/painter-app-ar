@@ -1,11 +1,10 @@
 import { Button, Grid } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import { useRouter } from "next/router";
 import { useAuth } from "../../shared-components/services/auth-context";
-import Footer from "shared-components/components/landingpage/Footer";
 import Navbar from "shared-components/components/navbar/Navbar";
 import React from "react";
-import Sidemenu from "shared-components/components/navbar/Sidemenu";
-import Paper from "@mui/material/Paper";
+
 export default function Home() {
   const { user } = useAuth();
   console.log("user   ", user);
