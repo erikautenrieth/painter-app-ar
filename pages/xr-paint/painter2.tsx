@@ -80,7 +80,7 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
     painterPlayer1.setSize(defaultPaintSizePlayer1);
     painterPlayer1.mesh.material.side = THREE.DoubleSide;
     painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
-      color: defaultColorPlayer1,
+      color:  arrayOfPositionPlayer1 && arrayOfPositionPlayer1.length !== 0   ? arrayOfPositionPlayer1[arrayOfPositionPlayer1.length-1].color: "#1fd243",
     });
     scene.add(painterPlayer1.mesh);
 
@@ -93,7 +93,7 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      // updatePlayerPosition();
+      updatePlayerPosition();
     }
     controller = gl.xr.getController(0);
     controller.addEventListener("selectstart", onSelectStart);
@@ -128,8 +128,8 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
             y: cursor.y,
             z: cursor.z,
             type: "move",
-            color: defaultColorPlayer2,
-            size: defaultPaintSizePlayer2,
+            color: color,
+            size: size,
           };
           arrayOfPositionPlayer2.push(object);
         } else {
@@ -141,21 +141,12 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
             y: cursor.y,
             z: cursor.z,
             type: "line",
-            color: defaultColorPlayer2,
-            size: defaultPaintSizePlayer2,
+            color: color,
+            size: size,
           };
           arrayOfPositionPlayer2.push(object);
         }
       }
-    }
-  };
-  const updatePlayerPosition1 = async () => {
-    if (arrayOfPositionPlayer2.length > 0) {
-      const docKey = "zb5tWRiOArpG0vR5PjO8";
-      const collectionRef = collection(database, `host/${docKey}/player2`);
-      arrayOfPositionPlayer2.forEach(async (item) => {
-        await addDoc(collectionRef, item);
-      });
     }
   };
 
