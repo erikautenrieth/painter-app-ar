@@ -188,10 +188,12 @@ const HostingPage = () => {
   const createHost = async () => {
     const docCollection = collection(database, "host");
     const objColor1: IColor = colorPlayer1;
+    objColor1.hex += "e00";
     objColor1.rgb.a = null;
     objColor1.hsv.a = null;
 
     const objColor2: IColor = colorPlayer2;
+    objColor2.hex += "e00";
     objColor2.rgb.a = null;
     objColor2.hsv.a = null;
     const hostObject: IHost = {

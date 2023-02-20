@@ -30,12 +30,6 @@ const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const { user } = useAuth();
   const [userData, setUserData] = useState<any>();
-  let [player1, setPlayer1] = useState<
-    { index: number; x: number; y: number; z: number }[]
-  >([]);
-  let [player2, setPlayer2] = useState<
-    { index: number; x: number; y: number; z: number }[]
-  >([]);
   // Color Picker
   // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
   // Slider
@@ -50,7 +44,7 @@ const PaintXR = () => {
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
-  const hostID: string = "9q9fc59T8Aizm5Wv87RR";
+  const hostID: string = "sqLRvmp5OBxI9wQpjyCF";
 
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
@@ -218,13 +212,15 @@ const PaintXR = () => {
             userData.role === "admin" ? (
               <Painter1
                 hostingId={hostID}
-                color={colorPlayer1.hex}
+                color={colorPlayer1}
+                colorPlayer2={colorPlayer2}
                 size={painterSize1}
               ></Painter1>
             ) : userData.role === "player" ? (
               <Painter2
                 hostingId={hostID}
-                color={colorPlayer2.hex}
+                color={colorPlayer2}
+                colorPlayer1={colorPlayer1}
                 size={painterSize2}
               ></Painter2>
             ) : null

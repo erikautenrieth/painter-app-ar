@@ -7,6 +7,7 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
+import { IColor } from "pages/hosting-page/[hostingId]";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
@@ -14,10 +15,16 @@ import Painter1 from "./painter1";
 // That is the position of Paint of Player 1
 type Props = {
   hostingId: string | undefined;
-  color: any;
+  color: IColor;
+  colorPlayer1: IColor;
   size: number;
 };
-const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
+const Painter2: React.FC<Props> = ({
+  hostingId,
+  color,
+  colorPlayer1,
+  size,
+}: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any, controllerPlayer1: any;
@@ -72,7 +79,7 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
     painter.setSize(size);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
-      color: color,
+      color: color.hex.slice(0, 7),
     });
     scene.add(painter.mesh);
 
@@ -80,7 +87,7 @@ const Painter2: React.FC<Props> = ({ hostingId, color, size  }: Props) => {
     painterPlayer1.setSize(defaultPaintSizePlayer1);
     painterPlayer1.mesh.material.side = THREE.DoubleSide;
     painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
-      color:  arrayOfPositionPlayer1 && arrayOfPositionPlayer1.length !== 0   ? arrayOfPositionPlayer1[arrayOfPositionPlayer1.length-1].color: "#1fd243",
+      color: colorPlayer1.hex.slice(0, 7),
     });
     scene.add(painterPlayer1.mesh);
 

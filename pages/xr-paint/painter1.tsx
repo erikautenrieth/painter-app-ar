@@ -9,16 +9,23 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { IColor } from "pages/hosting-page/[hostingId]";
 import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
 type Props = {
   hostingId: string | undefined;
-  color: any;
+  color: IColor;
+  colorPlayer2: IColor;
   size: number;
 };
-const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
+const Painter1: React.FC<Props> = ({
+  hostingId,
+  color,
+  colorPlayer2,
+  size,
+}: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -54,7 +61,6 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
   const defaultPaintSizePlayer1: number = 0.4;
   const defaultPaintSizePlayer2: number = 0.4;
 
-
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -74,7 +80,7 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
     painter.setSize(size);
     painter.mesh.material.side = THREE.DoubleSide;
     painter.mesh.material = new THREE.MeshBasicMaterial({
-      color: color,
+      color: color.hex.slice(0, 7),
     });
     scene.add(painter.mesh);
 
@@ -82,7 +88,7 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
     painterPlayer2.setSize(defaultPaintSizePlayer2);
     painterPlayer2.mesh.material.side = THREE.DoubleSide;
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
-      color:  arrayOfPositionPlayer2 && arrayOfPositionPlayer2.length !== 0  ? arrayOfPositionPlayer2[arrayOfPositionPlayer2.length-1].color: "#dad810",
+      color: colorPlayer2.hex.slice(0, 7),
     });
     scene.add(painterPlayer2.mesh);
 
@@ -210,8 +216,6 @@ const Painter1: React.FC<Props> = ({ hostingId, color, size}: Props) => {
     init();
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
-        console.log("hamedkabir data  ", arrayOfPositionPlayer2);
-
         paintFromDB();
       }
     }
