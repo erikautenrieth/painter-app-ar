@@ -41,6 +41,10 @@ export type IHost = {
   createdAt: Date;
   player1Position: IPosition[];
   player2Position: IPosition[];
+  player1Color: string;
+  player2Color: string;
+  player1PaintSize: number;
+  player2PaintSize: number;
 };
 const HostingPage = () => {
   const router = useRouter();
@@ -169,6 +173,10 @@ const HostingPage = () => {
       createdAt: new Date(),
       player1Position: [],
       player2Position: [],
+      player1Color: "#dad810",
+      player2Color: "#1fd243",
+      player1PaintSize: 0.4,
+      player2PaintSize: 0.4,
     };
     await addDoc(docCollection, hostObject).then(
       (res) => {
