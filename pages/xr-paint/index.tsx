@@ -9,6 +9,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { SetStateAction, useEffect, useRef, useState } from "react";
@@ -21,53 +22,9 @@ import { Button, Grid, Paper, Slider } from "@mui/material";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 import Navbar from "../../shared-components/components/navbar/Navbar";
-
-function Button2({ onClick, children, position, scale }: any) {
-  const meshRef: any = useRef();
-
-  useFrame((state: any) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.mouseY * 0.01;
-      meshRef.current.rotation.y = state.mouseX * 0.01;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} onClick={onClick} position={position} scale={scale}>
-      <planeGeometry />
-      {/* <boxGeometry args={[1, 1, 1]} /> */}
-      <meshBasicMaterial color={"orange"} />
-    </mesh>
-  );
-}
-
-function Box(props: any) {
-  // This reference gives us direct access to the THREE.Mesh object
-  const ref: any = useRef();
-  // Hold state for hovered and clicked events
-  const [hovered, hover] = useState(false);
-  const [clicked, click] = useState(false);
-  // Subscribe this component to the render-loop, rotate the mesh every frame
-  useFrame((state, delta) => {
-    if (ref.current) {
-      ref.current.rotation.x += delta;
-    }
-  });
-  // Return the view, these are regular Threejs elements expressed in JSX
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 1.5 : 1}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
-    </mesh>
-  );
-}
+import { async } from "@firebase/util";
+import { IColor, IHost } from "pages/hosting-page/[hostingId]";
+import { Color } from "three/src/Three";
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
@@ -93,6 +50,8 @@ const PaintXR = () => {
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
+  const hostID: string = "9q9fc59T8Aizm5Wv87RR";
+
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
     const docSnap = await getDoc(docRef);
@@ -105,95 +64,83 @@ const PaintXR = () => {
     }
   };
 
-  /**
-   * this method ready from collection and each position with doc it and index
-   */
-  const getPlayerPosition1 = async () => {
-    const docKey = "zb5tWRiOArpG0vR5PjO8";
-
-    if (userData) {
-      if (userData.role === "admin") {
-        const q = query(
-          collection(database, `host/${docKey}/player2`),
-          orderBy("index", "asc")
-        );
-        onSnapshot(q, (doc) => {
-          const array: any = [];
-          doc.forEach((res) => {
-            const data = res.data();
-            const id = res.id;
-            if (data) {
-              array.push({ id, ...data });
-            }
-          });
-          setPlayer2(array);
-          // player2 = array;
-        });
-      } else {
-        const q = query(
-          collection(database, `host/${docKey}/player1`),
-          orderBy("index", "asc")
-        );
-        onSnapshot(q, (doc) => {
-          const array: any = [];
-          doc.forEach((res) => {
-            const data = res.data();
-            const id = res.id;
-            if (data) {
-              array.push({ id, ...data });
-            }
-          });
-          setPlayer1(array);
-
-          // player1 = array;
-        });
-      }
-    }
-  };
-
-  /**
-   * this method read player position from document and array
-   */
-  const getPlayerPosition = async () => {
-    const docKey = zustandStore.hostingId;
-    onSnapshot(doc(database, `host/${docKey}`), (doc) => {
-      const data = doc.data();
-      const id = doc.id;
-      if (data) {
-        // if (data.player2) {
-        //   setPlayer2(data.player2.position);
-        // }
-        // if (data.player1) {
-        //   setPlayer1(data.player1.position);
-        // }
-        setPlayer1(data.player1Position);
-        setPlayer2(data.player2Position);
-      }
-    });
-  };
-
   useEffect(() => {
     getUserById();
   }, []);
 
-  // useEffect(() => {
-  //   if (zustandStore) {
-  //     getPlayerPosition();
-  //   }
-  // }, [loader]);
-
-  //if (userData) {console.log("hamedkabir role  ", userData.role);}
-  //if (zustandStore) {console.log("hamedkabir hosting id  ", zustandStore.hostingId);}
+  useEffect(() => {
+    getPlayerPaintSizeAndColor();
+  }, []);
 
   function rangeValueText(value: number) {
+    updatePlayerPaintSize(value);
     return `${value}`;
   }
+
+  const updatePlayerPaintSize = async (value: number) => {
+    const docRef = doc(database, `host/${hostID}`);
+    if (email === emailUser1) {
+      await updateDoc(docRef, {
+        player2PaintSize: value,
+      });
+    } else {
+      await updateDoc(docRef, {
+        player1PaintSize: value,
+      });
+    }
+  };
+
+  const getPlayerPaintSizeAndColor = async () => {
+    onSnapshot(doc(database, `host/${hostID}`), (doc) => {
+      const data = doc.data();
+      if (data) {
+        setPainterSize1(data.player1PaintSize);
+        setPainterSize2(data.player2PaintSize);
+        setColorPlayer1(data.player1Color);
+        setColorPlayer2(data.player2Color);
+      }
+    });
+  };
 
   const handleChangeSize = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       email === emailUser1
         ? setPainterSize2(newValue as number)
         : setPainterSize1(newValue as number);
+    }
+  };
+
+  const handleColorChange = (event: any) => {
+    console.log(event);
+
+    const obj: IColor = {
+      hex: event.hex,
+      hsv: {
+        a: event.hsv.a ? event.hsv.a : null,
+        h: event.hsv.h,
+        s: event.hsv.s,
+        v: event.hsv.v,
+      },
+      rgb: {
+        a: event.rgb.a ? event.rgb.a : null,
+        b: event.rgb.b,
+        g: event.rgb.g,
+        r: event.rgb.r,
+      },
+    };
+    updatePlayerPaintColor(obj);
+  };
+
+  const updatePlayerPaintColor = async (value: any) => {
+    const docRef = doc(database, `host/${hostID}`);
+    if (email === emailUser1) {
+      await updateDoc(docRef, {
+        player2Color: value,
+      });
+    } else {
+      await updateDoc(docRef, {
+        player1Color: value,
+      });
     }
   };
 
@@ -212,7 +159,8 @@ const PaintXR = () => {
             width={320}
             height={228}
             color={email === emailUser1 ? colorPlayer2 : colorPlayer1}
-            onChange={email === emailUser1 ? setColorPlayer2 : setColorPlayer1}
+            // onChange={email === emailUser1 ? setColorPlayer2 : setColorPlayer1}
+            onChange={handleColorChange}
             hideHSV
             dark
           />
@@ -264,27 +212,18 @@ const PaintXR = () => {
         </Grid>
       </Paper>
 
-      {/*
-      {userData ? <ARButton></ARButton> : null}
-      <Button className="hamedkabir" size="large" variant="contained">
-        Bereit
-      </Button> */}
-
       <Canvas>
         <XR>
-          {/* <Button onClick={handleClick} position={[0, 0, -5]} scale={[2, 2, 2]}>
-            Click me
-          </Button> */}
           {userData ? (
             userData.role === "admin" ? (
               <Painter1
-                hostingId={"wIhLoGlmpsvybeI7geuH"}
+                hostingId={hostID}
                 color={colorPlayer1.hex}
                 size={painterSize1}
               ></Painter1>
             ) : userData.role === "player" ? (
               <Painter2
-                hostingId={"wIhLoGlmpsvybeI7geuH"}
+                hostingId={hostID}
                 color={colorPlayer2.hex}
                 size={painterSize2}
               ></Painter2>
