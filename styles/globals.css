@@ -51,9 +51,13 @@ a {
   z-index: 9;
 }
 
+.navbar {
+  display: none;
+}
+
 @media only screen and (max-width: 425px) {
   .navbar {
-    display: none;
+    display: inline;
   }
 }
 

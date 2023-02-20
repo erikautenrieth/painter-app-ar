@@ -190,10 +190,10 @@ const PaintXR = () => {
   }
 
   const handleChangeSize = (event: Event, newValue: number | number[]) => {
-    if (typeof newValue === 'number') {
+    if (typeof newValue === "number") {
       email === emailUser1
-          ? setPainterSize2(newValue as number)
-          : setPainterSize1(newValue as number)
+        ? setPainterSize2(newValue as number)
+        : setPainterSize1(newValue as number);
     }
   };
 
@@ -278,13 +278,13 @@ const PaintXR = () => {
           {userData ? (
             userData.role === "admin" ? (
               <Painter1
-                hostingId={"C40TA8sCawBJm8GwJzsv"}
+                hostingId={"wIhLoGlmpsvybeI7geuH"}
                 color={colorPlayer1.hex}
                 size={painterSize1}
               ></Painter1>
             ) : userData.role === "player" ? (
               <Painter2
-                hostingId={"C40TA8sCawBJm8GwJzsv"}
+                hostingId={"wIhLoGlmpsvybeI7geuH"}
                 color={colorPlayer2.hex}
                 size={painterSize2}
               ></Painter2>
