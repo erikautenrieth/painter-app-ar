@@ -108,6 +108,7 @@ const Painter1: React.FC<Props> = ({
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
     controller.userData.painter = painter;
+    controller.userData.painter2 = painterPlayer2;
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
@@ -123,6 +124,7 @@ const Painter1: React.FC<Props> = ({
     if (ctl) {
       const userData = ctl.userData;
       const painter = userData.painter;
+      const painter2 = userData.painter2;
 
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
       if (userDataSelecting) {
@@ -155,6 +157,21 @@ const Painter1: React.FC<Props> = ({
           arrayOfPositionPlayer1.push(object);
         }
       }
+
+      // if (indexOfArrayPositions < arrayOfPositionPlayer2.length) {
+      //   cursor.set(
+      //     arrayOfPositionPlayer2[indexOfArrayPositions].x,
+      //     arrayOfPositionPlayer2[indexOfArrayPositions].y,
+      //     arrayOfPositionPlayer2[indexOfArrayPositions].z
+      //   );
+      //   if (arrayOfPositionPlayer2[indexOfArrayPositions].type == "move") {
+      //     painter2.moveTo(cursor);
+      //   } else {
+      //     painter2.lineTo(cursor);
+      //     painter2.update();
+      //   }
+      //   indexOfArrayPositions++;
+      // }
     }
   };
 
@@ -168,9 +185,10 @@ const Painter1: React.FC<Props> = ({
     }
   };
 
-  const paintFromDB = () => {
+  const paintFromDB = (painterObj: any) => {
     if (indexOfArrayPositions < arrayOfPositionPlayer2.length) {
-      const painter = painterPlayer2;
+      const userData = painterObj.userData;
+      const painter = userData.painter2;
       cursor.set(
         arrayOfPositionPlayer2[indexOfArrayPositions].x,
         arrayOfPositionPlayer2[indexOfArrayPositions].y,
@@ -183,7 +201,7 @@ const Painter1: React.FC<Props> = ({
         painter.update();
       }
       indexOfArrayPositions++;
-      paintFromDB();
+      paintFromDB(painterObj);
     } else {
       cursor.set(0, 0, -0.2);
       painter.moveTo(cursor);
@@ -216,7 +234,11 @@ const Painter1: React.FC<Props> = ({
     init();
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
-        paintFromDB();
+        if (controller) {
+          console.log("hamedkabir");
+
+          paintFromDB(controller);
+        }
       }
     }
   }, [arrayOfPositionPlayer2, painterPlayer2]);
