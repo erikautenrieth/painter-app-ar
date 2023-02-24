@@ -81,10 +81,10 @@ const Painter1: React.FC<Props> = ({
     scene.add(painter.mesh);
 
     painterPlayer2 = new TubePainter();
-    painterPlayer2.setSize(sizePlayer2);
+    painterPlayer2.setSize(paintSizePlayer2);
     painterPlayer2.mesh.material.side = THREE.DoubleSide;
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
-      color: colorPlayer2.hex.slice(0, 7),
+      color: paintColorPlayer2?.hex.slice(0, 7),
     });
     scene.add(painterPlayer2.mesh);
 
@@ -153,21 +153,6 @@ const Painter1: React.FC<Props> = ({
           arrayOfPositionPlayer1.push(object);
         }
       }
-
-      // if (indexOfArrayPositions < arrayOfPositionPlayer2.length) {
-      //   cursor.set(
-      //     arrayOfPositionPlayer2[indexOfArrayPositions].x,
-      //     arrayOfPositionPlayer2[indexOfArrayPositions].y,
-      //     arrayOfPositionPlayer2[indexOfArrayPositions].z
-      //   );
-      //   if (arrayOfPositionPlayer2[indexOfArrayPositions].type == "move") {
-      //     painter2.moveTo(cursor);
-      //   } else {
-      //     painter2.lineTo(cursor);
-      //     painter2.update();
-      //   }
-      //   indexOfArrayPositions++;
-      // }
     }
   };
 
@@ -227,7 +212,7 @@ const Painter1: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    init();
+    init(colorPlayer2, sizePlayer2);
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
         if (controller) {
