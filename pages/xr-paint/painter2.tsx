@@ -29,7 +29,7 @@ const Painter2: React.FC<Props> = ({
 }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
-  let controller: any, controllerPlayer1: any;
+  let controller: any;
   let painter: any, painterPlayer1: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
@@ -54,11 +54,10 @@ const Painter2: React.FC<Props> = ({
     }[]
   >([]);
 
-  let indexOfArrayPositions: number = 0;
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
 
-  const init = (paintColorPlayer1?: IColor, paintSizePlayer1?: number) => {
+  const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
       window.innerWidth / window.innerHeight,
@@ -82,10 +81,10 @@ const Painter2: React.FC<Props> = ({
     scene.add(painter.mesh);
 
     painterPlayer1 = new TubePainter();
-    painterPlayer1.setSize(paintSizePlayer1);
+    painterPlayer1.setSize(sizePlayer1);
     painterPlayer1.mesh.material.side = THREE.DoubleSide;
     painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
-      color: paintColorPlayer1?.hex.slice(0, 7),
+      color: colorPlayer1?.hex.slice(0, 7),
     });
     scene.add(painterPlayer1.mesh);
 
@@ -105,7 +104,6 @@ const Painter2: React.FC<Props> = ({
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
     controller.userData.painter = painter;
-    controller.userData.painter1 = painterPlayer1;
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
@@ -121,7 +119,6 @@ const Painter2: React.FC<Props> = ({
     if (ctl) {
       const userData = ctl.userData;
       const painter = userData.painter;
-      const painter1 = userData.painter1;
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
 
       if (userDataSelecting === true) {
@@ -166,25 +163,24 @@ const Painter2: React.FC<Props> = ({
     }
   };
 
-  function paintFromDB(painterObj: any) {
-    const userData = painterObj.userData;
-    const painterToUse = userData.painter1;
-    if (indexOfArrayPositions < arrayOfPositionPlayer1.length) {
-      const position = arrayOfPositionPlayer1[indexOfArrayPositions];
-      cursor.set(position.x, position.y, position.z);
-      if (position.type == "move") {
-        painterToUse.moveTo(cursor);
-      } else {
-        painterToUse.lineTo(cursor);
-        painterToUse.update();
-      }
-      indexOfArrayPositions++;
-      paintFromDB(painterObj);
-    } else {
-      cursor.set(0, 0, -0.2);
+  function paintFromDB(positionObj: any) {
+    const painterToUse = painterPlayer1;
+    const position = positionObj;
+
+    cursor.set(position.x, position.y, position.z);
+    if (position.type === "move") {
       painterToUse.moveTo(cursor);
     }
+
+    if (position.type === "line") {
+      painterToUse.lineTo(cursor);
+      painterToUse.update();
+    }
   }
+  const setCursorToLastPosition = (x: number, y: number, z: number) => {
+    cursor.set(x, y, z);
+    painterPlayer1.moveTo(cursor);
+  };
 
   /**
    * this method read player position from document and array
@@ -209,28 +205,29 @@ const Painter2: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    init(colorPlayer1, sizePlayer1);
+    init();
     if (painterPlayer1) {
       if (arrayOfPositionPlayer1) {
-        if (controller) {
-          console.log("hamedkabir");
-          for (
-            let index = indexOfArrayPositionsT;
-            index < arrayOfPositionPlayer1.length;
-            index++
-          ) {
-            setIndexOfArrayPositions(index);
+        if (arrayOfPositionPlayer1.length !== 0) {
+          if (indexOfArrayPositionsT < arrayOfPositionPlayer1.length) {
+            setCursorToLastPosition(
+              arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].x,
+              arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].y,
+              arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].z
+            );
+            for (
+              let index = indexOfArrayPositionsT + 2;
+              index < arrayOfPositionPlayer1.length;
+              index++
+            ) {
+              paintFromDB(arrayOfPositionPlayer1[index]);
+            }
+            setIndexOfArrayPositions(arrayOfPositionPlayer1.length);
           }
-          console.log(
-            "test",
-            indexOfArrayPositionsT,
-            arrayOfPositionPlayer1.length
-          );
-          paintFromDB(controller);
         }
       }
     }
-  }, [arrayOfPositionPlayer1, painterPlayer1]);
+  }, [arrayOfPositionPlayer1]);
 
   useFrame(() => {
     if (controller) {

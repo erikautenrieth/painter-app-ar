@@ -104,7 +104,6 @@ const Painter1: React.FC<Props> = ({
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
     controller.userData.painter = painter;
-    controller.userData.painter2 = painterPlayer2;
     scene.add(controller);
 
     window.addEventListener("resize", onWindowResize);
@@ -120,11 +119,9 @@ const Painter1: React.FC<Props> = ({
     if (ctl) {
       const userData = ctl.userData;
       const painter = userData.painter;
-      const painter2 = userData.painter2;
 
       cursor.set(0, 0, -0.2).applyMatrix4(ctl.matrixWorld);
-      if (userDataSelecting) {
-      }
+
       if (userDataSelecting === true) {
         if (userData.skipFrames >= -2) {
           userData.skipFrames--;
@@ -167,27 +164,22 @@ const Painter1: React.FC<Props> = ({
   };
 
   const paintFromDB = (positionObj: any) => {
-    console.log("Hamedkabir painter Object", positionObj);
     const painterToUse = painterPlayer2;
     const position = positionObj;
 
     cursor.set(position.x, position.y, position.z);
     if (position.type === "move") {
       painterToUse.moveTo(cursor);
-    } else {
+    }
+
+    if (position.type === "line") {
       painterToUse.lineTo(cursor);
       painterToUse.update();
     }
   };
-
-  const paintFromDBReset = () => {
-    cursor.set(0, 0, -0.2);
+  const setCursorToLastPosition = (x: number, y: number, z: number) => {
+    cursor.set(x, y, z);
     painterPlayer2.moveTo(cursor);
-  };
-
-  const resetPainterPlayer2Array = () => {
-    setArrayOfPositionPlayer2([]);
-    setIndexOfArrayPositions(0);
   };
 
   /**
@@ -216,17 +208,26 @@ const Painter1: React.FC<Props> = ({
     init();
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
-        for (
-          let index = indexOfArrayPositionsT + 1;
-          index < arrayOfPositionPlayer2.length - 1;
-          index++
-        ) {
-          paintFromDB(arrayOfPositionPlayer2[index]);
-          setIndexOfArrayPositions((prev) => prev + 1);
+        if (arrayOfPositionPlayer2.length !== 0) {
+          if (indexOfArrayPositionsT < arrayOfPositionPlayer2.length) {
+            setCursorToLastPosition(
+              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].x,
+              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].y,
+              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].z
+            );
+            for (
+              let index = indexOfArrayPositionsT + 2;
+              index < arrayOfPositionPlayer2.length;
+              index++
+            ) {
+              paintFromDB(arrayOfPositionPlayer2[index]);
+            }
+            setIndexOfArrayPositions(arrayOfPositionPlayer2.length);
+          }
         }
       }
     }
-  }, [arrayOfPositionPlayer2, painterPlayer2]);
+  }, [arrayOfPositionPlayer2]);
   useFrame(() => {
     if (controller) {
       handleController(controller);
