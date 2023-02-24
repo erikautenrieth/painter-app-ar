@@ -55,8 +55,9 @@ const Painter1: React.FC<Props> = ({
     }[]
   >([]);
 
+  const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
+    useState<number>(0);
   let indexOfArrayPositions: number = 0;
-
   const init = (paintColorPlayer2?: IColor, paintSizePlayer2?: number) => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -166,26 +167,25 @@ const Painter1: React.FC<Props> = ({
     }
   };
 
-  const paintFromDB = (painterObj: any) => {
+  const paintFromDB = (painterObj: any, positionObj: any) => {
+    const userData = painterObj.userData;
+    const painterToUse = userData.painter2;
+    // const painterToUse = painterPlayer2;
     if (indexOfArrayPositions < arrayOfPositionPlayer2.length) {
-      const userData = painterObj.userData;
-      const painter = userData.painter2;
-      cursor.set(
-        arrayOfPositionPlayer2[indexOfArrayPositions].x,
-        arrayOfPositionPlayer2[indexOfArrayPositions].y,
-        arrayOfPositionPlayer2[indexOfArrayPositions].z
-      );
-      if (arrayOfPositionPlayer2[indexOfArrayPositions].type == "move") {
-        painter.moveTo(cursor);
+      const position = positionObj;
+
+      cursor.set(position.x, position.y, position.z);
+      if (position.type == "move") {
+        painterToUse.moveTo(cursor);
       } else {
-        painter.lineTo(cursor);
-        painter.update();
+        painterToUse.lineTo(cursor);
+        painterToUse.update();
       }
-      indexOfArrayPositions++;
-      paintFromDB(painterObj);
+      // indexOfArrayPositions++;
+      // paintFromDB(painterObj);
     } else {
       cursor.set(0, 0, -0.2);
-      painter.moveTo(cursor);
+      painterToUse.moveTo(cursor);
     }
   };
 
@@ -216,9 +216,19 @@ const Painter1: React.FC<Props> = ({
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
         if (controller) {
-          console.log("hamedkabir");
-
-          paintFromDB(controller);
+          for (
+            let index = indexOfArrayPositionsT;
+            index < arrayOfPositionPlayer2.length;
+            index++
+          ) {
+            paintFromDB(controller, arrayOfPositionPlayer2[index]);
+            setIndexOfArrayPositions(index);
+          }
+          console.log(
+            "test",
+            indexOfArrayPositionsT,
+            arrayOfPositionPlayer2.length
+          );
         }
       }
     }

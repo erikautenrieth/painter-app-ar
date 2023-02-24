@@ -55,6 +55,8 @@ const Painter2: React.FC<Props> = ({
   >([]);
 
   let indexOfArrayPositions: number = 0;
+  const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
+    useState<number>(0);
 
   const init = (paintColorPlayer1?: IColor, paintSizePlayer1?: number) => {
     camera = new THREE.PerspectiveCamera(
@@ -165,25 +167,22 @@ const Painter2: React.FC<Props> = ({
   };
 
   function paintFromDB(painterObj: any) {
+    const userData = painterObj.userData;
+    const painterToUse = userData.painter1;
     if (indexOfArrayPositions < arrayOfPositionPlayer1.length) {
-      const userData = painterObj.userData;
-      const painter = userData.painter1;
-      cursor.set(
-        arrayOfPositionPlayer1[indexOfArrayPositions].x,
-        arrayOfPositionPlayer1[indexOfArrayPositions].y,
-        arrayOfPositionPlayer1[indexOfArrayPositions].z
-      );
-      if (arrayOfPositionPlayer1[indexOfArrayPositions].type == "move") {
-        painter.moveTo(cursor);
+      const position = arrayOfPositionPlayer1[indexOfArrayPositions];
+      cursor.set(position.x, position.y, position.z);
+      if (position.type == "move") {
+        painterToUse.moveTo(cursor);
       } else {
-        painter.lineTo(cursor);
-        painter.update();
+        painterToUse.lineTo(cursor);
+        painterToUse.update();
       }
       indexOfArrayPositions++;
       paintFromDB(painterObj);
     } else {
       cursor.set(0, 0, -0.2);
-      painter.moveTo(cursor);
+      painterToUse.moveTo(cursor);
     }
   }
 
@@ -215,7 +214,18 @@ const Painter2: React.FC<Props> = ({
       if (arrayOfPositionPlayer1) {
         if (controller) {
           console.log("hamedkabir");
-
+          for (
+            let index = indexOfArrayPositionsT;
+            index < arrayOfPositionPlayer1.length;
+            index++
+          ) {
+            setIndexOfArrayPositions(index);
+          }
+          console.log(
+            "test",
+            indexOfArrayPositionsT,
+            arrayOfPositionPlayer1.length
+          );
           paintFromDB(controller);
         }
       }
