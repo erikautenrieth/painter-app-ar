@@ -57,8 +57,7 @@ const Painter1: React.FC<Props> = ({
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
-  let indexOfArrayPositions: number = 0;
-  const init = (paintColorPlayer2?: IColor, paintSizePlayer2?: number) => {
+  const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
       window.innerWidth / window.innerHeight,
@@ -82,10 +81,10 @@ const Painter1: React.FC<Props> = ({
     scene.add(painter.mesh);
 
     painterPlayer2 = new TubePainter();
-    painterPlayer2.setSize(paintSizePlayer2);
+    painterPlayer2.setSize(sizePlayer2);
     painterPlayer2.mesh.material.side = THREE.DoubleSide;
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
-      color: paintColorPlayer2?.hex.slice(0, 7),
+      color: colorPlayer2?.hex.slice(0, 7),
     });
     scene.add(painterPlayer2.mesh);
 
@@ -169,8 +168,6 @@ const Painter1: React.FC<Props> = ({
 
   const paintFromDB = (positionObj: any) => {
     console.log("Hamedkabir painter Object", positionObj);
-    // const userData = controller.userData;
-    // const painterToUse = userData.painter2;
     const painterToUse = painterPlayer2;
     const position = positionObj;
 
@@ -186,6 +183,11 @@ const Painter1: React.FC<Props> = ({
   const paintFromDBReset = () => {
     cursor.set(0, 0, -0.2);
     painterPlayer2.moveTo(cursor);
+  };
+
+  const resetPainterPlayer2Array = () => {
+    setArrayOfPositionPlayer2([]);
+    setIndexOfArrayPositions(0);
   };
 
   /**
@@ -211,23 +213,17 @@ const Painter1: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    init(colorPlayer2, sizePlayer2);
+    init();
     if (painterPlayer2) {
       if (arrayOfPositionPlayer2) {
         for (
-          let index = indexOfArrayPositionsT;
-          index < arrayOfPositionPlayer2.length;
+          let index = indexOfArrayPositionsT + 1;
+          index < arrayOfPositionPlayer2.length - 1;
           index++
         ) {
           paintFromDB(arrayOfPositionPlayer2[index]);
           setIndexOfArrayPositions((prev) => prev + 1);
         }
-
-        console.log(
-          "test",
-          indexOfArrayPositionsT,
-          arrayOfPositionPlayer2.length
-        );
       }
     }
   }, [arrayOfPositionPlayer2, painterPlayer2]);
