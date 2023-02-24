@@ -18,12 +18,14 @@ type Props = {
   color: IColor;
   colorPlayer1: IColor;
   size: number;
+  sizePlayer1: number;
 };
 const Painter2: React.FC<Props> = ({
   hostingId,
   color,
   colorPlayer1,
   size,
+  sizePlayer1,
 }: Props) => {
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
@@ -37,7 +39,7 @@ const Painter2: React.FC<Props> = ({
       y: number;
       z: number;
       type: string;
-      color: any;
+      color: IColor;
       size: number;
     }[]
   >([]);
@@ -47,20 +49,14 @@ const Painter2: React.FC<Props> = ({
       y: number;
       z: number;
       type: "move" | "line";
-      color: any;
+      color: IColor;
       size: number;
     }[]
   >([]);
 
   let indexOfArrayPositions: number = 0;
 
-  const defaultColorPlayer1: number = 0x00ff00;
-  const defaultColorPlayer2: number = 0xf2bb07;
-
-  const defaultPaintSizePlayer1: number = 0.4;
-  const defaultPaintSizePlayer2: number = 0.4;
-
-  const init = () => {
+  const init = (paintColorPlayer1?: IColor, paintSizePlayer1?: number) => {
     camera = new THREE.PerspectiveCamera(
       70,
       window.innerWidth / window.innerHeight,
@@ -84,7 +80,7 @@ const Painter2: React.FC<Props> = ({
     scene.add(painter.mesh);
 
     painterPlayer1 = new TubePainter();
-    painterPlayer1.setSize(defaultPaintSizePlayer1);
+    painterPlayer1.setSize(sizePlayer1);
     painterPlayer1.mesh.material.side = THREE.DoubleSide;
     painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
       color: colorPlayer1.hex.slice(0, 7),

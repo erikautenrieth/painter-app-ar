@@ -215,6 +215,7 @@ const PaintXR = () => {
                 color={colorPlayer1}
                 colorPlayer2={colorPlayer2}
                 size={painterSize1}
+                sizePlayer2={painterSize2}
               ></Painter1>
             ) : userData.role === "player" ? (
               <Painter2
@@ -222,6 +223,7 @@ const PaintXR = () => {
                 color={colorPlayer2}
                 colorPlayer1={colorPlayer1}
                 size={painterSize2}
+                sizePlayer1={painterSize1}
               ></Painter2>
             ) : null
           ) : null}
