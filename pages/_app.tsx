@@ -8,7 +8,7 @@ import "bulma/css/bulma.min.css";
 import "../styles/globals.css";
 import "../styles/main.scss";
 
-const noAuthRequired = ["/", "/landingpage", "/login", "/xr-paint"];
+const noAuthRequired = ["/", "/landingpage", "/login"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();

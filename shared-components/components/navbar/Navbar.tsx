@@ -7,11 +7,11 @@ const Navbar = () => {
   const { user, login, logOut } = useAuth();
   return (
     <>
-      <div className="sidemenu">
+      {/* <div className="sidemenu">
 
-      </div>
+      </div> */}
+      <Sidemenu />
       <nav className="navbar">
-        <Sidemenu />
         <div id="navbarMenu" className="navbar-menu">
           <Link href="/landingpage">
             <a className="navbar-item  is-size-5 has-text-weight-semibold">

@@ -29,11 +29,28 @@ import {
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import Playeranimation from "./playeranimation";
+import { useColor } from "react-color-palette";
 
 export type IPosition = {
   x: number;
   y: number;
   z: number;
+};
+
+export type IColor = {
+  hex: string;
+  hsv: {
+    a?: number | null;
+    h: number;
+    s: number;
+    v: number;
+  };
+  rgb: {
+    a?: number | null;
+    b: number;
+    g: number;
+    r: number;
+  };
 };
 export type IHost = {
   player1Ready: boolean;
@@ -41,8 +58,15 @@ export type IHost = {
   createdAt: Date;
   player1Position: IPosition[];
   player2Position: IPosition[];
+  player1Color: IColor;
+  player2Color: IColor;
+  player1PaintSize: number;
+  player2PaintSize: number;
 };
 const HostingPage = () => {
+  const [colorPlayer1, setColorPlayer1] = useColor("hex", "#dad810");
+  const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
+
   const router = useRouter();
   const [userRole, setUserRole] = useState<any>("admin");
   const [userState, setUserState] = useState<any>(false);
@@ -163,12 +187,25 @@ const HostingPage = () => {
   // eine Methode direkt nach dem Admin bei der Seite ankommt ein Host automatisch erstellt wird
   const createHost = async () => {
     const docCollection = collection(database, "host");
+    const objColor1: IColor = colorPlayer1;
+    objColor1.hex += "e00";
+    objColor1.rgb.a = null;
+    objColor1.hsv.a = null;
+
+    const objColor2: IColor = colorPlayer2;
+    objColor2.hex += "e00";
+    objColor2.rgb.a = null;
+    objColor2.hsv.a = null;
     const hostObject: IHost = {
       player1Ready: false,
       player2Ready: false,
       createdAt: new Date(),
       player1Position: [],
       player2Position: [],
+      player1Color: objColor1,
+      player2Color: objColor2,
+      player1PaintSize: 0.4,
+      player2PaintSize: 0.4,
     };
     await addDoc(docCollection, hostObject).then(
       (res) => {

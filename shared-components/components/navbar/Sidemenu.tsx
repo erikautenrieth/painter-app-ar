@@ -4,7 +4,7 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAuth } from "shared-components/services/auth-context";
 
-export default function Sidemenu() {
+const Sidemenu = () => {
   const [sidemenuClick, setSidemenuClick] = useState<boolean>(false);
   const { user, login, logOut } = useAuth();
   function navbarIsClicked() {
@@ -93,4 +93,6 @@ export default function Sidemenu() {
       ) : null}
     </div>
   );
-}
+};
+
+export default Sidemenu;
