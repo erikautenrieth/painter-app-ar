@@ -24,7 +24,8 @@ export default function Login() {
   const handleLogin = async (e: any) => {
     e.preventDefault();
     try {
-      await login(data.email, data.password);
+      const test = await login(data.email, data.password);
+
       goToPage("/home");
     } catch (err) {
       console.log(err);
