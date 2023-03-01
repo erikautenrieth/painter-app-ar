@@ -41,3 +41,5 @@ android
 ios
 firebase-debug.log
 .env
+.yarn/install-state.gz
+.yarnrc.yml
