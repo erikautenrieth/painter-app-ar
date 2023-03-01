@@ -119,7 +119,7 @@ const HostingPage = () => {
 
       await deleteDoc(docRef).then(
         () => {
-          console.log("host by id removed  ");
+          // console.log("host by id removed  ");
         },
         (error) => {
           console.log("host couldn,t remove by error   ", error);
@@ -165,7 +165,6 @@ const HostingPage = () => {
         if (data) {
           setHostingData({ id, ...data });
           zustandStore.setHostingId(id);
-          // console.log("hamedkabir  ", zustandStore);
         }
       });
     }
@@ -175,7 +174,7 @@ const HostingPage = () => {
     const docCollection = collection(database, "host");
     await getDocs(docCollection).then((data) => {
       if (data.docs.length > 0) {
-        console.log("host already exist");
+        // console.log("host already exist");
       } else {
         if (userRole == "admin") {
           createHost();
@@ -209,7 +208,7 @@ const HostingPage = () => {
     };
     await addDoc(docCollection, hostObject).then(
       (res) => {
-        console.log("Host created successfully!");
+        // console.log("Host created successfully!");
         setCreateHost(true);
       },
       (error) => {
@@ -459,7 +458,7 @@ const HostingPage = () => {
           </Paper>
         </>
       ) : (
-        <h1>Please wait of host ...</h1>
+        <h1 className="m-t-200x m-l-20x">Please wait of host ...</h1>
       )}
     </>
   );

@@ -44,7 +44,7 @@ const PaintXR = () => {
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
-  const hostID: string = "sqLRvmp5OBxI9wQpjyCF";
+  const hostID: string | undefined = zustandStore.hostingId;
 
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
@@ -105,8 +105,6 @@ const PaintXR = () => {
   };
 
   const handleColorChange = (event: any) => {
-    console.log(event);
-
     const obj: IColor = {
       hex: event.hex,
       hsv: {

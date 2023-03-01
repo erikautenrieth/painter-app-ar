@@ -11,7 +11,6 @@ export const getUserById = async () => {
   if (docSnap.exists()) {
     const data = docSnap.data();
     data.id = docSnap.id;
-    console.log("hamedkabir  ", data);
 
     setUserData(data);
   }

@@ -7,7 +7,6 @@ import React from "react";
 
 export default function Home() {
   const { user } = useAuth();
-  console.log("user   ", user);
   const router = useRouter();
   const navigateToPage = (href: string) => {
     router.push(href);

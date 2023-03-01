@@ -62,7 +62,6 @@ function Box(props: ThreeElements["mesh"]) {
 
 const test = () => {
   const zustandStore = ZustandStore();
-  console.log("hamedkabir   ", zustandStore.hostingId);
 
   return (
     <div className="containerCanva">

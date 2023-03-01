@@ -11,7 +11,6 @@ const Model = ({ url }: { url: string }) => {
     new FBXLoader().load(url, (object) => {
       object.scale.set(2.5, 2.5, 2.5);
       object.position.set(0, -3, 0);
-      console.log(object.children);
       // Farbe des Modells ändern
       object.traverse(function (child) {
         if (child instanceof THREE.Mesh) {

@@ -37,7 +37,6 @@ export const AuthContextProvider = ({
           email: user.email,
           uid: user.uid,
         });
-        console.log("login event", user);
       } else {
         setUser({ email: null, uid: null });
         console.log("logout event");

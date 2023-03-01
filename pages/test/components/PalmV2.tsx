@@ -67,8 +67,6 @@ const Palm2: React.FC<props> = ({ boundary, count }) => {
           maxChildZ
         )
       ) {
-        console.log("Content box overlapping!   ", palm.position);
-
         return true;
       }
     }
