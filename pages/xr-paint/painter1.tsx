@@ -9,8 +9,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { IColor } from "pages/hosting-page/[hostingId]";
 import { useEffect, useState } from "react";
+import { IColor } from "shared-components/interfaces/host.interface";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
@@ -231,7 +231,9 @@ const Painter1: React.FC<Props> = ({
   useFrame(() => {
     if (controller) {
       handleController(controller);
-      gl.render(scene, camera);
+      if (gl) {
+        gl.render(scene, camera);
+      }
     }
   });
   return <></>;

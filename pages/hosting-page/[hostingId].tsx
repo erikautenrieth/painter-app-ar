@@ -30,39 +30,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import Playeranimation from "./playeranimation";
 import { useColor } from "react-color-palette";
+import { IColor, IHost } from "shared-components/interfaces/host.interface";
 
-export type IPosition = {
-  x: number;
-  y: number;
-  z: number;
-};
-
-export type IColor = {
-  hex: string;
-  hsv: {
-    a?: number | null;
-    h: number;
-    s: number;
-    v: number;
-  };
-  rgb: {
-    a?: number | null;
-    b: number;
-    g: number;
-    r: number;
-  };
-};
-export type IHost = {
-  player1Ready: boolean;
-  player2Ready: boolean;
-  createdAt: Date;
-  player1Position: IPosition[];
-  player2Position: IPosition[];
-  player1Color: IColor;
-  player2Color: IColor;
-  player1PaintSize: number;
-  player2PaintSize: number;
-};
 const HostingPage = () => {
   const [colorPlayer1, setColorPlayer1] = useColor("hex", "#dad810");
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");

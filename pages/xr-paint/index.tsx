@@ -23,8 +23,8 @@ import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 import Navbar from "../../shared-components/components/navbar/Navbar";
 import { async } from "@firebase/util";
-import { IColor, IHost } from "pages/hosting-page/[hostingId]";
 import { Color } from "three/src/Three";
+import { IColor } from "shared-components/interfaces/host.interface";
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
@@ -44,8 +44,10 @@ const PaintXR = () => {
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
-  const hostID: string | undefined = zustandStore.hostingId;
+  const hostID2: string | undefined = zustandStore.hostingId;
 
+  // Q9oLV94mYhny8JO4A3s1
+  const hostID: string | undefined = "Q9oLV94mYhny8JO4A3s1";
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
     const docSnap = await getDoc(docRef);
