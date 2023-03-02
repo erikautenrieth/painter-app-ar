@@ -1,16 +1,9 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { database } from "config/firebase";
-import {
-  addDoc,
-  collection,
-  doc,
-  onSnapshot,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { IColor } from "shared-components/interfaces/host.interface";
+import { IPainter } from "shared-components/interfaces/painter.interface";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
@@ -34,25 +27,9 @@ const Painter1: React.FC<Props> = ({
   let painter: any, painterPlayer2: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  const [arrayOfPositionPlayer1] = useState<
-    {
-      x: number;
-      y: number;
-      z: number;
-      type: string;
-      color: IColor;
-      size: number;
-    }[]
-  >([]);
+  const [arrayOfPositionPlayer1] = useState<IPainter[]>([]);
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
-    {
-      x: number;
-      y: number;
-      z: number;
-      type: "move" | "line";
-      color: IColor;
-      size: number;
-    }[]
+    IPainter[]
   >([]);
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
@@ -99,12 +76,18 @@ const Painter1: React.FC<Props> = ({
       setUserDataSelecting(false);
       updatePlayerPosition();
     }
-    controller = gl.xr.getController(0);
-    controller.addEventListener("selectstart", onSelectStart);
-    controller.addEventListener("selectend", onSelectEnd);
-    controller.userData.skipFrames = 0;
-    controller.userData.painter = painter;
-    scene.add(controller);
+    if (gl) {
+      if (gl.xr) {
+        if (gl.xr.getController(0)) {
+          controller = gl.xr.getController(0);
+          controller.addEventListener("selectstart", onSelectStart);
+          controller.addEventListener("selectend", onSelectEnd);
+          controller.userData.skipFrames = 0;
+          controller.userData.painter = painter;
+          scene.add(controller);
+        }
+      }
+    }
 
     window.addEventListener("resize", onWindowResize);
   };
@@ -127,25 +110,21 @@ const Painter1: React.FC<Props> = ({
           userData.skipFrames--;
 
           painter.moveTo(cursor);
-          const object = {
+          const object: IPainter = {
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
             type: "move",
-            color: color,
-            size: size,
           };
           arrayOfPositionPlayer1.push(object);
         } else {
           painter.lineTo(cursor);
           painter.update();
-          const object = {
+          const object: IPainter = {
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
             type: "line",
-            color: color,
-            size: size,
           };
           arrayOfPositionPlayer1.push(object);
         }
