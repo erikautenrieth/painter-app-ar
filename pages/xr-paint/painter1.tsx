@@ -1,4 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
+import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 import { database } from "config/firebase";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -28,9 +29,44 @@ const Painter1: React.FC<Props> = ({
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
   const [arrayOfPositionPlayer1] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_0] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_1] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_2] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_3] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_4] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_5] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_6] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_7] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_8] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_9] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_10] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_11] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_12] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_13] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_14] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_15] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer1_16] = useState<IPainter[]>([]);
+
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
     IPainter[]
   >([]);
+  const [arrayOfPositionPlayer2_0] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_1] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_2] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_3] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_4] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_5] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_6] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_7] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_8] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_9] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_10] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_11] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_12] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_13] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_14] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_15] = useState<IPainter[]>([]);
+  const [arrayOfPositionPlayer2_16] = useState<IPainter[]>([]);
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
@@ -74,7 +110,7 @@ const Painter1: React.FC<Props> = ({
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      updatePlayerPosition();
+      // updatePlayerPosition();
     }
     if (gl) {
       if (gl.xr) {
@@ -136,9 +172,21 @@ const Painter1: React.FC<Props> = ({
     if (arrayOfPositionPlayer1.length > 0) {
       const docKey = hostingId;
       const docRef = doc(database, `host/${docKey}`);
-      await updateDoc(docRef, {
-        player1Position: arrayOfPositionPlayer1,
-      });
+      if (arrayOfPositionPlayer1.length < 150) {
+        await updateDoc(docRef, {
+          player1Position: arrayOfPositionPlayer1,
+        });
+      }
+      if (arrayOfPositionPlayer1_0.length < 150) {
+        await updateDoc(docRef, {
+          player1Position_0: arrayOfPositionPlayer1_0,
+        });
+      }
+      if (arrayOfPositionPlayer1_1.length < 150) {
+        await updateDoc(docRef, {
+          player1Position_1: arrayOfPositionPlayer1_1,
+        });
+      }
     }
   };
 
@@ -207,6 +255,16 @@ const Painter1: React.FC<Props> = ({
       }
     }
   }, [arrayOfPositionPlayer2]);
+
+  const [isDown, setIsDown] = useState(false);
+
+  const handlePointerDown = () => {
+    setIsDown(true);
+  };
+
+  const handlePointerUp = () => {
+    setIsDown(false);
+  };
   useFrame(() => {
     if (controller) {
       handleController(controller);
@@ -214,8 +272,16 @@ const Painter1: React.FC<Props> = ({
         gl.render(scene, camera);
       }
     }
+    // console.log("hamedkabir  ", isDown);
+    if (isDown) {
+      // do something while the mouse button is down
+    }
   });
-  return <></>;
+  return (
+    <mesh onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+      {/* your mesh geometry and material */}
+    </mesh>
+  );
 };
 
 export default Painter1;

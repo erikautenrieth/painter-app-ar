@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ARButton, XR } from "@react-three/xr";
+import { ARButton, useXR, XR } from "@react-three/xr";
 import { database } from "config/firebase";
 import {
   collection,
@@ -138,6 +138,15 @@ const PaintXR = () => {
     }
   };
 
+  const { isPresenting } = useXR();
+  const handlePointerDown = (event: { buttons: number }) => {
+    if (isPresenting && event.buttons === 2) {
+      console.log("hamedkabir down");
+
+      // Hier können Sie Ihren Code ausführen, wenn der Benutzer in einer XR-Umgebung ist und mit der rechten Maustaste klickt
+    }
+  };
+
   return (
     <div className="containerCanva">
       <Navbar />
@@ -206,7 +215,7 @@ const PaintXR = () => {
         </Grid>
       </Paper>
 
-      <Canvas>
+      <Canvas onPointerDown={handlePointerDown}>
         <XR>
           {userData ? (
             userData.role === "admin" ? (
