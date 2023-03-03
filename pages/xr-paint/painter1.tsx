@@ -30,6 +30,20 @@ const Painter1: React.FC<Props> = ({
   let painter: any, painterPlayer2: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
+  const [arrayOfPositionPlayer1Prefix, setArrayOfPositionPlayer1Prefix] =
+    useState<number>(0);
+  const [arrayOfPositionPlayer1PreIndex, setArrayOfPositionPlayer1PreIndex] =
+    useState<number>(0);
+  const [
+    arrayOfPositionPlayer1CurrentIndex,
+    setArrayOfPositionPlayer1CurrentIndex,
+  ] = useState<number>(150);
+  const arrayOfPositionPlayer1StepIndex: number = 150;
+  const [testingHamedkabir] = useState<any[]>([
+    {
+      player1Position_0: [],
+    },
+  ]);
   const [arrayOfPositionPlayer1] = useState<IPainter[]>([]);
   const [arrayOfPositionPlayer1_0] = useState<IPainter[]>([]);
   const [arrayOfPositionPlayer1_1] = useState<IPainter[]>([]);
@@ -160,12 +174,16 @@ const Painter1: React.FC<Props> = ({
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      updatePlayerPosition();
+      setTimeout(() => {
+        updatePlayerPosition();
+        // updatePlayerPositionHandler();
+      }, 500);
     }
     if (gl) {
       if (gl.xr) {
         if (gl.xr.getController(0)) {
           controller = gl.xr.getController(0);
+
           controller.addEventListener("selectstart", onSelectStart);
           controller.addEventListener("selectend", onSelectEnd);
           controller.userData.skipFrames = 0;
@@ -219,47 +237,100 @@ const Painter1: React.FC<Props> = ({
   };
 
   const arrayOfPositionPlayer1Handler = async (obj: IPainter) => {
-    if (arrayOfPositionPlayer1.length < 150) {
-      arrayOfPositionPlayer1.push(obj);
-    }
-    if (
-      arrayOfPositionPlayer1.length >= 150 &&
-      arrayOfPositionPlayer1_0.length < 150
-    ) {
-      arrayOfPositionPlayer1_0.push(obj);
-    }
-    if (
-      arrayOfPositionPlayer1_0.length >= 150 &&
-      arrayOfPositionPlayer1_1.length < 150
-    ) {
-      arrayOfPositionPlayer1_1.push(obj);
+    // arrayOfPositionPlayer1.push(obj);
+    const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
+    if (testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName]) {
+      if (
+        testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName].length >=
+          arrayOfPositionPlayer1PreIndex &&
+        testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName].length <
+          arrayOfPositionPlayer1CurrentIndex
+      ) {
+        testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName].push(obj);
+      } else {
+        const prefix = arrayOfPositionPlayer1Prefix + 1;
+        setArrayOfPositionPlayer1Prefix(prefix);
+        const newKeyName = `player1Position_${prefix}`;
+        const testingObject: any = {
+          [newKeyName]: [],
+        };
+        testingObject[newKeyName].push(obj);
+        testingHamedkabir.push(testingObject);
+      }
     }
   };
 
-  const updatePlayerPosition = async () => {
-    if (arrayOfPositionPlayer1.length > 0) {
-      if (arrayOfPositionPlayer1.length < 150) {
-        await updateHostingDoc(hostingId, arrayOfPositionPlayer1, -1).catch(
-          (res) => console.log(res)
-        );
-      }
-      if (
-        arrayOfPositionPlayer1.length >= 150 &&
-        arrayOfPositionPlayer1_0.length < 150
-      ) {
-        await updateHostingDoc(hostingId, arrayOfPositionPlayer1_0, 0).catch(
-          (res) => console.log(res)
-        );
-      }
-      if (
-        arrayOfPositionPlayer1_0.length >= 150 &&
-        arrayOfPositionPlayer1_1.length < 150
-      ) {
-        await updateHostingDoc(hostingId, arrayOfPositionPlayer1_1, 1).catch(
-          (res) => console.log(res)
-        );
-      }
+  const updatePlayerPositionHandler = () => {
+    console.log("Prefix  ", arrayOfPositionPlayer1Prefix);
+
+    // let array: IPainter[] = [];
+    // if (
+    //   arrayOfPositionPlayer1.length >= arrayOfPositionPlayer1PreIndex &&
+    //   arrayOfPositionPlayer1.length < arrayOfPositionPlayer1CurrentIndex
+    // ) {
+    //   const keyName = `player1Position_${arrayOfPositionPlayer1PreIndex}`;
+    //   const testingObject = {
+    //     [keyName]: array,
+    //   };
+    //   testingHamedkabir[arrayOfPositionPlayer1Prefix].keyName.push();
+    // } else {
+    //   const pre =
+    //     arrayOfPositionPlayer1PreIndex + arrayOfPositionPlayer1StepIndex;
+
+    //   setArrayOfPositionPlayer1PreIndex(pre);
+    //   const curr =
+    //     arrayOfPositionPlayer1CurrentIndex + arrayOfPositionPlayer1StepIndex;
+    //   setArrayOfPositionPlayer1CurrentIndex(curr);
+
+    //   const prefix = arrayOfPositionPlayer1Prefix + 1;
+    //   setArrayOfPositionPlayer1Prefix(prefix);
+    // }
+    // array = arrayOfPositionPlayer1.slice(
+    //   arrayOfPositionPlayer1PreIndex,
+    //   arrayOfPositionPlayer1CurrentIndex
+    // );
+    // updatePlayerPosition(array);
+  };
+  const updatePlayerPositionHandler2 = () => {
+    let array: IPainter[] = [];
+    if (
+      arrayOfPositionPlayer1.length >= arrayOfPositionPlayer1PreIndex &&
+      arrayOfPositionPlayer1.length < arrayOfPositionPlayer1CurrentIndex
+    ) {
+    } else {
+      const pre =
+        arrayOfPositionPlayer1PreIndex + arrayOfPositionPlayer1StepIndex;
+
+      setArrayOfPositionPlayer1PreIndex(pre);
+      const curr =
+        arrayOfPositionPlayer1CurrentIndex + arrayOfPositionPlayer1StepIndex;
+      setArrayOfPositionPlayer1CurrentIndex(curr);
+
+      const prefix = arrayOfPositionPlayer1Prefix + 1;
+      setArrayOfPositionPlayer1Prefix(prefix);
     }
+    array = arrayOfPositionPlayer1.slice(
+      arrayOfPositionPlayer1PreIndex,
+      arrayOfPositionPlayer1CurrentIndex
+    );
+    updatePlayerPosition2(array);
+  };
+
+  const updatePlayerPosition = async () => {
+    const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
+    await updateHostingDoc(
+      hostingId,
+      testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName],
+      keyName
+    );
+  };
+
+  const updatePlayerPosition2 = async (painterToUpdate: IPainter[]) => {
+    // await updateHostingDoc(
+    //   hostingId,
+    //   painterToUpdate,
+    //   arrayOfPositionPlayer1Prefix
+    // );
   };
 
   const paintFromDB = (positionObj: any) => {

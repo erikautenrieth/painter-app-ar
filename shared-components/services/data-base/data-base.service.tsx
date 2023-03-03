@@ -24,32 +24,12 @@ export async function getDocumentById(id: string) {
 export async function updateHostingDoc(
   hostingId: string | undefined,
   payload: IPainter[],
-  key: number
+  docKey: string
 ) {
-  const test = `player1Position_${0}`;
-  const test1 = `player1Position_${1}`;
-  const docKey = hostingId;
-  const docRef = doc(database, `host/${docKey}`);
-  switch (key) {
-    case -1:
-      await updateDoc(docRef, {
-        player1Position: payload,
-      });
-      break;
+  const docID = hostingId;
+  const docRef = doc(database, `host/${docID}`);
 
-    case 0:
-      await updateDoc(docRef, {
-        [test]: payload,
-      });
-      break;
-
-    case 1:
-      await updateDoc(docRef, {
-        [test1]: payload,
-      });
-      break;
-
-    default:
-      break;
-  }
+  await updateDoc(docRef, {
+    [docKey]: payload,
+  });
 }
