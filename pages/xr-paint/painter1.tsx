@@ -3,7 +3,7 @@ import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 import { useXR } from "@react-three/xr";
 import { database } from "config/firebase";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IColor } from "shared-components/interfaces/host.interface";
 import { IPainter } from "shared-components/interfaces/painter.interface";
 import { updateHostingDoc } from "shared-components/services/data-base/data-base.service";
@@ -24,6 +24,7 @@ const Painter1: React.FC<Props> = ({
   size,
   sizePlayer2,
 }: Props) => {
+  const controllerRef = useRef();
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -45,92 +46,10 @@ const Painter1: React.FC<Props> = ({
     },
   ]);
   const [arrayOfPositionPlayer1] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_0] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_1] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_2] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_3] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_4] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_5] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_6] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_7] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_8] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_9] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_10] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_11] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_12] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_13] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_14] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_15] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_16] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_17] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_18] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_19] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_20] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_21] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_22] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_23] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_24] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_25] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_26] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_27] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_28] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_29] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_30] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_31] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_32] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_33] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_34] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_35] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_36] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_37] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_38] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_39] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer1_40] = useState<IPainter[]>([]);
 
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
     IPainter[]
   >([]);
-  const [arrayOfPositionPlayer2_0] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_1] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_2] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_3] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_4] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_5] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_6] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_7] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_8] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_9] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_10] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_11] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_12] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_13] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_14] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_15] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_16] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_17] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_18] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_19] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_20] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_21] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_22] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_23] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_24] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_25] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_26] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_27] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_28] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_29] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_30] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_31] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_32] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_33] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_34] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_35] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_36] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_37] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_38] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_39] = useState<IPainter[]>([]);
-  const [arrayOfPositionPlayer2_40] = useState<IPainter[]>([]);
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
@@ -175,23 +94,28 @@ const Painter1: React.FC<Props> = ({
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
       setTimeout(() => {
-        updatePlayerPosition();
-        // updatePlayerPositionHandler();
+        // ### 1
+        // updatePlayerPosition();
+        // ### 2
+        arrayOfPositionPlayer1Handler2();
       }, 500);
     }
-    if (gl) {
-      if (gl.xr) {
-        if (gl.xr.getController(0)) {
-          controller = gl.xr.getController(0);
-
-          controller.addEventListener("selectstart", onSelectStart);
-          controller.addEventListener("selectend", onSelectEnd);
-          controller.userData.skipFrames = 0;
-          controller.userData.painter = painter;
-          scene.add(controller);
+    setTimeout(() => {
+      if (gl) {
+        if (gl.xr) {
+          if (gl.xr.getController(0)) {
+            controller = gl.xr.getController(0);
+            setTimeout(() => {
+              controller.addEventListener("selectstart", onSelectStart);
+              controller.addEventListener("selectend", onSelectEnd);
+              controller.userData.skipFrames = 0;
+              controller.userData.painter = painter;
+              scene.add(controller);
+            }, 200);
+          }
         }
       }
-    }
+    }, 100);
 
     window.addEventListener("resize", onWindowResize);
   };
@@ -220,7 +144,10 @@ const Painter1: React.FC<Props> = ({
             z: cursor.z,
             type: "move",
           };
-          arrayOfPositionPlayer1Handler(object);
+          // ### 1
+          // arrayOfPositionPlayer1Handler(object);
+          // ### 2
+          arrayOfPositionPlayer1.push(object);
         } else {
           painter.lineTo(cursor);
           painter.update();
@@ -230,12 +157,15 @@ const Painter1: React.FC<Props> = ({
             z: cursor.z,
             type: "line",
           };
-          arrayOfPositionPlayer1Handler(object);
+          // ### 1
+          // arrayOfPositionPlayer1Handler(object);
+          // ### 2
+          arrayOfPositionPlayer1.push(object);
         }
       }
     }
   };
-
+  // ### 1
   const arrayOfPositionPlayer1Handler = async (obj: IPainter) => {
     // arrayOfPositionPlayer1.push(obj);
     const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
@@ -260,38 +190,8 @@ const Painter1: React.FC<Props> = ({
     }
   };
 
-  const updatePlayerPositionHandler = () => {
-    console.log("Prefix  ", arrayOfPositionPlayer1Prefix);
-
-    // let array: IPainter[] = [];
-    // if (
-    //   arrayOfPositionPlayer1.length >= arrayOfPositionPlayer1PreIndex &&
-    //   arrayOfPositionPlayer1.length < arrayOfPositionPlayer1CurrentIndex
-    // ) {
-    //   const keyName = `player1Position_${arrayOfPositionPlayer1PreIndex}`;
-    //   const testingObject = {
-    //     [keyName]: array,
-    //   };
-    //   testingHamedkabir[arrayOfPositionPlayer1Prefix].keyName.push();
-    // } else {
-    //   const pre =
-    //     arrayOfPositionPlayer1PreIndex + arrayOfPositionPlayer1StepIndex;
-
-    //   setArrayOfPositionPlayer1PreIndex(pre);
-    //   const curr =
-    //     arrayOfPositionPlayer1CurrentIndex + arrayOfPositionPlayer1StepIndex;
-    //   setArrayOfPositionPlayer1CurrentIndex(curr);
-
-    //   const prefix = arrayOfPositionPlayer1Prefix + 1;
-    //   setArrayOfPositionPlayer1Prefix(prefix);
-    // }
-    // array = arrayOfPositionPlayer1.slice(
-    //   arrayOfPositionPlayer1PreIndex,
-    //   arrayOfPositionPlayer1CurrentIndex
-    // );
-    // updatePlayerPosition(array);
-  };
-  const updatePlayerPositionHandler2 = () => {
+  // ### 2
+  const arrayOfPositionPlayer1Handler2 = () => {
     let array: IPainter[] = [];
     if (
       arrayOfPositionPlayer1.length >= arrayOfPositionPlayer1PreIndex &&
@@ -315,7 +215,7 @@ const Painter1: React.FC<Props> = ({
     );
     updatePlayerPosition2(array);
   };
-
+  // ### 1
   const updatePlayerPosition = async () => {
     const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
     await updateHostingDoc(
@@ -324,13 +224,10 @@ const Painter1: React.FC<Props> = ({
       keyName
     );
   };
-
+  // ### 2
   const updatePlayerPosition2 = async (painterToUpdate: IPainter[]) => {
-    // await updateHostingDoc(
-    //   hostingId,
-    //   painterToUpdate,
-    //   arrayOfPositionPlayer1Prefix
-    // );
+    const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
+    await updateHostingDoc(hostingId, painterToUpdate, keyName);
   };
 
   const paintFromDB = (positionObj: any) => {
@@ -402,7 +299,11 @@ const Painter1: React.FC<Props> = ({
   useFrame(() => {
     if (controller) {
       handleController(controller);
-      gl.render(scene, camera);
+      if (gl) {
+        setTimeout(() => {
+          gl.render(scene, camera);
+        }, 200);
+      }
     }
   });
 

@@ -1,4 +1,4 @@
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ARButton, useXR, XR } from "@react-three/xr";
 import { database } from "config/firebase";
 import {

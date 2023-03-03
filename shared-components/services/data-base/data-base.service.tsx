@@ -20,7 +20,6 @@ export async function getDocumentById(id: string) {
     return null;
   }
 }
-
 export async function updateHostingDoc(
   hostingId: string | undefined,
   payload: IPainter[],
