@@ -24,7 +24,6 @@ const Painter1: React.FC<Props> = ({
   size,
   sizePlayer2,
 }: Props) => {
-  const controllerRef = useRef();
   const { gl, scene } = useThree();
   let camera: THREE.PerspectiveCamera;
   let controller: any;
@@ -98,7 +97,7 @@ const Painter1: React.FC<Props> = ({
         // updatePlayerPosition();
         // ### 2
         arrayOfPositionPlayer1Handler2();
-      }, 500);
+      }, 200);
     }
     setTimeout(() => {
       if (gl) {
