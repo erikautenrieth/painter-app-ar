@@ -46,7 +46,6 @@ const PaintXR = () => {
 
   const hostID2: string | undefined = zustandStore.hostingId;
 
-  // Q9oLV94mYhny8JO4A3s1
   const hostID: string | undefined = "Q9oLV94mYhny8JO4A3s1";
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
@@ -138,15 +137,6 @@ const PaintXR = () => {
     }
   };
 
-  const { isPresenting } = useXR();
-  const handlePointerDown = (event: { buttons: number }) => {
-    if (isPresenting && event.buttons === 2) {
-      console.log("hamedkabir down");
-
-      // Hier können Sie Ihren Code ausführen, wenn der Benutzer in einer XR-Umgebung ist und mit der rechten Maustaste klickt
-    }
-  };
-
   return (
     <div className="containerCanva">
       <Navbar />
@@ -215,7 +205,7 @@ const PaintXR = () => {
         </Grid>
       </Paper>
 
-      <Canvas onPointerDown={handlePointerDown}>
+      <Canvas>
         <XR>
           {userData ? (
             userData.role === "admin" ? (
