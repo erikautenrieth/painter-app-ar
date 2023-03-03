@@ -239,19 +239,25 @@ const Painter1: React.FC<Props> = ({
   const updatePlayerPosition = async () => {
     if (arrayOfPositionPlayer1.length > 0) {
       if (arrayOfPositionPlayer1.length < 150) {
-        await updateHostingDoc(hostingId, arrayOfPositionPlayer1, -1);
+        await updateHostingDoc(hostingId, arrayOfPositionPlayer1, -1).catch(
+          (res) => console.log(res)
+        );
       }
       if (
         arrayOfPositionPlayer1.length >= 150 &&
         arrayOfPositionPlayer1_0.length < 150
       ) {
-        await updateHostingDoc(hostingId, arrayOfPositionPlayer1_0, 0);
+        await updateHostingDoc(hostingId, arrayOfPositionPlayer1_0, 0).catch(
+          (res) => console.log(res)
+        );
       }
       if (
         arrayOfPositionPlayer1_0.length >= 150 &&
         arrayOfPositionPlayer1_1.length < 150
       ) {
-        await updateHostingDoc(hostingId, arrayOfPositionPlayer1_1, 1);
+        await updateHostingDoc(hostingId, arrayOfPositionPlayer1_1, 1).catch(
+          (res) => console.log(res)
+        );
       }
     }
   };

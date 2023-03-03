@@ -26,6 +26,8 @@ export async function updateHostingDoc(
   payload: IPainter[],
   key: number
 ) {
+  const test = `player1Position_${0}`;
+  const test1 = `player1Position_${1}`;
   const docKey = hostingId;
   const docRef = doc(database, `host/${docKey}`);
   switch (key) {
@@ -37,13 +39,13 @@ export async function updateHostingDoc(
 
     case 0:
       await updateDoc(docRef, {
-        player1Position_0: payload,
+        [test]: payload,
       });
       break;
 
     case 1:
       await updateDoc(docRef, {
-        player1Position_1: payload,
+        [test1]: payload,
       });
       break;
 
