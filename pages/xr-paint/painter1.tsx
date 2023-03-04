@@ -104,7 +104,7 @@ const Painter1: React.FC<Props> = ({
     setTimeout(() => {
       if (gl) {
         if (gl.xr) {
-          if (gl.xr.getController(0)) {
+          if (gl.xr.getController(0) && gl.xr.getSession() !== undefined) {
             controller = gl.xr.getController(0);
             controller.addEventListener("selectstart", onSelectStart);
             controller.addEventListener("selectend", onSelectEnd);
