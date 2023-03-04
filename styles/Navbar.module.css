@@ -1,17 +1,17 @@
 .navbar-menu {
-    border-color: #683ff8;
+    border-color: #1976d2 ;
     border-width: 0px;
     border-style: inset;
 }
 
 .navbar-item {
     border-style: solid;
-    border-color: #1f1442;
+    border-color: #1976d2 ;
     border-width: 2px;
 }
 
 .container {
-    color: #3b05e7;
+    color: #1976d2 ;
 }
 
 .navbar-start {
@@ -26,19 +26,19 @@ flex-grow: 1;
 }
 
 .navbar-end{
-    background-color: #683ff8; /* #c8e6ff */
+    background-color: #1976d2 ; /* #c8e6ff */
 }
 
 .navbar-brand{
-    background-color: #683ff8;
+    background-color: #1976d2 ;
 }
 
 .navbar-menu{
-    background-color: #683ff8;
+    background-color: #1976d2 ;
 }
 
 #navbarMenu .navbar-item {
-    color: black;
+    color: black ;
 }
 
 

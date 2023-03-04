@@ -9,7 +9,7 @@ Navbar
 }
 
 .sidemenu-button {
-  background: #322d6d !important;
+  background: #1976d2 !important;
   border-radius: 15px !important;
 }
 .sidemenu-button svg {
@@ -26,10 +26,10 @@ Navbar
   position: absolute;
   top: 0;
   left: 0;
-  width: 300px;
-  height: 450px;
+  width: 250px;
+  height: 350px;
   overflow: hidden;
-  background: #362e6f;
+  background: #1976d2 ;
   z-index: 9;
   border-radius: 10px;
 }
