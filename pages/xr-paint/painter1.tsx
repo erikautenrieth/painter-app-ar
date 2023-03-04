@@ -1,9 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
-import { useXR } from "@react-three/xr";
 import { database } from "config/firebase";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { IColor } from "shared-components/interfaces/host.interface";
 import { IPainter } from "shared-components/interfaces/painter.interface";
 import { updateHostingDoc } from "shared-components/services/data-base/data-base.service";
@@ -50,8 +48,12 @@ const Painter1: React.FC<Props> = ({
     IPainter[]
   >([]);
 
+  const [allDataFromDB, setAllDataFromDB] = useState<any>();
+  const [readingDataFromDB, setReadingDataFromDB] = useState<boolean>(false);
+
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
+
   const init = () => {
     camera = new THREE.PerspectiveCamera(
       70,
@@ -104,17 +106,15 @@ const Painter1: React.FC<Props> = ({
         if (gl.xr) {
           if (gl.xr.getController(0)) {
             controller = gl.xr.getController(0);
-            setTimeout(() => {
-              controller.addEventListener("selectstart", onSelectStart);
-              controller.addEventListener("selectend", onSelectEnd);
-              controller.userData.skipFrames = 0;
-              controller.userData.painter = painter;
-              scene.add(controller);
-            }, 200);
+            controller.addEventListener("selectstart", onSelectStart);
+            controller.addEventListener("selectend", onSelectEnd);
+            controller.userData.skipFrames = 0;
+            controller.userData.painter = painter;
+            scene.add(controller);
           }
         }
       }
-    }, 100);
+    }, 200);
 
     window.addEventListener("resize", onWindowResize);
   };
@@ -257,7 +257,36 @@ const Painter1: React.FC<Props> = ({
       const data = doc.data();
       const id = doc.id;
       if (data) {
-        setArrayOfPositionPlayer2(data.player2Position);
+        // for Painter2
+        let index = 0;
+        let bool = false;
+        let arrayObjectFromDB: IPainter[] = [];
+        while (!bool) {
+          const prefixName = `player2Position_${index}`;
+
+          if (data[prefixName]) {
+            setReadingDataFromDB(true);
+            arrayObjectFromDB.push(...data[prefixName]);
+            index++;
+          } else {
+            bool = true;
+          }
+        }
+
+        const filterArray: IPainter[] = arrayOfPositionPlayer2;
+        const lengthOfFilterArray: number = filterArray.length;
+        if (lengthOfFilterArray < arrayObjectFromDB.length) {
+          filterArray.push(
+            ...arrayObjectFromDB.slice(
+              lengthOfFilterArray,
+              arrayObjectFromDB.length
+            )
+          );
+          setArrayOfPositionPlayer2(filterArray);
+        }
+
+        setAllDataFromDB(data);
+        setReadingDataFromDB(false);
       }
     });
   };
@@ -271,37 +300,38 @@ const Painter1: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    init();
-    if (painterPlayer2) {
-      if (arrayOfPositionPlayer2) {
-        if (arrayOfPositionPlayer2.length !== 0) {
-          if (indexOfArrayPositionsT < arrayOfPositionPlayer2.length) {
-            setCursorToLastPosition(
-              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].x,
-              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].y,
-              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].z
-            );
-            for (
-              let index = indexOfArrayPositionsT + 2;
-              index < arrayOfPositionPlayer2.length;
-              index++
-            ) {
-              paintFromDB(arrayOfPositionPlayer2[index]);
+    setTimeout(() => {
+      init();
+      if (painterPlayer2) {
+        if (arrayOfPositionPlayer2) {
+          if (arrayOfPositionPlayer2.length !== 0) {
+            if (indexOfArrayPositionsT < arrayOfPositionPlayer2.length) {
+              setCursorToLastPosition(
+                arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].x,
+                arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].y,
+                arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].z
+              );
+              for (
+                let index = indexOfArrayPositionsT + 2;
+                index < arrayOfPositionPlayer2.length;
+                index++
+              ) {
+                paintFromDB(arrayOfPositionPlayer2[index]);
+              }
+              setIndexOfArrayPositions(arrayOfPositionPlayer2.length);
             }
-            setIndexOfArrayPositions(arrayOfPositionPlayer2.length);
           }
         }
       }
-    }
-  }, [arrayOfPositionPlayer2]);
+    }, 200);
+  }, [arrayOfPositionPlayer2, readingDataFromDB, allDataFromDB]);
 
   useFrame(() => {
     if (controller) {
       handleController(controller);
+
       if (gl) {
-        setTimeout(() => {
-          gl.render(scene, camera);
-        }, 200);
+        gl.render(scene, camera);
       }
     }
   });

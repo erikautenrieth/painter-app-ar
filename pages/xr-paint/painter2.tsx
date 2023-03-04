@@ -1,6 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { database } from "config/firebase";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { IColor } from "shared-components/interfaces/host.interface";
 import { IPainter } from "shared-components/interfaces/painter.interface";
@@ -50,6 +50,9 @@ const Painter2: React.FC<Props> = ({
   const [arrayOfPositionPlayer1, setArrayOfPositionPlayer1] = useState<
     IPainter[]
   >([]);
+
+  const [allDataFromDB, setAllDataFromDB] = useState<any>();
+  const [readingDataFromDB, setReadingDataFromDB] = useState<boolean>(false);
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
@@ -107,17 +110,15 @@ const Painter2: React.FC<Props> = ({
         if (gl.xr) {
           if (gl.xr.getController(0)) {
             controller = gl.xr.getController(0);
-            setTimeout(() => {
-              controller.addEventListener("selectstart", onSelectStart);
-              controller.addEventListener("selectend", onSelectEnd);
-              controller.userData.skipFrames = 0;
-              controller.userData.painter = painter;
-              scene.add(controller);
-            }, 200);
+            controller.addEventListener("selectstart", onSelectStart);
+            controller.addEventListener("selectend", onSelectEnd);
+            controller.userData.skipFrames = 0;
+            controller.userData.painter = painter;
+            scene.add(controller);
           }
         }
       }
-    }, 100);
+    }, 200);
 
     window.addEventListener("resize", onWindowResize);
   };
@@ -263,7 +264,36 @@ const Painter2: React.FC<Props> = ({
       const data = doc.data();
       const id = doc.id;
       if (data) {
-        setArrayOfPositionPlayer1(data.player1Position);
+        // for Painter1
+        let index = 0;
+        let bool = false;
+        let arrayObjectFromDB: IPainter[] = [];
+        while (!bool) {
+          const prefixName = `player1Position_${index}`;
+
+          if (data[prefixName]) {
+            setReadingDataFromDB(true);
+            arrayObjectFromDB.push(...data[prefixName]);
+            index++;
+          } else {
+            bool = true;
+          }
+        }
+
+        const filterArray: IPainter[] = arrayOfPositionPlayer1;
+        const lengthOfFilterArray: number = filterArray.length;
+        if (lengthOfFilterArray < arrayObjectFromDB.length) {
+          filterArray.push(
+            ...arrayObjectFromDB.slice(
+              lengthOfFilterArray,
+              arrayObjectFromDB.length
+            )
+          );
+          setArrayOfPositionPlayer1(filterArray);
+        }
+
+        setAllDataFromDB(data);
+        setReadingDataFromDB(false);
       }
     });
   };
@@ -277,37 +307,39 @@ const Painter2: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    init();
-    if (painterPlayer1) {
-      if (arrayOfPositionPlayer1) {
-        if (arrayOfPositionPlayer1.length !== 0) {
-          if (indexOfArrayPositionsT < arrayOfPositionPlayer1.length) {
-            setCursorToLastPosition(
-              arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].x,
-              arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].y,
-              arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].z
-            );
-            for (
-              let index = indexOfArrayPositionsT + 2;
-              index < arrayOfPositionPlayer1.length;
-              index++
-            ) {
-              paintFromDB(arrayOfPositionPlayer1[index]);
+    // ### with State
+    setTimeout(() => {
+      init();
+      if (painterPlayer1) {
+        if (arrayOfPositionPlayer1) {
+          if (arrayOfPositionPlayer1.length !== 0) {
+            if (indexOfArrayPositionsT < arrayOfPositionPlayer1.length) {
+              setCursorToLastPosition(
+                arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].x,
+                arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].y,
+                arrayOfPositionPlayer1[indexOfArrayPositionsT + 1].z
+              );
+              for (
+                let index = indexOfArrayPositionsT + 2;
+                index < arrayOfPositionPlayer1.length;
+                index++
+              ) {
+                paintFromDB(arrayOfPositionPlayer1[index]);
+              }
+              setIndexOfArrayPositions(arrayOfPositionPlayer1.length);
             }
-            setIndexOfArrayPositions(arrayOfPositionPlayer1.length);
           }
         }
       }
-    }
-  }, [arrayOfPositionPlayer1]);
+    }, 200);
+  }, [arrayOfPositionPlayer1, readingDataFromDB, allDataFromDB]);
 
   useFrame(() => {
     if (controller) {
       handleController(controller);
+
       if (gl) {
-        setTimeout(() => {
-          gl.render(scene, camera);
-        }, 200);
+        gl.render(scene, camera);
       }
     }
   });

@@ -1,18 +1,8 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ARButton, useXR, XR } from "@react-three/xr";
+import { Canvas } from "@react-three/fiber";
+import { ARButton, XR } from "@react-three/xr";
 import { database } from "config/firebase";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useAuth } from "shared-components/services/auth-context";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
 import Painter1 from "./painter1";
@@ -22,8 +12,7 @@ import { Button, Grid, Paper, Slider } from "@mui/material";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 import Navbar from "../../shared-components/components/navbar/Navbar";
-import { async } from "@firebase/util";
-import { Color } from "three/src/Three";
+
 import { IColor } from "shared-components/interfaces/host.interface";
 
 const PaintXR = () => {
@@ -38,6 +27,7 @@ const PaintXR = () => {
   const [openColorPicker, setOpenColorPicker] = useState<boolean>(false);
   const email = user.email;
   const emailUser1 = "user1@real-chat.de";
+
   const [painterSize1, setPainterSize1] = useState<number>(0.4);
   const [painterSize2, setPainterSize2] = useState<number>(0.4);
   const [colorPlayer1, setColorPlayer1] = useColor("hex", "#dad810");
@@ -45,7 +35,6 @@ const PaintXR = () => {
   const zustandStore = ZustandStore();
 
   const hostID2: string | undefined = zustandStore.hostingId;
-
   const hostID: string | undefined = "Q9oLV94mYhny8JO4A3s1";
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
