@@ -1,6 +1,6 @@
 .player {
-  font-size: 30px;
-  ont-weight: bold;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .hosting-user-ready {
@@ -15,3 +15,5 @@
 .m-l-20x {
   margin-left: 20px;
 }
+
+
