@@ -91,6 +91,13 @@
   max-width: 300px;
 }
 
+.image {
+  background-image: url("../public/pics/hostJoin.png");
+  height: 250px;
+  width: 100%;
+  background-repeat: round;
+}
+
 .card:hover,
 .card:focus,
 .card:active {
@@ -117,7 +124,7 @@
 .hamedkabir {
   position: absolute;
   width: 100%;
-  height: 120vh;
+  height: 100vh;
   background-image: url("/gifs/XtHc.gif");
   background-position: center;
   background-repeat: no-repeat;

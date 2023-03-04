@@ -81,10 +81,6 @@ export default function Home() {
                 <Grid item xs={12} className="no-padding home-cols-background">
                   <div className="card-image">
                     <figure className="image is-4by3">
-                      <img
-                        src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                        alt="Placeholder image"
-                      />
                     </figure>
                   </div>
                   <div className="card-content">
