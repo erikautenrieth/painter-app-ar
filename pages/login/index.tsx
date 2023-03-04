@@ -42,14 +42,12 @@ export default function Login() {
               <h3 className="title has-text-black">Login</h3>
               <hr className="login-hr" />
               <p className="subtitle has-text-black">
-                Please login to proceed.
+                Please login to proceed
               </p>
               <div className="box">
                 <figure className="avatar">
                   <img
-                    src="https://www.thispersondoesnotexist.com/image"
-                    height="150px"
-                    width={"150px"}
+
                   />
                 </figure>
 
