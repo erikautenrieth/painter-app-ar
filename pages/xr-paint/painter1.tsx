@@ -1,16 +1,10 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { database } from "config/firebase";
-import {
-  addDoc,
-  collection,
-  doc,
-  onSnapshot,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { IColor } from "pages/hosting-page/[hostingId]";
+import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { IColor } from "shared-components/interfaces/host.interface";
+import { IPainter } from "shared-components/interfaces/painter.interface";
+import { updateHostingDoc } from "shared-components/services/data-base/data-base.service";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 // That is the position of Paint of Player 2
@@ -34,26 +28,30 @@ const Painter1: React.FC<Props> = ({
   let painter: any, painterPlayer2: any;
   const cursor = new THREE.Vector3();
   const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
-  const [arrayOfPositionPlayer1] = useState<
+  // ### 1
+  const [testingHamedkabir] = useState<any[]>([
     {
-      x: number;
-      y: number;
-      z: number;
-      type: string;
-      color: IColor;
-      size: number;
-    }[]
-  >([]);
+      player1Position_0: [],
+    },
+  ]);
+  // ### 2
+  const [arrayOfPositionPlayer1Prefix, setArrayOfPositionPlayer1Prefix] =
+    useState<number>(0);
+  const [arrayOfPositionPlayer1PreIndex, setArrayOfPositionPlayer1PreIndex] =
+    useState<number>(0);
+  const [
+    arrayOfPositionPlayer1CurrentIndex,
+    setArrayOfPositionPlayer1CurrentIndex,
+  ] = useState<number>(150);
+  const arrayOfPositionPlayer1StepIndex: number = 150;
+
+  const [arrayOfPositionPlayer1] = useState<IPainter[]>([]);
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
-    {
-      x: number;
-      y: number;
-      z: number;
-      type: "move" | "line";
-      color: IColor;
-      size: number;
-    }[]
+    IPainter[]
   >([]);
+
+  const [allDataFromDB, setAllDataFromDB] = useState<any>();
+  const [readingDataFromDB, setReadingDataFromDB] = useState<boolean>(false);
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
@@ -97,16 +95,39 @@ const Painter1: React.FC<Props> = ({
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
       setUserDataSelecting(false);
-      updatePlayerPosition();
+      setTimeout(() => {
+        // ### 1
+        // updatePlayerPosition();
+        // ### 2
+        arrayOfPositionPlayer1Handler2();
+      }, 200);
     }
-    controller = gl.xr.getController(0);
-    controller.addEventListener("selectstart", onSelectStart);
-    controller.addEventListener("selectend", onSelectEnd);
-    controller.userData.skipFrames = 0;
-    controller.userData.painter = painter;
-    scene.add(controller);
+    setTimeout(() => {
+      if (gl) {
+        if (gl.xr) {
+          if (gl.xr.getController(0) && gl.xr.getSession() !== undefined) {
+            controller = gl.xr.getController(0);
+            controller.addEventListener("selectstart", onSelectStart);
+            controller.addEventListener("selectend", onSelectEnd);
+            controller.userData.skipFrames = 0;
+            controller.userData.painter = painter;
+            scene.add(controller);
+          }
+        }
+      }
+    }, 200);
 
     window.addEventListener("resize", onWindowResize);
+  };
+
+  const initPlayer2 = () => {
+    painterPlayer2 = new TubePainter();
+    painterPlayer2.setSize(sizePlayer2);
+    painterPlayer2.mesh.material.side = THREE.DoubleSide;
+    painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
+      color: colorPlayer2?.hex.slice(0, 7),
+    });
+    scene.add(painterPlayer2.mesh);
   };
 
   function onWindowResize() {
@@ -127,7 +148,7 @@ const Painter1: React.FC<Props> = ({
           userData.skipFrames--;
 
           painter.moveTo(cursor);
-          const object = {
+          const object: IPainter = {
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
@@ -135,11 +156,14 @@ const Painter1: React.FC<Props> = ({
             color: color,
             size: size,
           };
+          // ### 1
+          // arrayOfPositionPlayer1Handler(object);
+          // ### 2
           arrayOfPositionPlayer1.push(object);
         } else {
           painter.lineTo(cursor);
           painter.update();
-          const object = {
+          const object: IPainter = {
             x: cursor.x,
             y: cursor.y,
             z: cursor.z,
@@ -147,20 +171,77 @@ const Painter1: React.FC<Props> = ({
             color: color,
             size: size,
           };
+          // ### 1
+          // arrayOfPositionPlayer1Handler(object);
+          // ### 2
           arrayOfPositionPlayer1.push(object);
         }
       }
     }
   };
-
-  const updatePlayerPosition = async () => {
-    if (arrayOfPositionPlayer1.length > 0) {
-      const docKey = hostingId;
-      const docRef = doc(database, `host/${docKey}`);
-      await updateDoc(docRef, {
-        player1Position: arrayOfPositionPlayer1,
-      });
+  // ### 1
+  const arrayOfPositionPlayer1Handler = async (obj: IPainter) => {
+    // arrayOfPositionPlayer1.push(obj);
+    const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
+    if (testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName]) {
+      if (
+        testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName].length >=
+          arrayOfPositionPlayer1PreIndex &&
+        testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName].length <
+          arrayOfPositionPlayer1CurrentIndex
+      ) {
+        testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName].push(obj);
+      } else {
+        const prefix = arrayOfPositionPlayer1Prefix + 1;
+        setArrayOfPositionPlayer1Prefix(prefix);
+        const newKeyName = `player1Position_${prefix}`;
+        const testingObject: any = {
+          [newKeyName]: [],
+        };
+        testingObject[newKeyName].push(obj);
+        testingHamedkabir.push(testingObject);
+      }
     }
+  };
+
+  // ### 2
+  const arrayOfPositionPlayer1Handler2 = () => {
+    let array: IPainter[] = [];
+    if (
+      arrayOfPositionPlayer1.length >= arrayOfPositionPlayer1PreIndex &&
+      arrayOfPositionPlayer1.length < arrayOfPositionPlayer1CurrentIndex
+    ) {
+    } else {
+      const pre =
+        arrayOfPositionPlayer1PreIndex + arrayOfPositionPlayer1StepIndex;
+
+      setArrayOfPositionPlayer1PreIndex(pre);
+      const curr =
+        arrayOfPositionPlayer1CurrentIndex + arrayOfPositionPlayer1StepIndex;
+      setArrayOfPositionPlayer1CurrentIndex(curr);
+
+      const prefix = arrayOfPositionPlayer1Prefix + 1;
+      setArrayOfPositionPlayer1Prefix(prefix);
+    }
+    array = arrayOfPositionPlayer1.slice(
+      arrayOfPositionPlayer1PreIndex,
+      arrayOfPositionPlayer1CurrentIndex
+    );
+    updatePlayerPosition2(array);
+  };
+  // ### 1
+  const updatePlayerPosition = async () => {
+    const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
+    await updateHostingDoc(
+      hostingId,
+      testingHamedkabir[arrayOfPositionPlayer1Prefix][keyName],
+      keyName
+    );
+  };
+  // ### 2
+  const updatePlayerPosition2 = async (painterToUpdate: IPainter[]) => {
+    const keyName = `player1Position_${arrayOfPositionPlayer1Prefix}`;
+    await updateHostingDoc(hostingId, painterToUpdate, keyName);
   };
 
   const paintFromDB = (positionObj: any) => {
@@ -191,7 +272,36 @@ const Painter1: React.FC<Props> = ({
       const data = doc.data();
       const id = doc.id;
       if (data) {
-        setArrayOfPositionPlayer2(data.player2Position);
+        // for Painter2
+        let index = 0;
+        let bool = false;
+        let arrayObjectFromDB: IPainter[] = [];
+        while (!bool) {
+          const prefixName = `player2Position_${index}`;
+
+          if (data[prefixName]) {
+            setReadingDataFromDB(true);
+            arrayObjectFromDB.push(...data[prefixName]);
+            index++;
+          } else {
+            bool = true;
+          }
+        }
+
+        const filterArray: IPainter[] = arrayOfPositionPlayer2;
+        const lengthOfFilterArray: number = filterArray.length;
+        if (lengthOfFilterArray < arrayObjectFromDB.length) {
+          filterArray.push(
+            ...arrayObjectFromDB.slice(
+              lengthOfFilterArray,
+              arrayObjectFromDB.length
+            )
+          );
+          setArrayOfPositionPlayer2(filterArray);
+        }
+
+        setAllDataFromDB(data);
+        setReadingDataFromDB(false);
       }
     });
   };
@@ -205,35 +315,42 @@ const Painter1: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    init();
-    if (painterPlayer2) {
-      if (arrayOfPositionPlayer2) {
-        if (arrayOfPositionPlayer2.length !== 0) {
-          if (indexOfArrayPositionsT < arrayOfPositionPlayer2.length) {
-            setCursorToLastPosition(
-              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].x,
-              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].y,
-              arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].z
-            );
-            for (
-              let index = indexOfArrayPositionsT + 2;
-              index < arrayOfPositionPlayer2.length;
-              index++
-            ) {
-              paintFromDB(arrayOfPositionPlayer2[index]);
+    setTimeout(() => {
+      initPlayer2();
+      if (painterPlayer2) {
+        if (arrayOfPositionPlayer2) {
+          if (arrayOfPositionPlayer2.length !== 0) {
+            if (indexOfArrayPositionsT < arrayOfPositionPlayer2.length) {
+              setCursorToLastPosition(
+                arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].x,
+                arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].y,
+                arrayOfPositionPlayer2[indexOfArrayPositionsT + 1].z
+              );
+              for (
+                let index = indexOfArrayPositionsT + 2;
+                index < arrayOfPositionPlayer2.length;
+                index++
+              ) {
+                paintFromDB(arrayOfPositionPlayer2[index]);
+              }
+              setIndexOfArrayPositions(arrayOfPositionPlayer2.length);
             }
-            setIndexOfArrayPositions(arrayOfPositionPlayer2.length);
           }
         }
       }
-    }
-  }, [arrayOfPositionPlayer2]);
+    }, 100);
+  }, [arrayOfPositionPlayer2, readingDataFromDB, allDataFromDB]);
+
   useFrame(() => {
     if (controller) {
       handleController(controller);
-      gl.render(scene, camera);
+
+      if (gl) {
+        gl.render(scene, camera);
+      }
     }
   });
+
   return <></>;
 };
 
