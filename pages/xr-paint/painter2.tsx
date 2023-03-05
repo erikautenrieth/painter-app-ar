@@ -123,6 +123,16 @@ const Painter2: React.FC<Props> = ({
     window.addEventListener("resize", onWindowResize);
   };
 
+  const initPlayer1 = () => {
+    painterPlayer1 = new TubePainter();
+    painterPlayer1.setSize(sizePlayer1);
+    painterPlayer1.mesh.material.side = THREE.DoubleSide;
+    painterPlayer1.mesh.material = new THREE.MeshBasicMaterial({
+      color: colorPlayer1?.hex.slice(0, 7),
+    });
+    scene.add(painterPlayer1.mesh);
+  };
+
   function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -145,6 +155,8 @@ const Painter2: React.FC<Props> = ({
             y: cursor.y,
             z: cursor.z,
             type: "move",
+            color: color,
+            size: size,
           };
           // ### 1
           // arrayOfPositionPlayer2Handler(object);
@@ -159,6 +171,8 @@ const Painter2: React.FC<Props> = ({
             y: cursor.y,
             z: cursor.z,
             type: "line",
+            color: color,
+            size: size,
           };
           // ### 1
           // arrayOfPositionPlayer2Handler(object);
@@ -309,7 +323,7 @@ const Painter2: React.FC<Props> = ({
   useEffect(() => {
     // ### with State
     setTimeout(() => {
-      init();
+      initPlayer1();
       if (painterPlayer1) {
         if (arrayOfPositionPlayer1) {
           if (arrayOfPositionPlayer1.length !== 0) {
@@ -331,7 +345,7 @@ const Painter2: React.FC<Props> = ({
           }
         }
       }
-    }, 200);
+    }, 100);
   }, [arrayOfPositionPlayer1, readingDataFromDB, allDataFromDB]);
 
   useFrame(() => {
