@@ -14,10 +14,12 @@ import "react-color-palette/lib/css/styles.css";
 import Navbar from "../../shared-components/components/navbar/Navbar";
 
 import { IColor } from "shared-components/interfaces/host.interface";
+import { useRouter } from "next/router";
 
 const PaintXR = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const { user } = useAuth();
+  const router = useRouter();
   const [userData, setUserData] = useState<any>();
   // Color Picker
   // https://www.geeksforgeeks.org/how-to-add-color-picker-in-nextjs/
@@ -126,6 +128,11 @@ const PaintXR = () => {
     }
   };
 
+  useEffect(() => {
+    if (!user.uid) {
+      router.push("/landingpage");
+    }
+  }, [user.uid]);
   return (
     <div className="containerCanva">
       <Navbar />

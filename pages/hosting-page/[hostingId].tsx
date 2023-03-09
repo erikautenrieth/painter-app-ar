@@ -31,8 +31,10 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import Playeranimation from "./playeranimation";
 import { useColor } from "react-color-palette";
 import { IColor, IHost } from "shared-components/interfaces/host.interface";
+import { useAuth } from "shared-components/services/auth-context";
 
 const HostingPage = () => {
+  const { user } = useAuth();
   const [colorPlayer1, setColorPlayer1] = useColor("hex", "#dad810");
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
 
@@ -231,6 +233,12 @@ const HostingPage = () => {
       }
     }
   }, [seconds, hostingData]);
+
+  useEffect(() => {
+    if (!user.uid) {
+      router.push("/landingpage");
+    }
+  }, [user.uid]);
   return (
     <>
       <Navbar />

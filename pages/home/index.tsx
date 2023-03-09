@@ -18,12 +18,20 @@ export default function Home() {
 
   async function fetchData() {
     const data = await getDocumentById(user.uid);
+
     setUserData(data);
   }
   useEffect(() => {
-    fetchData();
+    if (user.uid) {
+      fetchData();
+    }
   }, [user.uid]);
 
+  useEffect(() => {
+    if (!user.uid) {
+      router.push("/landingpage");
+    }
+  }, [user.uid]);
   return (
     <>
       <Navbar />
@@ -80,8 +88,7 @@ export default function Home() {
               ) : (
                 <Grid item xs={12} className="no-padding home-cols-background">
                   <div className="card-image">
-                    <figure className="image is-4by3">
-                    </figure>
+                    <figure className="image is-4by3"></figure>
                   </div>
                   <div className="card-content">
                     <div className="content">
