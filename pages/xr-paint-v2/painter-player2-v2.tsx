@@ -1,8 +1,22 @@
+import { IColor } from "shared-components/interfaces/host.interface";
 import * as THREE from "three";
 import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
 
-const PainterV2 = () => {
+type Props = {
+  hostingId: string | undefined;
+  color: IColor;
+  colorPlayer1: IColor;
+  size: number;
+  sizePlayer1: number;
+};
+const PainterPlayer2V2: React.FC<Props> = ({
+  hostingId,
+  color,
+  colorPlayer1,
+  size,
+  sizePlayer1,
+}) => {
   let container;
   let camera: THREE.PerspectiveCamera,
     scene: THREE.Scene,
@@ -120,4 +134,4 @@ const PainterV2 = () => {
     </>
   );
 };
-export default PainterV2;
+export default PainterPlayer2V2;

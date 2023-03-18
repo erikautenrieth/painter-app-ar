@@ -7,7 +7,8 @@ import { IColor } from "shared-components/interfaces/host.interface";
 import { IUser } from "shared-components/interfaces/user.interface";
 import { useAuth } from "shared-components/services/auth-context";
 import { ZustandStore } from "shared-components/services/hooks/zustand.state";
-import PainterV2 from "./painter-v2";
+import PainterPlayer1V2 from "./painter-player1-v2";
+import PainterPlayer2V2 from "./painter-player2-v2";
 
 const XrPainterV2 = () => {
   const { user } = useAuth();
@@ -21,7 +22,7 @@ const XrPainterV2 = () => {
   const zustandStore = ZustandStore();
 
   const hostID2: string | undefined = zustandStore.hostingId;
-  const hostID: string | undefined = "Q9oLV94mYhny8JO4A3s1";
+  const hostID: string | undefined = "7N41NPevizz1frSGOtE1";
 
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
@@ -125,7 +126,25 @@ const XrPainterV2 = () => {
   // }, [user.uid]);
   return (
     <>
-      <PainterV2></PainterV2>
+      {userData ? (
+        userData.role === "admin" ? (
+          <PainterPlayer1V2
+            hostingId={hostID}
+            color={colorPlayer1}
+            colorPlayer2={colorPlayer2}
+            size={painterSize1}
+            sizePlayer2={painterSize2}
+          ></PainterPlayer1V2>
+        ) : userData.role === "player" ? (
+          <PainterPlayer2V2
+            hostingId={hostID}
+            color={colorPlayer2}
+            colorPlayer1={colorPlayer1}
+            size={painterSize2}
+            sizePlayer1={painterSize1}
+          ></PainterPlayer2V2>
+        ) : null
+      ) : null}
     </>
   );
 };
