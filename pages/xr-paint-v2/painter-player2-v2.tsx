@@ -128,10 +128,6 @@ const PainterPlayer2V2: React.FC<Props> = ({
       renderer.render(scene, camera);
     }
   }
-  return (
-    <>
-      <h1>Hamedkabir</h1>
-    </>
-  );
+  return <></>;
 };
 export default PainterPlayer2V2;

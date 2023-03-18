@@ -37,7 +37,7 @@ const PaintXR = () => {
   const zustandStore = ZustandStore();
 
   const hostID2: string | undefined = zustandStore.hostingId;
-  const hostID: string | undefined = "Q9oLV94mYhny8JO4A3s1";
+  const hostID: string | undefined = "7N41NPevizz1frSGOtE1";
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
     const docSnap = await getDoc(docRef);

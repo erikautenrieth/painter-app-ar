@@ -1,3 +1,4 @@
+import { useFrame } from "@react-three/fiber";
 import { database } from "config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -24,7 +25,7 @@ const PainterPlayer1V2: React.FC<Props> = ({
 }) => {
   let container;
   let camera: THREE.PerspectiveCamera,
-    scene: THREE.Scene,
+    scene: any,
     renderer: THREE.WebGLRenderer;
   let controller: THREE.Object3D<THREE.Event> | THREE.XRTargetRaySpace,
     painter: any,
@@ -32,11 +33,15 @@ const PainterPlayer1V2: React.FC<Props> = ({
 
   const cursor = new THREE.Vector3();
 
+  const [userDataSelecting, setUserDataSelecting] = useState<boolean>(false);
+
   // ### 2
   const [arrayOfPositionPlayer1Prefix, setArrayOfPositionPlayer1Prefix] =
     useState<number>(0);
+  let arrayOfPositionPlayer1PrefixDynamic = 0;
   const [arrayOfPositionPlayer1PreIndex, setArrayOfPositionPlayer1PreIndex] =
     useState<number>(0);
+  let arrayOfPositionPlayer1PreIndexDynamic = 0;
   const [
     arrayOfPositionPlayer1CurrentIndex,
     setArrayOfPositionPlayer1CurrentIndex,
@@ -44,6 +49,9 @@ const PainterPlayer1V2: React.FC<Props> = ({
   const arrayOfPositionPlayer1StepIndex: number = 150;
 
   const [arrayOfPositionPlayer1] = useState<IPainter[]>([]);
+  let arrayOfPositionyPlayer1Dynamic: any = {
+    player1Position_0: [],
+  };
   const [arrayOfPositionPlayer2, setArrayOfPositionPlayer2] = useState<
     IPainter[]
   >([]);
@@ -53,9 +61,6 @@ const PainterPlayer1V2: React.FC<Props> = ({
 
   const [indexOfArrayPositionsT, setIndexOfArrayPositions] =
     useState<number>(0);
-
-  init();
-  animate();
 
   function init() {
     container = document.createElement("div");
@@ -86,7 +91,9 @@ const PainterPlayer1V2: React.FC<Props> = ({
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0, 1, 0);
-    scene.add(light);
+    if (light) {
+      scene.add(light);
+    }
 
     //
 
@@ -96,7 +103,9 @@ const PainterPlayer1V2: React.FC<Props> = ({
     painter.mesh.material = new THREE.MeshBasicMaterial({
       color: color.hex.slice(0, 7),
     });
-    scene.add(painter.mesh);
+    if (painter) {
+      scene.add(painter.mesh);
+    }
 
     painterPlayer2 = new TubePainter();
     painterPlayer2.setSize(sizePlayer2);
@@ -104,27 +113,44 @@ const PainterPlayer1V2: React.FC<Props> = ({
     painterPlayer2.mesh.material = new THREE.MeshBasicMaterial({
       color: colorPlayer2?.hex.slice(0, 7),
     });
-    scene.add(painterPlayer2.mesh);
+    if (painterPlayer2) {
+      scene.add(painterPlayer2.mesh);
+    }
     //
 
     function onSelectStart(this: any) {
       this.userData.isSelecting = true;
       this.userData.skipFrames = 2;
+      setUserDataSelecting(true);
     }
 
     function onSelectEnd(this: any) {
       this.userData.isSelecting = false;
+      setUserDataSelecting(false);
       setTimeout(() => {
+        console.log(
+          "Hamedkabir index   ",
+          arrayOfPositionPlayer1PreIndex,
+          "    ",
+          arrayOfPositionPlayer1Prefix
+        );
+
+        console.log("hamedkabir   ", arrayOfPositionyPlayer1Dynamic);
+
+        // bad case
+        // updatePlayerPosition2(arrayOfPositionPlayer1);
         // ### 2
-        arrayOfPositionPlayer1Handler2();
-      }, 200);
+        // arrayOfPositionPlayer1Handler2();
+      }, 100);
     }
 
     controller = renderer.xr.getController(0);
     controller.addEventListener("selectstart", onSelectStart);
     controller.addEventListener("selectend", onSelectEnd);
     controller.userData.skipFrames = 0;
-    scene.add(controller);
+    if (controller) {
+      scene.add(controller);
+    }
 
     //
 
@@ -230,8 +256,10 @@ const PainterPlayer1V2: React.FC<Props> = ({
           color: color,
           size: size,
         };
+        // ### 1
+        addObjectToArrayPoisitionPlayer1(object);
         // ### 2
-        arrayOfPositionPlayer1.push(object);
+        // arrayOfPositionPlayer1.push(object);
       } else {
         painter.lineTo(cursor);
         painter.update();
@@ -243,15 +271,41 @@ const PainterPlayer1V2: React.FC<Props> = ({
           color: color,
           size: size,
         };
+        // ### 1
+        addObjectToArrayPoisitionPlayer1(object);
         // ### 2
-        arrayOfPositionPlayer1.push(object);
+        // arrayOfPositionPlayer1.push(object);
       }
     }
   }
 
+  const addObjectToArrayPoisitionPlayer1 = (obj: IPainter) => {
+    if (arrayOfPositionPlayer1PreIndexDynamic < 150) {
+      // setArrayOfPositionPlayer1PreIndex((res) => (res = res + 1));
+      arrayOfPositionPlayer1PreIndexDynamic++;
+    } else {
+      // setArrayOfPositionPlayer1PreIndex(0);
+      // setArrayOfPositionPlayer1Prefix((res) => (res = res + 1));
+      arrayOfPositionPlayer1PreIndexDynamic = 0;
+      arrayOfPositionPlayer1PrefixDynamic++;
+    }
+    console.log(arrayOfPositionPlayer1PreIndexDynamic);
+
+    arrayOfPositionyPlayer1Dynamic[
+      `player1Position_${arrayOfPositionPlayer1PrefixDynamic}`
+    ].push(obj);
+  };
+
   // ### 2
   const arrayOfPositionPlayer1Handler2 = () => {
     let array: IPainter[] = [];
+    console.log(
+      "Hamedkabir  ",
+      arrayOfPositionPlayer1,
+      "  ",
+      arrayOfPositionPlayer1PreIndex
+    );
+
     if (
       arrayOfPositionPlayer1.length >= arrayOfPositionPlayer1PreIndex &&
       arrayOfPositionPlayer1.length < arrayOfPositionPlayer1CurrentIndex
@@ -282,12 +336,19 @@ const PainterPlayer1V2: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    init();
+    animate();
+  }, []);
+
+  useEffect(() => {
     getPlayerPosition();
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      initPlayer2();
+      if (scene) {
+        initPlayer2();
+      }
       if (painterPlayer2) {
         if (arrayOfPositionPlayer2) {
           if (arrayOfPositionPlayer2.length !== 0) {
@@ -323,10 +384,6 @@ const PainterPlayer1V2: React.FC<Props> = ({
       renderer.render(scene, camera);
     }
   }
-  return (
-    <>
-      <h1>Hamedkabir</h1>
-    </>
-  );
+  return <></>;
 };
 export default PainterPlayer1V2;

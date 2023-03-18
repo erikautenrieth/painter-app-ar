@@ -120,6 +120,15 @@ const Painter1: React.FC<Props> = ({
     window.addEventListener("resize", onWindowResize);
   };
 
+  const initPlayer1 = () => {
+    painter = new TubePainter();
+    painter.setSize(size);
+    painter.mesh.material.side = THREE.DoubleSide;
+    painter.mesh.material = new THREE.MeshBasicMaterial({
+      color: color?.hex.slice(0, 7),
+    });
+    scene.add(painter.mesh);
+  };
   const initPlayer2 = () => {
     painterPlayer2 = new TubePainter();
     painterPlayer2.setSize(sizePlayer2);
@@ -308,8 +317,12 @@ const Painter1: React.FC<Props> = ({
 
   useEffect(() => {
     init();
-  }, [userDataSelecting]);
+  }, []);
 
+  useEffect(() => {
+    // initPlayer1();
+    init();
+  }, [userDataSelecting]);
   useEffect(() => {
     getPlayerPosition();
   }, []);

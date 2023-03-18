@@ -1,3 +1,5 @@
+import { Canvas } from "@react-three/fiber";
+import { ARButton, XR } from "@react-three/xr";
 import { database } from "config/firebase";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
@@ -126,6 +128,11 @@ const XrPainterV2 = () => {
   // }, [user.uid]);
   return (
     <>
+      {/* <ARButton></ARButton> */}
+      {/* <Canvas>
+        <XR>
+        </XR>
+      </Canvas> */}
       {userData ? (
         userData.role === "admin" ? (
           <PainterPlayer1V2
