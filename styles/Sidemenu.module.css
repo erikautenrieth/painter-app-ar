@@ -1,0 +1,47 @@
+/*
+Navbar
+*/
+.sideMenuButtonToOpen {
+  z-index: 9;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.sidemenu-button {
+  background: #1976d2 !important;
+  border-radius: 15px !important;
+}
+.sidemenu-button svg {
+  font-size: 35px;
+  color: white;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+.sidemenu-button:hover {
+  background: black;
+}
+
+.sidemenu-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 350px;
+  overflow: hidden;
+  background: #1976d2 ;
+  z-index: 9;
+  border-radius: 10px;
+}
+
+
+.sidemenu-content-items {
+  color: white !important;
+  border-bottom: 1px solid darkgray !important;
+  text-align: center !important;
+}
+
+.sidemenu {
+  width : 80px;
+  background: #362e6f;
+}
