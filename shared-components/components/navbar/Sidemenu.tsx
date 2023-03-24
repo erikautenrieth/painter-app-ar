@@ -55,13 +55,13 @@ const Sidemenu = () => {
               >
                 <ListItemText primary="Home" />
               </ListItemButton>
-              <ListItemButton
+              {/* <ListItemButton
                 className="sidemenu-content-items"
                 component="a"
                 href="/xr-paint"
               >
                 <ListItemText primary="XR Test" />
-              </ListItemButton>
+              </ListItemButton> */}
               <ListItemButton
                 className="sidemenu-content-items"
                 component="a"

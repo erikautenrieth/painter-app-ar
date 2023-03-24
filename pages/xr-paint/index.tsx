@@ -36,8 +36,8 @@ const PaintXR = () => {
   const [colorPlayer2, setColorPlayer2] = useColor("hex", "#1fd243");
   const zustandStore = ZustandStore();
 
-  const hostID2: string | undefined = zustandStore.hostingId;
-  const hostID: string | undefined = "Q9oLV94mYhny8JO4A3s1";
+  const hostID: string | undefined = zustandStore.hostingId;
+  const hostID2: string | undefined = "Q9oLV94mYhny8JO4A3s1";
   const getUserById = async () => {
     const docRef = doc(database, "users", user.uid);
     const docSnap = await getDoc(docRef);
